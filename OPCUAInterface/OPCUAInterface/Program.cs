@@ -20,16 +20,18 @@ namespace OPCUAInterface
             Console.WriteLine("Hello World!");
             Console.WriteLine(Program.test_hostname);
 
-
-            var mqttClient = MqttClient.CreateAsync("localhost").Result; //Creates instance of MQTTClient and connects to destination host address
-
+            //Creates instance of MQTTClient and connects to destination host address
+            var mqttClient = MqttClient.CreateAsync("localhost").Result; 
             var sess = mqttClient.ConnectAsync().Result;
 
+            //Topics for receipt and transmission
             string rcvTopic = "eebus/daenet/command";
             string sendTopic = "eebus/daenet/telemetry";
+
+            //Subscribes to the specified topic.
             mqttClient.SubscribeAsync(rcvTopic, MqttQualityOfService.ExactlyOnce);
 
-
+            //Console to allow string messages to be typed and sent.
             Task.Run(() =>
             {
                 while (true)
@@ -50,6 +52,7 @@ namespace OPCUAInterface
                 }
             });
 
+            //Subscribes to MQTT Server specified
             mqttClient.MessageStream.Subscribe(msg =>
             {
                 Console.ForegroundColor = ConsoleColor.Green;
