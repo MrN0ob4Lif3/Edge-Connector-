@@ -21,7 +21,7 @@ namespace OPCUAInterface
             Console.WriteLine(Program.test_hostname);
 
             //Creates instance of MQTTClient and connects to destination host address
-            var mqttClient = MqttClient.CreateAsync("localhost").Result; 
+            var mqttClient = MqttClient.CreateAsync("broker.hivemq.com").Result; 
             var sess = mqttClient.ConnectAsync().Result;
 
             //Topics for receipt and transmission
