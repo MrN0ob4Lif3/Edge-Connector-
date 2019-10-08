@@ -7,6 +7,11 @@ using Newtonsoft.Json;
 using Opc.Ua.Client;
 using Opc.Ua.Server;
 using Opc.Ua.Configuration;
+using System.ComponentModel.DataAnnotations;
+using MQTTnet;
+using MQTTnet.Client.Options;
+using MQTTnet.Client.Receiving;
+
 
 namespace OPCUAInterface
 {
@@ -20,9 +25,16 @@ namespace OPCUAInterface
             Console.WriteLine("Hello World!");
             Console.WriteLine(Program.test_hostname);
 
-            //Creates instance of MQTTClient and connects to destination host address
-            var mqttClient = MqttClient.CreateAsync("broker.hivemq.com").Result; 
-            var sess = mqttClient.ConnectAsync().Result;
+            // Create a new MQTT client.
+            var factory = new MqttFactory();
+            var mqttClient = factory.CreateMqttClient();
+
+            // Use WebSocket connection.
+            var options = new MqttClientOptionsBuilder()
+                .WithWebSocketServer("broker.hivemq.com:8000/mqtt")
+                .Build();
+
+            mqttClient.ConnectAsync(options, CancellationToken.None); // Since 3.0.5 with CancellationToken
 
             //Topics for receipt and transmission
             string rcvTopic = "eebus/daenet/command";
