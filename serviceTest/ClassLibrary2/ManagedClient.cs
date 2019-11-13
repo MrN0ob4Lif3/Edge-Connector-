@@ -44,23 +44,6 @@ namespace MQTTCore
                 Storage = ms
             };
             await managedMqttClient.StartAsync(options);
-
-            //Disconnect handler not needed as ManagedClient will auto-reconnect
-            /*managedMqttClient.UseDisconnectedHandler(async e =>
-            {
-                Console.WriteLine("### DISCONNECTED FROM SERVER ###");
-                await Task.Delay(TimeSpan.FromSeconds(5));
-
-                try
-                {
-                    await managedMqttClient.StartAsync(options);
-                }
-                catch
-                {
-                    Console.WriteLine("### RECONNECTING FAILED ###");
-                }
-            });
-            */
         }
 
         //MQTTClient connector (Throw in constructed client, brokerIP) [WebSocket]
@@ -82,23 +65,6 @@ namespace MQTTCore
                 Storage = ms
             };
             await managedMqttClient.StartAsync(options);
-
-            //Disconnect handler not needed as ManagedClient will auto-reconnect
-            /*managedMqttClient.UseDisconnectedHandler(async e =>
-            {
-                Console.WriteLine("### DISCONNECTED FROM SERVER ###");
-                await Task.Delay(TimeSpan.FromSeconds(5));
-
-                try
-                {
-                    await managedMqttClient.StartAsync(options);
-                }
-                catch
-                {
-                    Console.WriteLine("### RECONNECTING FAILED ###");
-                }
-            });
-            */
         }
 
         //MQTTClient topic subscription

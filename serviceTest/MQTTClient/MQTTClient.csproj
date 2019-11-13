@@ -35,6 +35,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\brokerService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="MqttMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +74,20 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Connected Services\brokerService\brokerService.wsdl" />
+    <None Include="Connected Services\brokerService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\MQTTClientForm.brokerService.CompositeType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Properties\DataSources\brokerService.CompositeType.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -81,15 +102,44 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\brokerService\brokerService.csproj">
+      <Project>{443289ba-c188-41f3-a552-a9a7715baa49}</Project>
+      <Name>brokerService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClassLibrary2\MQTTCore.csproj">
       <Project>{93cd2d9b-820e-4a57-b81b-e9f0bd05c9e8}</Project>
       <Name>MQTTCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MQTTService\MQTTService.csproj">
+      <Project>{de95a518-fd30-4de7-bdee-5f797e41c7eb}</Project>
+      <Name>MQTTService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MQTTnet">
       <Version>3.0.8</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\brokerService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\brokerService\item.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\brokerService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\brokerService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\brokerService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

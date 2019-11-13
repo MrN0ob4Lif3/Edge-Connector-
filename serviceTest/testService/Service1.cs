@@ -6,28 +6,23 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
-using System.ServiceModel;
+using System.Threading.Tasks;
 
-namespace MQTTService
+namespace testService
 {
-    public partial class MQTTService : ServiceBase
+    public partial class Service1 : ServiceBase
     {
-        ServiceHost host;
-
-        public MQTTService()
-        {    
+        public Service1()
+        {
             InitializeComponent();
         }
 
         protected override void OnStart(string[] args)
         {
-            host = new ServiceHost(typeof(brokerService.brokerService));
-            host.Open();
         }
 
         protected override void OnStop()
         {
-            host.Close();
         }
     }
 }

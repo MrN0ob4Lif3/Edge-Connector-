@@ -1,20 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MQTTCore;
-
-using MQTTnet;
+using System.ServiceModel;
 using MQTTnet.Client;
-using MQTTnet.Client.Options;
-using MQTTnet.Client.Receiving;
-using MQTTnet.Client.Subscribing;
-using MQTTnet.Server;
 using MQTTnet.Extensions.ManagedClient;
 
 namespace MQTTClientForm
@@ -27,7 +14,12 @@ namespace MQTTClientForm
 
         public MqttMain()
         {
+            brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
+            client.CreateClientAsync();
             InitializeComponent();
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
+            labelMessage.Text = "Service Started";
         }   
 
         private async void connectButton_Click(object sender, EventArgs e)
@@ -134,6 +126,26 @@ namespace MQTTClientForm
             {
                 System.Windows.Forms.MessageBox.Show("Error publish");
             }
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
+            labelMessage.Text = "Service Started";
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
+            labelMessage.Text = "Service Stopped";
+        }
+
+        private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
         }
     }
 }

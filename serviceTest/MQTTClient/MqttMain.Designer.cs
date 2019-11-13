@@ -46,6 +46,9 @@
             this.publishText = new System.Windows.Forms.TextBox();
             this.PublishButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.labelMessage = new System.Windows.Forms.Label();
             this.MqttTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -247,11 +250,42 @@
             this.textBox1.Size = new System.Drawing.Size(498, 262);
             this.textBox1.TabIndex = 1;
             // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(346, 24);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(75, 23);
+            this.btnStart.TabIndex = 5;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(471, 24);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.TabIndex = 6;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // labelMessage
+            // 
+            this.labelMessage.AutoSize = true;
+            this.labelMessage.Location = new System.Drawing.Point(584, 24);
+            this.labelMessage.Name = "labelMessage";
+            this.labelMessage.Size = new System.Drawing.Size(0, 13);
+            this.labelMessage.TabIndex = 7;
+            // 
             // MqttMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.labelMessage);
+            this.Controls.Add(this.btnStop);
+            this.Controls.Add(this.btnStart);
             this.Controls.Add(this.MqttTabs);
             this.Controls.Add(this.connectionChoice);
             this.Controls.Add(this.connectionType);
@@ -259,6 +293,7 @@
             this.Controls.Add(this.connectButton);
             this.Name = "MqttMain";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MqttMain_FormClosed);
             this.Load += new System.EventHandler(this.MqttMain_Load);
             this.MqttTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -298,6 +333,9 @@
         private System.Windows.Forms.TextBox topicSubscribe;
         private System.Windows.Forms.Button UnsubscribeButton;
         private System.Windows.Forms.TextBox pubTopic;
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Label labelMessage;
     }
 }
 

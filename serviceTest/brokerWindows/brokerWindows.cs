@@ -6,16 +6,19 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading.Tasks;
 using System.ServiceModel;
 
-namespace MQTTService
+
+
+namespace brokerWindows
 {
-    public partial class MQTTService : ServiceBase
+    public partial class brokerWindows : ServiceBase
     {
         ServiceHost host;
 
-        public MQTTService()
-        {    
+        public brokerWindows()
+        {
             InitializeComponent();
         }
 

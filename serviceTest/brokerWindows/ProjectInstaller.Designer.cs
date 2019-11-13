@@ -1,4 +1,4 @@
-﻿namespace MQTTService
+﻿namespace brokerWindows
 {
     partial class ProjectInstaller
     {
@@ -39,10 +39,8 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.DisplayName = "MQTTService";
-            this.serviceInstaller1.ServiceName = "MQTTService";
+            this.serviceInstaller1.ServiceName = "brokerWindows";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
-            this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
             // 
             // ProjectInstaller
             // 
