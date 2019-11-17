@@ -134,7 +134,7 @@ namespace MQTTClientForm
             }
             catch
             {
-                System.Windows.Forms.MessageBox.Show("Error publish");
+                MessageBox.Show("Error publish");
             }
         }
 

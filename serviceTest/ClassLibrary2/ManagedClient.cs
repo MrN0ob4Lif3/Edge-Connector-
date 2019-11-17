@@ -34,7 +34,7 @@ namespace MQTTCore
             {
                 ClientOptions = new MqttClientOptions
                 {
-                    ClientId = "MQTTnetManagedClientFromClient (TCP)",
+                    ClientId = "MQTTnetManagedClient (TCP)",
                     ChannelOptions = new MqttClientTcpOptions
                     {
                         Server = brokerIP
@@ -55,7 +55,7 @@ namespace MQTTCore
             {
                 ClientOptions = new MqttClientOptions
                 {
-                    ClientId = "MQTTnetManagedClientFromClient (WebSocket)",
+                    ClientId = "MQTTnetManagedClient (WebSocket)",
                     ChannelOptions = new MqttClientWebSocketOptions
                     {
                         Uri = brokerIP

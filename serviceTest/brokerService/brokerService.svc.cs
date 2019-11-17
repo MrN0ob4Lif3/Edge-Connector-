@@ -48,96 +48,52 @@ namespace brokerService
 
             if(option == 1)
             {
-                // Use WebSocket connection.
-                var options = new ManagedMqttClientOptionsBuilder()
-                    .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-                    .WithClientOptions(new MqttClientOptionsBuilder()
-                        .WithClientId(System.Environment.MachineName + "WebSocket")
-                        .WithWebSocketServer(brokerIP)
-                        .WithTls().Build())
-                    .Build();
-
-                // Message options
-                string mqttTopic = "testTopic";
-                string mqttMessage = "testMessage";
-                var message = new MqttApplicationMessageBuilder()
-                    .WithTopic(mqttTopic)
-                    .WithPayload(mqttMessage)
-                    .WithExactlyOnceQoS()
-                    .WithRetainFlag()
-                    .Build();
-
-                await managedMQTT.SubscribeAsync(new TopicFilterBuilder().WithTopic(mqttTopic).Build());
-                // Publishing
                 try
                 {
-                    await managedMQTT.PublishAsync(message);
+                    // Use WebSocket connection.
+                    await MQTTCore.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, brokerIP);
+
+                    // Message options
+                    string mqttTopic = "WebSocketTopic";
+                    string mqttMessage = "WebSocketMessage";
+
+                    //Subscription
+                    MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
+
+                    // Publishing
+                    await MQTTCore.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
                 }
+
                 catch (Exception e)
                 {
                     // Create an EventLog instance and assign its source.
                     EventLog myLog = new EventLog();
-                    myLog.Source = "brokerServicePublish";
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-
-                }
-                try
-                {
-                    await managedMQTT.StartAsync(options);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog();
-                    myLog.Source = "brokerServiceStart";
+                    myLog.Source = "brokerServiceWebSocket";
                     // Write an informational entry to the event log.
                     myLog.WriteEntry(e.Message);
                 }
             }
             else if(option == 2)
             {
-                // Use TCP connection.
-                var options = new ManagedMqttClientOptionsBuilder()
-                    .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-                    .WithClientOptions(new MqttClientOptionsBuilder()
-                        .WithClientId(System.Environment.MachineName + "TCP")
-                        .WithTcpServer(brokerIP)
-                        .WithTls().Build())
-                    .Build();
-
-                // Message options
-                string mqttTopic = "testTopic";
-                string mqttMessage = "testMessage";
-                var message = new MqttApplicationMessageBuilder()
-                    .WithTopic(mqttTopic)
-                    .WithPayload(mqttMessage)
-                    .WithExactlyOnceQoS()
-                    .WithRetainFlag()
-                    .Build();
-
-                await managedMQTT.SubscribeAsync(new TopicFilterBuilder().WithTopic(mqttTopic).Build());
-                // Publishing
                 try
                 {
-                    await managedMQTT.PublishAsync(message);
+                    // Use TCP connection.
+                    await MQTTCore.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, brokerIP);
+
+                    // Message options
+                    string mqttTopic = "TCPTopic";
+                    string mqttMessage = "TCPMessage";
+
+                    //Subscription
+                    MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
+
+                    // Publishing
+                    await MQTTCore.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
                 }catch (Exception e)
                 {
                     // Create an EventLog instance and assign its source.
                     EventLog myLog = new EventLog();
-                    myLog.Source = "brokerServicePublish";
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-
-                }
-                try
-                {
-                    await managedMQTT.StartAsync(options);
-                } catch(Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog();
-                    myLog.Source = "brokerServiceStart";
+                    myLog.Source = "brokerServiceTCP";
                     // Write an informational entry to the event log.
                     myLog.WriteEntry(e.Message);
                 }
