@@ -91,10 +91,10 @@ namespace MQTTClientForm.brokerService {
         System.Threading.Tasks.Task<MQTTClientForm.brokerService.CompositeType> GetDataUsingDataContractAsync(MQTTClientForm.brokerService.CompositeType composite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/CreateClientAsync", ReplyAction="http://tempuri.org/IbrokerService/CreateClientAsyncResponse")]
-        void CreateClientAsync();
+        void CreateClientAsync(string brokerIP, int option);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/CreateClientAsync", ReplyAction="http://tempuri.org/IbrokerService/CreateClientAsyncResponse")]
-        System.Threading.Tasks.Task CreateClientAsyncAsync();
+        System.Threading.Tasks.Task CreateClientAsyncAsync(string brokerIP, int option);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -140,12 +140,12 @@ namespace MQTTClientForm.brokerService {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
         
-        public void CreateClientAsync() {
-            base.Channel.CreateClientAsync();
+        public void CreateClientAsync(string brokerIP, int option) {
+            base.Channel.CreateClientAsync(brokerIP, option);
         }
         
-        public System.Threading.Tasks.Task CreateClientAsyncAsync() {
-            return base.Channel.CreateClientAsyncAsync();
+        public System.Threading.Tasks.Task CreateClientAsyncAsync(string brokerIP, int option) {
+            return base.Channel.CreateClientAsyncAsync(brokerIP, option);
         }
     }
 }

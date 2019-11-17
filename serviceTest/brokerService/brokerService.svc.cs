@@ -14,6 +14,7 @@ using MQTTnet.Client.Receiving;
 using MQTTnet.Client.Subscribing;
 using MQTTnet.Server;
 using MQTTnet.Extensions.ManagedClient;
+using System.Diagnostics;
 
 namespace brokerService
 {
@@ -39,91 +40,109 @@ namespace brokerService
             return composite;
         }
 
-        public async void CreateClientAsync()
+        public async void CreateClientAsync(String brokerIP, int option)
         {
             //Create a new ManagedMQTT Client.
             var mqttFactory = new MqttFactory();
             var managedMQTT = mqttFactory.CreateManagedMqttClient();
-            Console.WriteLine("Starting Managed MQTT Client");
 
-            // Use WebSocket connection.
-            Console.Write("MQTT Broker IP: ");
-            string brokerIP = Console.ReadLine();
-            var options = new ManagedMqttClientOptionsBuilder()
-                .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-                .WithClientOptions(new MqttClientOptionsBuilder()
-                    .WithClientId(System.Environment.MachineName)
-                    .WithWebSocketServer(brokerIP)
-                    .WithTls().Build())
-                .Build();
-            Console.WriteLine("Attempting connection to " + brokerIP + " via WebSocket");
-
-            // Message options
-            Console.Write("Topic: ");
-            string mqttTopic = Console.ReadLine();
-            Console.Write("Message: ");
-            string mqttMessage = Console.ReadLine();
-            var message = new MqttApplicationMessageBuilder()
-                .WithTopic(mqttTopic)
-                .WithPayload(mqttMessage)
-                .WithExactlyOnceQoS()
-                .WithRetainFlag()
-                .Build();
-
-            await managedMQTT.SubscribeAsync(new TopicFilterBuilder().WithTopic(mqttTopic).Build());
-            // Publishing
-            await managedMQTT.PublishAsync(message);
-            Console.WriteLine("Message: " + mqttMessage + " published to Topic " + mqttTopic);
-            await managedMQTT.StartAsync(options);
-
-            /*
-            // Create a new MQTT client.
-            var factory = new MqttFactory();
-            var mqttClient = factory.CreateMqttClient();
-            Console.WriteLine("Starting MQTT Client");
-
-            // Use WebSocket connection.
-            Console.Write("MQTT Broker IP: ");
-            string brokerIP2 = Console.ReadLine();
-            var options2 = new MqttClientOptionsBuilder()
-                .WithWebSocketServer(brokerIP)
-                .Build();
-            Console.WriteLine("Connecting to " + brokerIP2 + " via TCP");
-
-            await mqttClient.ConnectAsync(options2);        
-
-            // Reconnection
-            mqttClient.UseDisconnectedHandler(async e =>
+            if(option == 1)
             {
-                Console.WriteLine("### DISCONNECTED FROM SERVER ###");
-                await Task.Delay(TimeSpan.FromSeconds(5));
-                
+                // Use WebSocket connection.
+                var options = new ManagedMqttClientOptionsBuilder()
+                    .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
+                    .WithClientOptions(new MqttClientOptionsBuilder()
+                        .WithClientId(System.Environment.MachineName + "WebSocket")
+                        .WithWebSocketServer(brokerIP)
+                        .WithTls().Build())
+                    .Build();
+
+                // Message options
+                string mqttTopic = "testTopic";
+                string mqttMessage = "testMessage";
+                var message = new MqttApplicationMessageBuilder()
+                    .WithTopic(mqttTopic)
+                    .WithPayload(mqttMessage)
+                    .WithExactlyOnceQoS()
+                    .WithRetainFlag()
+                    .Build();
+
+                await managedMQTT.SubscribeAsync(new TopicFilterBuilder().WithTopic(mqttTopic).Build());
+                // Publishing
                 try
                 {
-                    await mqttClient.ConnectAsync(options2); // Since 3.0.5 with CancellationToken
+                    await managedMQTT.PublishAsync(message);
                 }
-                catch
+                catch (Exception e)
                 {
-                    Console.WriteLine("### RECONNECTING FAILED ###");
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog();
+                    myLog.Source = "brokerServicePublish";
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+
                 }
-            });
+                try
+                {
+                    await managedMQTT.StartAsync(options);
+                }
+                catch (Exception e)
+                {
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog();
+                    myLog.Source = "brokerServiceStart";
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+                }
+            }
+            else if(option == 2)
+            {
+                // Use TCP connection.
+                var options = new ManagedMqttClientOptionsBuilder()
+                    .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
+                    .WithClientOptions(new MqttClientOptionsBuilder()
+                        .WithClientId(System.Environment.MachineName + "TCP")
+                        .WithTcpServer(brokerIP)
+                        .WithTls().Build())
+                    .Build();
 
-            // Message options
-            Console.Write("Topic: ");
-            string mqttTopic2 = Console.ReadLine();
-            Console.Write("Message: ");
-            string mqttMessage2 = Console.ReadLine();
-            var message2 = new MqttApplicationMessageBuilder()
-                .WithTopic(mqttTopic)
-                .WithPayload(mqttMessage)
-                .WithExactlyOnceQoS()
-                .WithRetainFlag()
-                .Build();
+                // Message options
+                string mqttTopic = "testTopic";
+                string mqttMessage = "testMessage";
+                var message = new MqttApplicationMessageBuilder()
+                    .WithTopic(mqttTopic)
+                    .WithPayload(mqttMessage)
+                    .WithExactlyOnceQoS()
+                    .WithRetainFlag()
+                    .Build();
 
-            // Publishing
-            await mqttClient.PublishAsync(message2);
-            Console.WriteLine("Message: " + mqttMessage2 + " published to Topic " + mqttTopic2);
-            */
+                await managedMQTT.SubscribeAsync(new TopicFilterBuilder().WithTopic(mqttTopic).Build());
+                // Publishing
+                try
+                {
+                    await managedMQTT.PublishAsync(message);
+                }catch (Exception e)
+                {
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog();
+                    myLog.Source = "brokerServicePublish";
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+
+                }
+                try
+                {
+                    await managedMQTT.StartAsync(options);
+                } catch(Exception e)
+                {
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog();
+                    myLog.Source = "brokerServiceStart";
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+                }
+            }
+
         }
     }
 }

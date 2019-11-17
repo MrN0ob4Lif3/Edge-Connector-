@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using System.ServiceModel;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
+using System.Threading;
+using System.Diagnostics;
 
 namespace MQTTClientForm
 {
@@ -14,12 +16,7 @@ namespace MQTTClientForm
 
         public MqttMain()
         {
-            brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
-            client.CreateClientAsync();
             InitializeComponent();
-            btnStart.Enabled = false;
-            btnStop.Enabled = true;
-            labelMessage.Text = "Service Started";
         }   
 
         private async void connectButton_Click(object sender, EventArgs e)
@@ -27,8 +24,7 @@ namespace MQTTClientForm
             if(connectionString.Text != string.Empty)
             {
                 brokerIP = connectionString.Text;
-                //mqttClient = MQTTCore.MqttClient.CreateClient();
-                managedMqttClient = MQTTCore.ManagedClient.CreateManagedClient();
+                managedMqttClient = MQTTCore.ManagedClient.CreateManagedClient(); 
                 if(connectionChoice.SelectedIndex == 0)
                     try
                     {
@@ -58,6 +54,20 @@ namespace MQTTClientForm
         {
             connectionChoice.SelectedIndex = 0;
             connectionString.Text = "localhost";
+            try
+            {
+                brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
+                client.CreateClientAsync(connectionString.Text, 2);
+                // Log an event to indicate successful start.
+                labelMessage.Text = "Forms OK";
+            } catch(Exception ex)
+            {
+                // Log the exception.
+                labelMessage.Text = "Forms Error";
+            }
+
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
         }
 
         private void SubscribeButton_Click(object sender, EventArgs e)

@@ -20,7 +20,7 @@ namespace brokerService
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         [OperationContract]
-        void CreateClientAsync();
+        void CreateClientAsync(String brokerIP, int option);
 
 
         // TODO: Add your service operations here
