@@ -54,13 +54,13 @@ namespace MQTTClientForm
         {
             connectionChoice.SelectedIndex = 0;
             connectionString.Text = "localhost";
+            brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");   
             try
             {
-                brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
                 client.CreateClientAsync(connectionString.Text, 2);
                 // Log an event to indicate successful start.
-                labelMessage.Text = "Forms OK";
-            } catch(Exception ex)
+                labelMessage.Text = client.GetData("Service Function works");
+            } catch(Exception)
             {
                 // Log the exception.
                 labelMessage.Text = "Forms Error";
