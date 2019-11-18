@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.ServiceModel;
-using MQTTnet.Client;
-using MQTTnet.Extensions.ManagedClient;
-using System.Threading;
-using System.Diagnostics;
 using System.ServiceProcess;
+using Microsoft.Win32;
+using MQTTnet.Extensions.ManagedClient;
+
 
 namespace MQTTClientForm
 {
@@ -15,6 +14,17 @@ namespace MQTTClientForm
         public string brokerIP;
         brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
         ServiceController brokerWindows = new ServiceController("brokerWindows");
+
+        //Startup registry key and value
+        private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private static readonly string StartupValue = "MQTTBroker";
+
+        private static void SetStartup()
+        {
+            //Set the application to run at startup
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+            key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+        }
 
         public MqttMain()
         {
@@ -26,54 +36,40 @@ namespace MQTTClientForm
         {
             connectionChoice.SelectedIndex = 0;
             connectionString.Text = "localhost";
-            /*
-            brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");   
-            try
-            {
-                client.CreateClientAsync(connectionString.Text, 1);
-                // Log an event to indicate successful start.
-                labelMessage.Text = client.GetData("Service Function works");
-            } catch(Exception)
-            {
-                // Log the exception.
-                labelMessage.Text = "Forms Error";
-            }
-
-            btnStart.Enabled = false;
-            btnStop.Enabled = true;
-            */
         }
 
         //Connect to specified address.
-        private void connectButton_Click(object sender, EventArgs e)
+        private void ConnectButton_Click(object sender, EventArgs e)
         {
             if (connectionString.Text != string.Empty)
             {
                 brokerIP = connectionString.Text;
-                if (connectionChoice.SelectedIndex == 0)
-                    try
-                    {            
-                        client.ConnectClientAsync(connectionString.Text, 0);
-                        // Log an event to indicate successful start.
-                        labelMessage.Text = client.GetData("Service Function works");
-                    }
-                    catch (Exception)
-                    {
-                        // Log the exception.
-                        labelMessage.Text = "Forms Error";
-                    }
-                else if (connectionChoice.SelectedIndex == 1)
-                    try
-                    {
-                        client.ConnectClientAsync(connectionString.Text, 1);
-                        // Log an event to indicate successful start.
-                        labelMessage.Text = client.GetData("Service Function works");
-                    }
-                    catch (Exception)
-                    {
-                        // Log the exception.
-                        labelMessage.Text = "Forms Error";
-                    }
+                if(client.InnerChannel.State != CommunicationState.Faulted)
+                {
+                    if (connectionChoice.SelectedIndex == 0)
+                        try
+                        {
+                            client.ConnectClientAsync(connectionString.Text, 0);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    else if (connectionChoice.SelectedIndex == 1)
+                        try
+                        {
+                            client.ConnectClientAsync(connectionString.Text, 1);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Error connecting.");
+                        }
+                }
+                else
+                {
+                    client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
+                }
+
             }
         }
 
@@ -92,7 +88,7 @@ namespace MQTTClientForm
             }
             catch
             {
-                System.Windows.Forms.MessageBox.Show("Error subscribe");
+                MessageBox.Show("Error subscribing.");
             }
         }
         
@@ -118,7 +114,7 @@ namespace MQTTClientForm
             }
             catch
             {
-                System.Windows.Forms.MessageBox.Show("Error unsubscribe");
+                MessageBox.Show("Error unsubscribing");
             }
         }
 
@@ -141,7 +137,7 @@ namespace MQTTClientForm
             }
             catch
             {
-                MessageBox.Show("Error publish");
+                MessageBox.Show("Error publishing.");
             }
         }
 
@@ -154,23 +150,33 @@ namespace MQTTClientForm
         }
 
         //Starts service.
-        private void btnStart_Click(object sender, EventArgs e)
+        private void BtnStart_Click(object sender, EventArgs e)
         {
-            brokerWindows.Start();
-            btnStart.Enabled = false;
-            btnStop.Enabled = true;
-            labelMessage.Text = "Service Started";
+            try
+            {
+                brokerWindows.Start();
+                labelMessage.Text = "Service Started";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Service already running.");
+            }
+
         }
         
         //Stop service.
-        private void btnStop_Click(object sender, EventArgs e)
+        private void BtnStop_Click(object sender, EventArgs e)
         {
-            brokerWindows.Stop();
-            btnStart.Enabled = true;
-            btnStop.Enabled = false;
-            labelMessage.Text = "Service Stopped";
+            try
+            {
+                brokerWindows.Stop();
+                labelMessage.Text = "Service Stopped";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Service already stopped.");
+            }
         }
-
 
         private void MqttMain_Resize(object sender, EventArgs e)
         {
@@ -185,7 +191,7 @@ namespace MQTTClientForm
             }
         }
 
-        private void mqttNotify_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void MqttNotify_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             this.WindowState = FormWindowState.Normal;

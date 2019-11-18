@@ -73,7 +73,7 @@
             this.connectButton.TabIndex = 0;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
-            this.connectButton.Click += new System.EventHandler(this.connectButton_Click);
+            this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // connectionString
             // 
@@ -262,7 +262,7 @@
             this.btnStart.TabIndex = 5;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
             // btnStop
             // 
@@ -272,7 +272,7 @@
             this.btnStop.TabIndex = 6;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
             // labelMessage
             // 
@@ -286,7 +286,7 @@
             // 
             this.mqttNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("mqttNotify.Icon")));
             this.mqttNotify.Text = "MQTTBroker";
-            this.mqttNotify.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.mqttNotify_MouseDoubleClick);
+            this.mqttNotify.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MqttNotify_MouseDoubleClick);
             // 
             // MqttMain
             // 

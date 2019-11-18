@@ -1,18 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using System.Threading.Tasks;
-
 using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Client.Options;
-using MQTTnet.Client.Receiving;
-using MQTTnet.Client.Subscribing;
-using MQTTnet.Server;
 using MQTTnet.Extensions.ManagedClient;
 using System.Diagnostics;
 

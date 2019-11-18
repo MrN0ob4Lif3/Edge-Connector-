@@ -42,8 +42,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQTTService", "MQTTService\MQTTService.csproj", "{DE95A518-FD30-4DE7-BDEE-5F797E41C7EB}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InterfaceSetup", "InterfaceSetup\InterfaceSetup.vdproj", "{8639156D-0338-4B98-B697-A7ED793A8B40}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTCore", "ClassLibrary2\MQTTCore.csproj", "{93CD2D9B-820E-4A57-B81B-E9F0BD05C9E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQTTClient", "MQTTClient\MQTTClient.csproj", "{34FC924D-9ACA-4E64-A409-2CE4150FAD31}"
@@ -51,6 +49,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brokerService", "brokerService\brokerService.csproj", "{443289BA-C188-41F3-A552-A9A7715BAA49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brokerWindows", "brokerWindows\brokerWindows.csproj", "{1C21376B-D7AE-4F19-9210-F87296C23FBE}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MQTTBroker", "MQTTBroker\MQTTBroker.vdproj", "{D3DFD72D-90F1-4183-80C0-C91AE3C04624}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,12 +171,6 @@ Global
 		{DE95A518-FD30-4DE7-BDEE-5F797E41C7EB}.Release|x64.Build.0 = Release|Any CPU
 		{DE95A518-FD30-4DE7-BDEE-5F797E41C7EB}.Release|x86.ActiveCfg = Release|Any CPU
 		{DE95A518-FD30-4DE7-BDEE-5F797E41C7EB}.Release|x86.Build.0 = Release|Any CPU
-		{8639156D-0338-4B98-B697-A7ED793A8B40}.Debug|Any CPU.ActiveCfg = Debug
-		{8639156D-0338-4B98-B697-A7ED793A8B40}.Debug|x64.ActiveCfg = Debug
-		{8639156D-0338-4B98-B697-A7ED793A8B40}.Debug|x86.ActiveCfg = Debug
-		{8639156D-0338-4B98-B697-A7ED793A8B40}.Release|Any CPU.ActiveCfg = Release
-		{8639156D-0338-4B98-B697-A7ED793A8B40}.Release|x64.ActiveCfg = Release
-		{8639156D-0338-4B98-B697-A7ED793A8B40}.Release|x86.ActiveCfg = Release
 		{93CD2D9B-820E-4A57-B81B-E9F0BD05C9E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93CD2D9B-820E-4A57-B81B-E9F0BD05C9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93CD2D9B-820E-4A57-B81B-E9F0BD05C9E8}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -225,6 +219,12 @@ Global
 		{1C21376B-D7AE-4F19-9210-F87296C23FBE}.Release|x64.Build.0 = Release|Any CPU
 		{1C21376B-D7AE-4F19-9210-F87296C23FBE}.Release|x86.ActiveCfg = Release|Any CPU
 		{1C21376B-D7AE-4F19-9210-F87296C23FBE}.Release|x86.Build.0 = Release|Any CPU
+		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Debug|Any CPU.ActiveCfg = Debug
+		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Debug|x64.ActiveCfg = Debug
+		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Debug|x86.ActiveCfg = Debug
+		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Release|Any CPU.ActiveCfg = Release
+		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Release|x64.ActiveCfg = Release
+		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
