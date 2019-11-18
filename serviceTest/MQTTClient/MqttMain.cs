@@ -10,54 +10,25 @@ namespace MQTTClientForm
 {
     public partial class MqttMain : Form
     {
-        public IMqttClient mqttClient;
         public IManagedMqttClient managedMqttClient;
         public string brokerIP;
+        brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
 
         public MqttMain()
         {
             InitializeComponent();
-        }   
-
-        private async void connectButton_Click(object sender, EventArgs e)
-        {
-            if(connectionString.Text != string.Empty)
-            {
-                brokerIP = connectionString.Text;
-                managedMqttClient = MQTTCore.ManagedClient.CreateManagedClient(); 
-                if(connectionChoice.SelectedIndex == 0)
-                    try
-                    {
-                        //await MQTTCore.MqttClient.MqttConnectTCPAsync(mqttClient, brokerIP);
-                        await MQTTCore.ManagedClient.ManagedMqttConnectTCPAsync(managedMqttClient, brokerIP);
-
-                    }
-                    catch
-                    {
-                        System.Windows.Forms.MessageBox.Show("Connection failed.\n\nPlease check that you have entered the correct broker address.");
-                    }
-                        
-                else if(connectionChoice.SelectedIndex == 1)
-                    try
-                    {
-                        //await MQTTCore.MqttClient.MqttConnectWebSocket(mqttClient, brokerIP);
-                        await MQTTCore.ManagedClient.ManagedMqttConnectWebSocket(managedMqttClient, brokerIP);
-                    }
-                    catch
-                    {
-                        System.Windows.Forms.MessageBox.Show("Connection failed.\n\nPlease check that you have entered the correct broker address.");
-                    }
-            }
         }
 
+        //Initializes specific form elements.
         private void MqttMain_Load(object sender, EventArgs e)
         {
             connectionChoice.SelectedIndex = 0;
             connectionString.Text = "localhost";
+            /*
             brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");   
             try
             {
-                client.CreateClientAsync(connectionString.Text, 2);
+                client.CreateClientAsync(connectionString.Text, 1);
                 // Log an event to indicate successful start.
                 labelMessage.Text = client.GetData("Service Function works");
             } catch(Exception)
@@ -68,15 +39,49 @@ namespace MQTTClientForm
 
             btnStart.Enabled = false;
             btnStop.Enabled = true;
+            */
         }
 
+        //Connect to specified address.
+        private void connectButton_Click(object sender, EventArgs e)
+        {
+            if (connectionString.Text != string.Empty)
+            {
+                brokerIP = connectionString.Text;
+                if (connectionChoice.SelectedIndex == 0)
+                    try
+                    {            
+                        client.ConnectClientAsync(connectionString.Text, 0);
+                        // Log an event to indicate successful start.
+                        labelMessage.Text = client.GetData("Service Function works");
+                    }
+                    catch (Exception)
+                    {
+                        // Log the exception.
+                        labelMessage.Text = "Forms Error";
+                    }
+                else if (connectionChoice.SelectedIndex == 1)
+                    try
+                    {
+                        client.ConnectClientAsync(connectionString.Text, 1);
+                        // Log an event to indicate successful start.
+                        labelMessage.Text = client.GetData("Service Function works");
+                    }
+                    catch (Exception)
+                    {
+                        // Log the exception.
+                        labelMessage.Text = "Forms Error";
+                    }
+            }
+        }
+
+        //Subscribe to topic.
         private void SubscribeButton_Click(object sender, EventArgs e)
         {
             try
-            {
+            { 
                 string topic = topicSubscribe.Text;
-                //MQTTCore.MqttClient.MqttSubscribe(mqttClient, topic);
-                MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMqttClient, topic);
+                client.SubscribeTopicAsync(topic);
                 if (topicListPub.Items.Contains(topic))
                     return;
                 else
@@ -88,13 +93,13 @@ namespace MQTTClientForm
                 System.Windows.Forms.MessageBox.Show("Error subscribe");
             }
         }
-
+        
+        //Unsubscribes from topic.
         private void UnsubscribeButton_Click(object sender, EventArgs e)
         {
             try
-            {
-                //MQTTCore.MqttClient.MqttUnsubscribe(mqttClient, topicSubscribe.Text);
-                MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMqttClient, topicSubscribe.Text);
+            {       
+                client.UnsubscribeTopicAsync(topicSubscribe.Text);
                 ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(topicListSub);
                 selectedItems = topicListSub.SelectedItems;
 
@@ -115,7 +120,8 @@ namespace MQTTClientForm
             }
         }
 
-        private async void PublishButton_Click(object sender, EventArgs e)
+        //Publishes message to selected topic.
+        private void PublishButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -124,8 +130,7 @@ namespace MQTTClientForm
                     topicChosen = topicListPub.SelectedItem.ToString();
                 else
                     topicChosen = pubTopic.Text;
-                //await MQTTCore.MqttClient.MqttPublish(mqttClient, topicChosen, publishText.Text);
-                await MQTTCore.ManagedClient.ManagedMqttPublish(managedMqttClient, topicChosen, publishText.Text);
+                client.PublishTopicAsync(topicChosen, publishText.Text);
                 if (topicListSub.Items.Contains(topicChosen))
                     return;
                 else

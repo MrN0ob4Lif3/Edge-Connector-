@@ -22,8 +22,17 @@ namespace brokerService
         [OperationContract]
         void CreateClientAsync(String brokerIP, int option);
 
+        [OperationContract]
+        void ConnectClientAsync(String brokerIP, int option);
 
-        // TODO: Add your service operations here
+        [OperationContract]
+        void SubscribeTopicAsync(String topic);
+
+        [OperationContract]
+        void UnsubscribeTopicAsync(String topic);
+
+        [OperationContract]
+        void PublishTopicAsync(String topic, String message);
     }
 
 

@@ -95,6 +95,30 @@ namespace MQTTClientForm.brokerService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/CreateClientAsync", ReplyAction="http://tempuri.org/IbrokerService/CreateClientAsyncResponse")]
         System.Threading.Tasks.Task CreateClientAsyncAsync(string brokerIP, int option);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/ConnectClientAsync", ReplyAction="http://tempuri.org/IbrokerService/ConnectClientAsyncResponse")]
+        void ConnectClientAsync(string brokerIP, int option);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/ConnectClientAsync", ReplyAction="http://tempuri.org/IbrokerService/ConnectClientAsyncResponse")]
+        System.Threading.Tasks.Task ConnectClientAsyncAsync(string brokerIP, int option);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/SubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/SubscribeTopicAsyncResponse")]
+        void SubscribeTopicAsync(string topic);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/SubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/SubscribeTopicAsyncResponse")]
+        System.Threading.Tasks.Task SubscribeTopicAsyncAsync(string topic);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsyncResponse")]
+        void UnsubscribeTopicAsync(string topic);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsyncResponse")]
+        System.Threading.Tasks.Task UnsubscribeTopicAsyncAsync(string topic);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/PublishTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/PublishTopicAsyncResponse")]
+        void PublishTopicAsync(string topic, string message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/PublishTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/PublishTopicAsyncResponse")]
+        System.Threading.Tasks.Task PublishTopicAsyncAsync(string topic, string message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -146,6 +170,38 @@ namespace MQTTClientForm.brokerService {
         
         public System.Threading.Tasks.Task CreateClientAsyncAsync(string brokerIP, int option) {
             return base.Channel.CreateClientAsyncAsync(brokerIP, option);
+        }
+        
+        public void ConnectClientAsync(string brokerIP, int option) {
+            base.Channel.ConnectClientAsync(brokerIP, option);
+        }
+        
+        public System.Threading.Tasks.Task ConnectClientAsyncAsync(string brokerIP, int option) {
+            return base.Channel.ConnectClientAsyncAsync(brokerIP, option);
+        }
+        
+        public void SubscribeTopicAsync(string topic) {
+            base.Channel.SubscribeTopicAsync(topic);
+        }
+        
+        public System.Threading.Tasks.Task SubscribeTopicAsyncAsync(string topic) {
+            return base.Channel.SubscribeTopicAsyncAsync(topic);
+        }
+        
+        public void UnsubscribeTopicAsync(string topic) {
+            base.Channel.UnsubscribeTopicAsync(topic);
+        }
+        
+        public System.Threading.Tasks.Task UnsubscribeTopicAsyncAsync(string topic) {
+            return base.Channel.UnsubscribeTopicAsyncAsync(topic);
+        }
+        
+        public void PublishTopicAsync(string topic, string message) {
+            base.Channel.PublishTopicAsync(topic, message);
+        }
+        
+        public System.Threading.Tasks.Task PublishTopicAsyncAsync(string topic, string message) {
+            return base.Channel.PublishTopicAsyncAsync(topic, message);
         }
     }
 }

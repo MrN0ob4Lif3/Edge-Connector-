@@ -54,6 +54,30 @@
   <wsdl:message name="IbrokerService_CreateClientAsync_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateClientAsyncResponse" />
   </wsdl:message>
+  <wsdl:message name="IbrokerService_ConnectClientAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectClientAsync" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_ConnectClientAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectClientAsyncResponse" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_SubscribeTopicAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubscribeTopicAsync" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_SubscribeTopicAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubscribeTopicAsyncResponse" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_UnsubscribeTopicAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:UnsubscribeTopicAsync" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_UnsubscribeTopicAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UnsubscribeTopicAsyncResponse" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_PublishTopicAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:PublishTopicAsync" />
+  </wsdl:message>
+  <wsdl:message name="IbrokerService_PublishTopicAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PublishTopicAsyncResponse" />
+  </wsdl:message>
   <wsdl:portType name="IbrokerService">
     <wsdl:operation name="GetData">
       <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/GetData" message="tns:IbrokerService_GetData_InputMessage" />
@@ -66,6 +90,22 @@
     <wsdl:operation name="CreateClientAsync">
       <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/CreateClientAsync" message="tns:IbrokerService_CreateClientAsync_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/CreateClientAsyncResponse" message="tns:IbrokerService_CreateClientAsync_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConnectClientAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/ConnectClientAsync" message="tns:IbrokerService_ConnectClientAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/ConnectClientAsyncResponse" message="tns:IbrokerService_ConnectClientAsync_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeTopicAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/SubscribeTopicAsync" message="tns:IbrokerService_SubscribeTopicAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/SubscribeTopicAsyncResponse" message="tns:IbrokerService_SubscribeTopicAsync_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UnsubscribeTopicAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync" message="tns:IbrokerService_UnsubscribeTopicAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsyncResponse" message="tns:IbrokerService_UnsubscribeTopicAsync_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PublishTopicAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/PublishTopicAsync" message="tns:IbrokerService_PublishTopicAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/PublishTopicAsyncResponse" message="tns:IbrokerService_PublishTopicAsync_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IbrokerService" type="tns:IbrokerService">
@@ -97,6 +137,42 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ConnectClientAsync">
+      <soap:operation soapAction="http://tempuri.org/IbrokerService/ConnectClientAsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeTopicAsync">
+      <soap:operation soapAction="http://tempuri.org/IbrokerService/SubscribeTopicAsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnsubscribeTopicAsync">
+      <soap:operation soapAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishTopicAsync">
+      <soap:operation soapAction="http://tempuri.org/IbrokerService/PublishTopicAsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IbrokerService" type="tns:IbrokerService">
     <wsp:PolicyReference URI="#NetTcpBinding_IbrokerService_policy" />
@@ -121,6 +197,42 @@
     </wsdl:operation>
     <wsdl:operation name="CreateClientAsync">
       <soap12:operation soapAction="http://tempuri.org/IbrokerService/CreateClientAsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConnectClientAsync">
+      <soap12:operation soapAction="http://tempuri.org/IbrokerService/ConnectClientAsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeTopicAsync">
+      <soap12:operation soapAction="http://tempuri.org/IbrokerService/SubscribeTopicAsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnsubscribeTopicAsync">
+      <soap12:operation soapAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PublishTopicAsync">
+      <soap12:operation soapAction="http://tempuri.org/IbrokerService/PublishTopicAsync" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

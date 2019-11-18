@@ -42,4 +42,54 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="ConnectClientAsync">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="brokerIP" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="option" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConnectClientAsyncResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubscribeTopicAsync">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubscribeTopicAsyncResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UnsubscribeTopicAsync">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UnsubscribeTopicAsyncResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PublishTopicAsync">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PublishTopicAsyncResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
