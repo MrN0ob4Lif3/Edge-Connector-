@@ -170,7 +170,6 @@ namespace brokerService
             }
         }
 
-
         public async void PublishTopicAsync(String topic, String message)
         {
             try

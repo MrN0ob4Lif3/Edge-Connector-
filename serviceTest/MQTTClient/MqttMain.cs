@@ -5,6 +5,7 @@ using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using System.Threading;
 using System.Diagnostics;
+using System.ServiceProcess;
 
 namespace MQTTClientForm
 {
@@ -13,6 +14,7 @@ namespace MQTTClientForm
         public IManagedMqttClient managedMqttClient;
         public string brokerIP;
         brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
+        ServiceController brokerWindows = new ServiceController("brokerWindows");
 
         public MqttMain()
         {
@@ -143,24 +145,57 @@ namespace MQTTClientForm
             }
         }
 
+        //Refreshes elements after tab switch.
+        private void MqttTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            topicListSub.SelectedItem = null;
+            topicListPub.SelectedItem = null;
+            pubTopic.Text = "If you want to publish new topic, enter topic name here.";
+        }
+
+        //Starts service.
         private void btnStart_Click(object sender, EventArgs e)
         {
+            brokerWindows.Start();
             btnStart.Enabled = false;
             btnStop.Enabled = true;
             labelMessage.Text = "Service Started";
         }
-
+        
+        //Stop service.
         private void btnStop_Click(object sender, EventArgs e)
         {
+            brokerWindows.Stop();
             btnStart.Enabled = true;
             btnStop.Enabled = false;
             labelMessage.Text = "Service Stopped";
         }
 
+
+        private void MqttMain_Resize(object sender, EventArgs e)
+        {
+            //if the form is minimized  
+            //hide it from the task bar  
+            //and show the system tray icon (represented by the NotifyIcon control)  
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+                this.ShowInTaskbar = true;
+                mqttNotify.Visible = true;
+            }
+        }
+
+        private void mqttNotify_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            mqttNotify.Visible = false;
+        }
+
         private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            btnStart.Enabled = true;
-            btnStop.Enabled = false;
+            
         }
+
     }
 }

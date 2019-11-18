@@ -28,18 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MqttMain));
             this.connectButton = new System.Windows.Forms.Button();
             this.connectionString = new System.Windows.Forms.TextBox();
             this.connectionType = new System.Windows.Forms.Label();
             this.connectionChoice = new System.Windows.Forms.ComboBox();
             this.MqttTabs = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.subscribeTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.topicListSub = new System.Windows.Forms.ListBox();
             this.UnsubscribeButton = new System.Windows.Forms.Button();
             this.topicSubscribe = new System.Windows.Forms.TextBox();
             this.SubscribeButton = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.publishTab = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.topicListPub = new System.Windows.Forms.ListBox();
             this.pubTopic = new System.Windows.Forms.TextBox();
@@ -49,13 +51,14 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.labelMessage = new System.Windows.Forms.Label();
+            this.mqttNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.MqttTabs.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.subscribeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.publishTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -103,24 +106,25 @@
             // 
             // MqttTabs
             // 
-            this.MqttTabs.Controls.Add(this.tabPage1);
-            this.MqttTabs.Controls.Add(this.tabPage2);
+            this.MqttTabs.Controls.Add(this.subscribeTab);
+            this.MqttTabs.Controls.Add(this.publishTab);
             this.MqttTabs.Location = new System.Drawing.Point(12, 108);
             this.MqttTabs.Name = "MqttTabs";
             this.MqttTabs.SelectedIndex = 0;
             this.MqttTabs.Size = new System.Drawing.Size(776, 330);
             this.MqttTabs.TabIndex = 4;
+            this.MqttTabs.SelectedIndexChanged += new System.EventHandler(this.MqttTabs_SelectedIndexChanged);
             // 
-            // tabPage1
+            // subscribeTab
             // 
-            this.tabPage1.Controls.Add(this.splitContainer1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(768, 304);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Topics";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.subscribeTab.Controls.Add(this.splitContainer1);
+            this.subscribeTab.Location = new System.Drawing.Point(4, 22);
+            this.subscribeTab.Name = "subscribeTab";
+            this.subscribeTab.Padding = new System.Windows.Forms.Padding(3);
+            this.subscribeTab.Size = new System.Drawing.Size(768, 304);
+            this.subscribeTab.TabIndex = 0;
+            this.subscribeTab.Text = "Topics";
+            this.subscribeTab.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -177,16 +181,16 @@
             this.SubscribeButton.UseVisualStyleBackColor = true;
             this.SubscribeButton.Click += new System.EventHandler(this.SubscribeButton_Click);
             // 
-            // tabPage2
+            // publishTab
             // 
-            this.tabPage2.Controls.Add(this.splitContainer2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(768, 304);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Publishing";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.publishTab.Controls.Add(this.splitContainer2);
+            this.publishTab.Location = new System.Drawing.Point(4, 22);
+            this.publishTab.Name = "publishTab";
+            this.publishTab.Padding = new System.Windows.Forms.Padding(3);
+            this.publishTab.Size = new System.Drawing.Size(768, 304);
+            this.publishTab.TabIndex = 1;
+            this.publishTab.Text = "Publishing";
+            this.publishTab.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
@@ -278,6 +282,12 @@
             this.labelMessage.Size = new System.Drawing.Size(0, 13);
             this.labelMessage.TabIndex = 7;
             // 
+            // mqttNotify
+            // 
+            this.mqttNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("mqttNotify.Icon")));
+            this.mqttNotify.Text = "MQTTBroker";
+            this.mqttNotify.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.mqttNotify_MouseDoubleClick);
+            // 
             // MqttMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -295,14 +305,15 @@
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MqttMain_FormClosed);
             this.Load += new System.EventHandler(this.MqttMain_Load);
+            this.Resize += new System.EventHandler(this.MqttMain_Resize);
             this.MqttTabs.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.subscribeTab.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.publishTab.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.Panel2.PerformLayout();
@@ -320,10 +331,10 @@
         private System.Windows.Forms.Label connectionType;
         private System.Windows.Forms.ComboBox connectionChoice;
         private System.Windows.Forms.TabControl MqttTabs;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage subscribeTab;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button SubscribeButton;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage publishTab;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button PublishButton;
         private System.Windows.Forms.TextBox textBox1;
@@ -336,6 +347,7 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Label labelMessage;
+        private System.Windows.Forms.NotifyIcon mqttNotify;
     }
 }
 
