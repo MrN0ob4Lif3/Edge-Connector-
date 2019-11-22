@@ -75,85 +75,95 @@ namespace MQTTClientForm.brokerService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="brokerService.IbrokerService")]
-    public interface IbrokerService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="brokerService.IBrokerService")]
+    public interface IBrokerService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/GetData", ReplyAction="http://tempuri.org/IbrokerService/GetDataResponse")]
-        string GetData(string value);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/GetData", ReplyAction="http://tempuri.org/IbrokerService/GetDataResponse")]
-        System.Threading.Tasks.Task<string> GetDataAsync(string value);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IbrokerService/GetDataUsingDataContractResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IBrokerService/GetDataUsingDataContractResponse")]
         MQTTClientForm.brokerService.CompositeType GetDataUsingDataContract(MQTTClientForm.brokerService.CompositeType composite);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IbrokerService/GetDataUsingDataContractResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IBrokerService/GetDataUsingDataContractResponse")]
         System.Threading.Tasks.Task<MQTTClientForm.brokerService.CompositeType> GetDataUsingDataContractAsync(MQTTClientForm.brokerService.CompositeType composite);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/CreateClientAsync", ReplyAction="http://tempuri.org/IbrokerService/CreateClientAsyncResponse")]
-        void CreateClientAsync(string brokerIP, int option);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTCreateClientAsyncResponse")]
+        void MQTTCreateClientAsync(string mqttIP, int option);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/CreateClientAsync", ReplyAction="http://tempuri.org/IbrokerService/CreateClientAsyncResponse")]
-        System.Threading.Tasks.Task CreateClientAsyncAsync(string brokerIP, int option);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTCreateClientAsyncResponse")]
+        System.Threading.Tasks.Task MQTTCreateClientAsyncAsync(string mqttIP, int option);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/ConnectClientAsync", ReplyAction="http://tempuri.org/IbrokerService/ConnectClientAsyncResponse")]
-        void ConnectClientAsync(string brokerIP, int option);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTConnectClientAsyncResponse")]
+        void MQTTConnectClientAsync(string mqttIP, int option);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/ConnectClientAsync", ReplyAction="http://tempuri.org/IbrokerService/ConnectClientAsyncResponse")]
-        System.Threading.Tasks.Task ConnectClientAsyncAsync(string brokerIP, int option);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTConnectClientAsyncResponse")]
+        System.Threading.Tasks.Task MQTTConnectClientAsyncAsync(string mqttIP, int option);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/SubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/SubscribeTopicAsyncResponse")]
-        void SubscribeTopicAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsyncResponse")]
+        void MQTTSubscribeTopicAsync(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/SubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/SubscribeTopicAsyncResponse")]
-        System.Threading.Tasks.Task SubscribeTopicAsyncAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsyncResponse")]
+        System.Threading.Tasks.Task MQTTSubscribeTopicAsyncAsync(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsyncResponse")]
-        void UnsubscribeTopicAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsyncResponse")]
+        void MQTTUnsubscribeTopicAsync(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsyncResponse")]
-        System.Threading.Tasks.Task UnsubscribeTopicAsyncAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsyncResponse")]
+        System.Threading.Tasks.Task MQTTUnsubscribeTopicAsyncAsync(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/PublishTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/PublishTopicAsyncResponse")]
-        void PublishTopicAsync(string topic, string message);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsyncResponse")]
+        void MQTTPublishTopicAsync(string topic, string message);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IbrokerService/PublishTopicAsync", ReplyAction="http://tempuri.org/IbrokerService/PublishTopicAsyncResponse")]
-        System.Threading.Tasks.Task PublishTopicAsyncAsync(string topic, string message);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsyncResponse")]
+        System.Threading.Tasks.Task MQTTPublishTopicAsyncAsync(string topic, string message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCCreateClient", ReplyAction="http://tempuri.org/IBrokerService/OPCCreateClientResponse")]
+        void OPCCreateClient(string opcIP, bool securityCheck);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCCreateClient", ReplyAction="http://tempuri.org/IBrokerService/OPCCreateClientResponse")]
+        System.Threading.Tasks.Task OPCCreateClientAsync(string opcIP, bool securityCheck);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnectClient", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectClientResponse")]
+        void OPCConnectClient();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnectClient", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectClientResponse")]
+        System.Threading.Tasks.Task OPCConnectClientAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCSubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCSubscribeTopicResponse")]
+        void OPCSubscribeTopic();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCSubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCSubscribeTopicResponse")]
+        System.Threading.Tasks.Task OPCSubscribeTopicAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse")]
+        void OPCUnsubscribeTopic();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse")]
+        System.Threading.Tasks.Task OPCUnsubscribeTopicAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IbrokerServiceChannel : MQTTClientForm.brokerService.IbrokerService, System.ServiceModel.IClientChannel {
+    public interface IBrokerServiceChannel : MQTTClientForm.brokerService.IBrokerService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class IbrokerServiceClient : System.ServiceModel.ClientBase<MQTTClientForm.brokerService.IbrokerService>, MQTTClientForm.brokerService.IbrokerService {
+    public partial class BrokerServiceClient : System.ServiceModel.ClientBase<MQTTClientForm.brokerService.IBrokerService>, MQTTClientForm.brokerService.IBrokerService {
         
-        public IbrokerServiceClient() {
+        public BrokerServiceClient() {
         }
         
-        public IbrokerServiceClient(string endpointConfigurationName) : 
+        public BrokerServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public IbrokerServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public BrokerServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public IbrokerServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public BrokerServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public IbrokerServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public BrokerServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
-        }
-        
-        public string GetData(string value) {
-            return base.Channel.GetData(value);
-        }
-        
-        public System.Threading.Tasks.Task<string> GetDataAsync(string value) {
-            return base.Channel.GetDataAsync(value);
         }
         
         public MQTTClientForm.brokerService.CompositeType GetDataUsingDataContract(MQTTClientForm.brokerService.CompositeType composite) {
@@ -164,44 +174,76 @@ namespace MQTTClientForm.brokerService {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
         
-        public void CreateClientAsync(string brokerIP, int option) {
-            base.Channel.CreateClientAsync(brokerIP, option);
+        public void MQTTCreateClientAsync(string mqttIP, int option) {
+            base.Channel.MQTTCreateClientAsync(mqttIP, option);
         }
         
-        public System.Threading.Tasks.Task CreateClientAsyncAsync(string brokerIP, int option) {
-            return base.Channel.CreateClientAsyncAsync(brokerIP, option);
+        public System.Threading.Tasks.Task MQTTCreateClientAsyncAsync(string mqttIP, int option) {
+            return base.Channel.MQTTCreateClientAsyncAsync(mqttIP, option);
         }
         
-        public void ConnectClientAsync(string brokerIP, int option) {
-            base.Channel.ConnectClientAsync(brokerIP, option);
+        public void MQTTConnectClientAsync(string mqttIP, int option) {
+            base.Channel.MQTTConnectClientAsync(mqttIP, option);
         }
         
-        public System.Threading.Tasks.Task ConnectClientAsyncAsync(string brokerIP, int option) {
-            return base.Channel.ConnectClientAsyncAsync(brokerIP, option);
+        public System.Threading.Tasks.Task MQTTConnectClientAsyncAsync(string mqttIP, int option) {
+            return base.Channel.MQTTConnectClientAsyncAsync(mqttIP, option);
         }
         
-        public void SubscribeTopicAsync(string topic) {
-            base.Channel.SubscribeTopicAsync(topic);
+        public void MQTTSubscribeTopicAsync(string topic) {
+            base.Channel.MQTTSubscribeTopicAsync(topic);
         }
         
-        public System.Threading.Tasks.Task SubscribeTopicAsyncAsync(string topic) {
-            return base.Channel.SubscribeTopicAsyncAsync(topic);
+        public System.Threading.Tasks.Task MQTTSubscribeTopicAsyncAsync(string topic) {
+            return base.Channel.MQTTSubscribeTopicAsyncAsync(topic);
         }
         
-        public void UnsubscribeTopicAsync(string topic) {
-            base.Channel.UnsubscribeTopicAsync(topic);
+        public void MQTTUnsubscribeTopicAsync(string topic) {
+            base.Channel.MQTTUnsubscribeTopicAsync(topic);
         }
         
-        public System.Threading.Tasks.Task UnsubscribeTopicAsyncAsync(string topic) {
-            return base.Channel.UnsubscribeTopicAsyncAsync(topic);
+        public System.Threading.Tasks.Task MQTTUnsubscribeTopicAsyncAsync(string topic) {
+            return base.Channel.MQTTUnsubscribeTopicAsyncAsync(topic);
         }
         
-        public void PublishTopicAsync(string topic, string message) {
-            base.Channel.PublishTopicAsync(topic, message);
+        public void MQTTPublishTopicAsync(string topic, string message) {
+            base.Channel.MQTTPublishTopicAsync(topic, message);
         }
         
-        public System.Threading.Tasks.Task PublishTopicAsyncAsync(string topic, string message) {
-            return base.Channel.PublishTopicAsyncAsync(topic, message);
+        public System.Threading.Tasks.Task MQTTPublishTopicAsyncAsync(string topic, string message) {
+            return base.Channel.MQTTPublishTopicAsyncAsync(topic, message);
+        }
+        
+        public void OPCCreateClient(string opcIP, bool securityCheck) {
+            base.Channel.OPCCreateClient(opcIP, securityCheck);
+        }
+        
+        public System.Threading.Tasks.Task OPCCreateClientAsync(string opcIP, bool securityCheck) {
+            return base.Channel.OPCCreateClientAsync(opcIP, securityCheck);
+        }
+        
+        public void OPCConnectClient() {
+            base.Channel.OPCConnectClient();
+        }
+        
+        public System.Threading.Tasks.Task OPCConnectClientAsync() {
+            return base.Channel.OPCConnectClientAsync();
+        }
+        
+        public void OPCSubscribeTopic() {
+            base.Channel.OPCSubscribeTopic();
+        }
+        
+        public System.Threading.Tasks.Task OPCSubscribeTopicAsync() {
+            return base.Channel.OPCSubscribeTopicAsync();
+        }
+        
+        public void OPCUnsubscribeTopic() {
+            base.Channel.OPCUnsubscribeTopic();
+        }
+        
+        public System.Threading.Tasks.Task OPCUnsubscribeTopicAsync() {
+            return base.Channel.OPCUnsubscribeTopicAsync();
         }
     }
 }

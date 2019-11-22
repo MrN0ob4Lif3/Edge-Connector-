@@ -25,7 +25,7 @@ namespace brokerService
 
         [OperationContract]
         void MQTTPublishTopicAsync(String topic, String message);
-
+        
         [OperationContract]
         void OPCCreateClient(String opcIP, bool securityCheck);
 
@@ -37,6 +37,7 @@ namespace brokerService
 
         [OperationContract]
         void OPCUnsubscribeTopic();
+        
     }
 
 

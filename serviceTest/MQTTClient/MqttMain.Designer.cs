@@ -52,7 +52,7 @@
             this.mqttStop = new System.Windows.Forms.Button();
             this.labelMessage = new System.Windows.Forms.Label();
             this.mqttNotify = new System.Windows.Forms.NotifyIcon(this.components);
-            this.opcButton = new System.Windows.Forms.Button();
+            this.opcStart = new System.Windows.Forms.Button();
             this.opcStop = new System.Windows.Forms.Button();
             this.MqttTabs.SuspendLayout();
             this.subscribeTab.SuspendLayout();
@@ -279,10 +279,11 @@
             // labelMessage
             // 
             this.labelMessage.AutoSize = true;
-            this.labelMessage.Location = new System.Drawing.Point(584, 24);
+            this.labelMessage.Location = new System.Drawing.Point(584, 29);
             this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(0, 13);
+            this.labelMessage.Size = new System.Drawing.Size(84, 13);
             this.labelMessage.TabIndex = 7;
+            this.labelMessage.Text = "PlaceholderText";
             // 
             // mqttNotify
             // 
@@ -290,19 +291,19 @@
             this.mqttNotify.Text = "MQTTBroker";
             this.mqttNotify.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MqttNotify_MouseDoubleClick);
             // 
-            // opcButton
+            // opcStart
             // 
-            this.opcButton.Location = new System.Drawing.Point(587, 24);
-            this.opcButton.Name = "opcButton";
-            this.opcButton.Size = new System.Drawing.Size(75, 23);
-            this.opcButton.TabIndex = 8;
-            this.opcButton.Text = "OPC Start";
-            this.opcButton.UseVisualStyleBackColor = true;
-            this.opcButton.Click += new System.EventHandler(this.OpcButton_Click);
+            this.opcStart.Location = new System.Drawing.Point(23, 24);
+            this.opcStart.Name = "opcStart";
+            this.opcStart.Size = new System.Drawing.Size(75, 23);
+            this.opcStart.TabIndex = 8;
+            this.opcStart.Text = "OPC Start";
+            this.opcStart.UseVisualStyleBackColor = true;
+            this.opcStart.Click += new System.EventHandler(this.OpcStart_Click);
             // 
             // opcStop
             // 
-            this.opcStop.Location = new System.Drawing.Point(668, 24);
+            this.opcStop.Location = new System.Drawing.Point(104, 24);
             this.opcStop.Name = "opcStop";
             this.opcStop.Size = new System.Drawing.Size(75, 23);
             this.opcStop.TabIndex = 9;
@@ -316,7 +317,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.opcStop);
-            this.Controls.Add(this.opcButton);
+            this.Controls.Add(this.opcStart);
             this.Controls.Add(this.labelMessage);
             this.Controls.Add(this.mqttStop);
             this.Controls.Add(this.mqttStart);
@@ -372,7 +373,7 @@
         private System.Windows.Forms.Button mqttStop;
         private System.Windows.Forms.Label labelMessage;
         private System.Windows.Forms.NotifyIcon mqttNotify;
-        private System.Windows.Forms.Button opcButton;
+        private System.Windows.Forms.Button opcStart;
         private System.Windows.Forms.Button opcStop;
     }
 }

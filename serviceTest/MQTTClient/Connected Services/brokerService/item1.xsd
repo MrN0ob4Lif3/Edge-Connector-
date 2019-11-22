@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/brokerService" />
-  <xs:element name="GetData">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetDataResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="GetDataResult" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="GetDataUsingDataContract">
     <xs:complexType>
       <xs:sequence>
@@ -29,57 +15,57 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CreateClientAsync">
+  <xs:element name="MQTTCreateClientAsync">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="brokerIP" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="mqttIP" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="option" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CreateClientAsyncResponse">
+  <xs:element name="MQTTCreateClientAsyncResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="ConnectClientAsync">
+  <xs:element name="MQTTConnectClientAsync">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="brokerIP" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="mqttIP" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="option" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="ConnectClientAsyncResponse">
+  <xs:element name="MQTTConnectClientAsyncResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="SubscribeTopicAsync">
+  <xs:element name="MQTTSubscribeTopicAsync">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="SubscribeTopicAsyncResponse">
+  <xs:element name="MQTTSubscribeTopicAsyncResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="UnsubscribeTopicAsync">
+  <xs:element name="MQTTUnsubscribeTopicAsync">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UnsubscribeTopicAsyncResponse">
+  <xs:element name="MQTTUnsubscribeTopicAsyncResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="PublishTopicAsync">
+  <xs:element name="MQTTPublishTopicAsync">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
@@ -87,7 +73,50 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="PublishTopicAsyncResponse">
+  <xs:element name="MQTTPublishTopicAsyncResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCCreateClient">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="opcIP" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="securityCheck" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCCreateClientResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCConnectClient">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCConnectClientResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCSubscribeTopic">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCSubscribeTopicResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCUnsubscribeTopic">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCUnsubscribeTopicResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>

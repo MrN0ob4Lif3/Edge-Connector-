@@ -12,7 +12,7 @@ namespace MQTTClientForm
     {
         public IManagedMqttClient managedMqttClient;
         public string brokerIP;
-        brokerService.IbrokerServiceClient client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
+        brokerService.BrokerServiceClient client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
         ServiceController brokerWindows = new ServiceController("brokerWindows");
 
         //Startup registry key and value
@@ -50,7 +50,8 @@ namespace MQTTClientForm
                     if (connectionChoice.SelectedIndex == 0)
                         try
                         {
-                            client.ConnectClientAsync(connectionString.Text, 0);
+                            client.MQTTConnectClientAsync(connectionString.Text, 0);
+                            labelMessage.Text = "MQTT connected";
                         }
                         catch (Exception ex)
                         {
@@ -59,7 +60,7 @@ namespace MQTTClientForm
                     else if (connectionChoice.SelectedIndex == 1)
                         try
                         {
-                            client.ConnectClientAsync(connectionString.Text, 1);
+                            client.MQTTConnectClientAsync(connectionString.Text, 1);
                         }
                         catch (Exception)
                         {
@@ -68,7 +69,7 @@ namespace MQTTClientForm
                 }
                 else
                 {
-                    client = new brokerService.IbrokerServiceClient("NetTcpBinding_IbrokerService");
+                    client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
                 }
 
             }
@@ -80,7 +81,7 @@ namespace MQTTClientForm
             try
             { 
                 string topic = topicSubscribe.Text;
-                client.SubscribeTopicAsync(topic);
+                client.MQTTSubscribeTopicAsync(topic);
                 if (topicListPub.Items.Contains(topic))
                     return;
                 else
@@ -98,7 +99,7 @@ namespace MQTTClientForm
         {
             try
             {       
-                client.UnsubscribeTopicAsync(topicSubscribe.Text);
+                client.MQTTUnsubscribeTopicAsync(topicSubscribe.Text);
                 ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(topicListSub);
                 selectedItems = topicListSub.SelectedItems;
 
@@ -129,7 +130,7 @@ namespace MQTTClientForm
                     topicChosen = topicListPub.SelectedItem.ToString();
                 else
                     topicChosen = pubTopic.Text;
-                client.PublishTopicAsync(topicChosen, publishText.Text);
+                client.MQTTPublishTopicAsync(topicChosen, publishText.Text);
                 if (topicListSub.Items.Contains(topicChosen))
                     return;
                 else
@@ -204,15 +205,16 @@ namespace MQTTClientForm
             
         }
 
-        private void OpcButton_Click(object sender, EventArgs e)
+        private void OpcStart_Click(object sender, EventArgs e)
         {
             try
             {
-                labelMessage.Text = "Service Started";
+                client.OPCCreateClient("opc.tcp://localhost:62541/Quickstarts/ReferenceServer", false);
+                labelMessage.Text = "OPC connected";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Service already running.");
+                MessageBox.Show(ex.ToString());
             }
         }
 

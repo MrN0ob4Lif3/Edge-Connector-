@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="brokerService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-  <wsp:Policy wsu:Id="NetTcpBinding_IbrokerService_policy">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="BrokerService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IBrokerService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
@@ -36,91 +36,112 @@
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/brokerService" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IbrokerService_GetData_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetData" />
-  </wsdl:message>
-  <wsdl:message name="IbrokerService_GetData_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataResponse" />
-  </wsdl:message>
-  <wsdl:message name="IbrokerService_GetDataUsingDataContract_InputMessage">
+  <wsdl:message name="IBrokerService_GetDataUsingDataContract_InputMessage">
     <wsdl:part name="parameters" element="tns:GetDataUsingDataContract" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_GetDataUsingDataContract_OutputMessage">
+  <wsdl:message name="IBrokerService_GetDataUsingDataContract_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_CreateClientAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:CreateClientAsync" />
+  <wsdl:message name="IBrokerService_MQTTCreateClientAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTCreateClientAsync" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_CreateClientAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CreateClientAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTCreateClientAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTCreateClientAsyncResponse" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_ConnectClientAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:ConnectClientAsync" />
+  <wsdl:message name="IBrokerService_MQTTConnectClientAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTConnectClientAsync" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_ConnectClientAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ConnectClientAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTConnectClientAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTConnectClientAsyncResponse" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_SubscribeTopicAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:SubscribeTopicAsync" />
+  <wsdl:message name="IBrokerService_MQTTSubscribeTopicAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTSubscribeTopicAsync" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_SubscribeTopicAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SubscribeTopicAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTSubscribeTopicAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTSubscribeTopicAsyncResponse" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_UnsubscribeTopicAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:UnsubscribeTopicAsync" />
+  <wsdl:message name="IBrokerService_MQTTUnsubscribeTopicAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTUnsubscribeTopicAsync" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_UnsubscribeTopicAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UnsubscribeTopicAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTUnsubscribeTopicAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTUnsubscribeTopicAsyncResponse" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_PublishTopicAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:PublishTopicAsync" />
+  <wsdl:message name="IBrokerService_MQTTPublishTopicAsync_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTPublishTopicAsync" />
   </wsdl:message>
-  <wsdl:message name="IbrokerService_PublishTopicAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:PublishTopicAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTPublishTopicAsync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTPublishTopicAsyncResponse" />
   </wsdl:message>
-  <wsdl:portType name="IbrokerService">
-    <wsdl:operation name="GetData">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/GetData" message="tns:IbrokerService_GetData_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/GetDataResponse" message="tns:IbrokerService_GetData_OutputMessage" />
-    </wsdl:operation>
+  <wsdl:message name="IBrokerService_OPCCreateClient_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCCreateClient" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCCreateClient_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCCreateClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCConnectClient_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCConnectClient" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCConnectClient_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCConnectClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCSubscribeTopic_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCSubscribeTopic" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCSubscribeTopic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCSubscribeTopicResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCUnsubscribeTopic_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCUnsubscribeTopic" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCUnsubscribeTopic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCUnsubscribeTopicResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IBrokerService">
     <wsdl:operation name="GetDataUsingDataContract">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/GetDataUsingDataContract" message="tns:IbrokerService_GetDataUsingDataContract_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/GetDataUsingDataContractResponse" message="tns:IbrokerService_GetDataUsingDataContract_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetDataUsingDataContract" message="tns:IBrokerService_GetDataUsingDataContract_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetDataUsingDataContractResponse" message="tns:IBrokerService_GetDataUsingDataContract_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="CreateClientAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/CreateClientAsync" message="tns:IbrokerService_CreateClientAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/CreateClientAsyncResponse" message="tns:IbrokerService_CreateClientAsync_OutputMessage" />
+    <wsdl:operation name="MQTTCreateClientAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsync" message="tns:IBrokerService_MQTTCreateClientAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsyncResponse" message="tns:IBrokerService_MQTTCreateClientAsync_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ConnectClientAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/ConnectClientAsync" message="tns:IbrokerService_ConnectClientAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/ConnectClientAsyncResponse" message="tns:IbrokerService_ConnectClientAsync_OutputMessage" />
+    <wsdl:operation name="MQTTConnectClientAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync" message="tns:IBrokerService_MQTTConnectClientAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsyncResponse" message="tns:IBrokerService_MQTTConnectClientAsync_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="SubscribeTopicAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/SubscribeTopicAsync" message="tns:IbrokerService_SubscribeTopicAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/SubscribeTopicAsyncResponse" message="tns:IbrokerService_SubscribeTopicAsync_OutputMessage" />
+    <wsdl:operation name="MQTTSubscribeTopicAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync" message="tns:IBrokerService_MQTTSubscribeTopicAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsyncResponse" message="tns:IBrokerService_MQTTSubscribeTopicAsync_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UnsubscribeTopicAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync" message="tns:IbrokerService_UnsubscribeTopicAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/UnsubscribeTopicAsyncResponse" message="tns:IbrokerService_UnsubscribeTopicAsync_OutputMessage" />
+    <wsdl:operation name="MQTTUnsubscribeTopicAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync" message="tns:IBrokerService_MQTTUnsubscribeTopicAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsyncResponse" message="tns:IBrokerService_MQTTUnsubscribeTopicAsync_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="PublishTopicAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IbrokerService/PublishTopicAsync" message="tns:IbrokerService_PublishTopicAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IbrokerService/PublishTopicAsyncResponse" message="tns:IbrokerService_PublishTopicAsync_OutputMessage" />
+    <wsdl:operation name="MQTTPublishTopicAsync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" message="tns:IBrokerService_MQTTPublishTopicAsync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsyncResponse" message="tns:IBrokerService_MQTTPublishTopicAsync_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCCreateClient">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCCreateClient" message="tns:IBrokerService_OPCCreateClient_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCCreateClientResponse" message="tns:IBrokerService_OPCCreateClient_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCConnectClient">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCConnectClient" message="tns:IBrokerService_OPCConnectClient_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCConnectClientResponse" message="tns:IBrokerService_OPCConnectClient_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCSubscribeTopic">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCSubscribeTopic" message="tns:IBrokerService_OPCSubscribeTopic_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCSubscribeTopicResponse" message="tns:IBrokerService_OPCSubscribeTopic_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnsubscribeTopic">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" message="tns:IBrokerService_OPCUnsubscribeTopic_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse" message="tns:IBrokerService_OPCUnsubscribeTopic_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="BasicHttpBinding_IbrokerService" type="tns:IbrokerService">
+  <wsdl:binding name="BasicHttpBinding_IBrokerService" type="tns:IBrokerService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetData">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/GetData" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="GetDataUsingDataContract">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/GetDataUsingDataContract" style="document" />
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetDataUsingDataContract" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -128,8 +149,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="CreateClientAsync">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/CreateClientAsync" style="document" />
+    <wsdl:operation name="MQTTCreateClientAsync">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTCreateClientAsync" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -137,8 +158,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ConnectClientAsync">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/ConnectClientAsync" style="document" />
+    <wsdl:operation name="MQTTConnectClientAsync">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTConnectClientAsync" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -146,8 +167,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SubscribeTopicAsync">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/SubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTSubscribeTopicAsync">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -155,8 +176,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UnsubscribeTopicAsync">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTUnsubscribeTopicAsync">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -164,8 +185,44 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="PublishTopicAsync">
-      <soap:operation soapAction="http://tempuri.org/IbrokerService/PublishTopicAsync" style="document" />
+    <wsdl:operation name="MQTTPublishTopicAsync">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCCreateClient">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCCreateClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCConnectClient">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCConnectClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCSubscribeTopic">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCSubscribeTopic" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnsubscribeTopic">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -174,20 +231,11 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="NetTcpBinding_IbrokerService" type="tns:IbrokerService">
-    <wsp:PolicyReference URI="#NetTcpBinding_IbrokerService_policy" />
+  <wsdl:binding name="NetTcpBinding_IBrokerService" type="tns:IBrokerService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IBrokerService_policy" />
     <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
-    <wsdl:operation name="GetData">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/GetData" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="GetDataUsingDataContract">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/GetDataUsingDataContract" style="document" />
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetDataUsingDataContract" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -195,8 +243,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="CreateClientAsync">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/CreateClientAsync" style="document" />
+    <wsdl:operation name="MQTTCreateClientAsync">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTCreateClientAsync" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -204,8 +252,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ConnectClientAsync">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/ConnectClientAsync" style="document" />
+    <wsdl:operation name="MQTTConnectClientAsync">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTConnectClientAsync" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -213,8 +261,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SubscribeTopicAsync">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/SubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTSubscribeTopicAsync">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -222,8 +270,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UnsubscribeTopicAsync">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/UnsubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTUnsubscribeTopicAsync">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -231,8 +279,44 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="PublishTopicAsync">
-      <soap12:operation soapAction="http://tempuri.org/IbrokerService/PublishTopicAsync" style="document" />
+    <wsdl:operation name="MQTTPublishTopicAsync">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCCreateClient">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCCreateClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCConnectClient">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCConnectClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCSubscribeTopic">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCSubscribeTopic" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnsubscribeTopic">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -241,11 +325,11 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="brokerService">
-    <wsdl:port name="BasicHttpBinding_IbrokerService" binding="tns:BasicHttpBinding_IbrokerService">
+  <wsdl:service name="BrokerService">
+    <wsdl:port name="BasicHttpBinding_IBrokerService" binding="tns:BasicHttpBinding_IBrokerService">
       <soap:address location="http://localhost:8080/brokerService" />
     </wsdl:port>
-    <wsdl:port name="NetTcpBinding_IbrokerService" binding="tns:NetTcpBinding_IbrokerService">
+    <wsdl:port name="NetTcpBinding_IBrokerService" binding="tns:NetTcpBinding_IBrokerService">
       <soap12:address location="net.tcp://localhost:8090/brokerService" />
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:8090/brokerService</wsa10:Address>

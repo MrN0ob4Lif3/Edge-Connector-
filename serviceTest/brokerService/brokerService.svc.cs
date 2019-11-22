@@ -14,7 +14,7 @@ namespace brokerService
     {
         //Create a new ManagedMQTT Client.
         IManagedMqttClient managedMQTT = new MqttFactory().CreateManagedMqttClient();
-
+        
         //OPC Client variables
         private ApplicationConfiguration m_configuration;
         private Session m_session;
@@ -30,7 +30,8 @@ namespace brokerService
         private Subscription m_subscription;
         private MonitoredItem monitoredItem;
         private bool m_connectedOnce;
-
+        
+        
         public CompositeType GetDataUsingDataContract(CompositeType composite)
         {
             if (composite == null)
@@ -68,7 +69,7 @@ namespace brokerService
                     // Create an EventLog instance and assign its source.
                     EventLog myLog = new EventLog
                     {
-                        Source = "brokerServiceTCP"
+                        Source = "brokerServiceMQTTTCP"
                     };
                     // Write an informational entry to the event log.
                     myLog.WriteEntry(e.Message);
@@ -97,7 +98,7 @@ namespace brokerService
                     // Create an EventLog instance and assign its source.
                     EventLog myLog = new EventLog
                     {
-                        Source = "brokerServiceWebSocket"
+                        Source = "brokerServiceMQTTWebSocket"
                     };
                     // Write an informational entry to the event log.
                     myLog.WriteEntry(e.Message);
@@ -120,7 +121,7 @@ namespace brokerService
                     // Create an EventLog instance and assign its source.
                     EventLog myLog = new EventLog
                     {
-                        Source = "brokerServiceTCP"
+                        Source = "brokerServiceMQTTTCP"
                     };
                     // Write an informational entry to the event log.
                     myLog.WriteEntry(e.Message);
@@ -139,7 +140,7 @@ namespace brokerService
                     // Create an EventLog instance and assign its source.
                     EventLog myLog = new EventLog
                     {
-                        Source = "brokerServiceWebSocket"
+                        Source = "brokerServiceMQTTWebSocket"
                     };
                     // Write an informational entry to the event log.
                     myLog.WriteEntry(e.Message);
@@ -158,7 +159,7 @@ namespace brokerService
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceSubscribe"
+                    Source = "brokerServiceMQTTSubscribe"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -176,7 +177,7 @@ namespace brokerService
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceSubscribe"
+                    Source = "brokerServiceMQTTSubscribe"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -194,31 +195,53 @@ namespace brokerService
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServicePublish"
+                    Source = "brokerServiceMQTTPublish"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
             }
         }
         //OPC client creation function.
+        
         public async void OPCCreateClient(String opcIP, bool securityCheck)
         {
-            //Find best endpoint
-            EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(opcIP, securityCheck, m_discoverTimeout);
-            EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
-            ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
-            //Create Session
-            m_session = await Session.Create(
-                m_configuration,
-                endpoint,
-                false,
-                !DisableDomainCheck,
-                (String.IsNullOrEmpty(SessionName)) ? m_configuration.ApplicationName : SessionName,
-                60000,
-                UserIdentity,
-                PreferredLocales);
-            //Keep session alive 
-            m_session.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
+            if (m_configuration == null)
+            {
+                throw new ArgumentNullException("m_configuration");
+            }
+
+            m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+
+            try
+            {
+                //Find best endpoint
+                EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(opcIP, securityCheck, m_discoverTimeout);
+                EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
+                ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
+                //Create Session
+                m_session = await Session.Create(
+                    m_configuration,
+                    endpoint,
+                    false,
+                    !DisableDomainCheck,
+                    (String.IsNullOrEmpty(SessionName)) ? m_configuration.ApplicationName : SessionName,
+                    60000,
+                    UserIdentity,
+                    PreferredLocales);
+                //Keep session alive 
+                m_session.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
+            }
+            catch (Exception e)
+            {
+                // Create an EventLog instance and assign its source.
+                EventLog myLog = new EventLog
+                {
+                    Source = "brokerServiceOPCClient"
+                };
+                // Write an informational entry to the event log.
+                myLog.WriteEntry(e.Message);
+            }
+
         }
 
         /// <summary>
@@ -235,6 +258,32 @@ namespace brokerService
         /// The user identity to use when creating the session.
         /// </summary>
         public IUserIdentity UserIdentity { get; set; }
+
+        /// <summary>
+        /// The client application configuration.
+        /// </summary>
+        public ApplicationConfiguration Configuration
+        {
+            get { return m_configuration; }
+
+            set
+            {
+                if (!Object.ReferenceEquals(m_configuration, value))
+                {
+                    if (m_configuration != null)
+                    {
+                        m_configuration.CertificateValidator.CertificateValidation -= m_CertificateValidation;
+                    }
+
+                    m_configuration = value;
+
+                    if (m_configuration != null)
+                    {
+                        m_configuration.CertificateValidator.CertificateValidation += m_CertificateValidation;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// The locales to use when creating the session.
@@ -310,6 +359,32 @@ namespace brokerService
             }
         }
 
+        /// <summary>
+        /// Handles a certificate validation error.
+        /// </summary>
+        private void CertificateValidator_CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
+        {
+            try
+            {
+                e.Accept = m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates;
+                /*
+                if (!m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+                {
+                    DialogResult result = MessageBox.Show(
+                        e.Certificate.Subject,
+                        "Untrusted Certificate",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    e.Accept = (result == DialogResult.Yes);
+                }*/
+            }
+            catch (Exception exception)
+            {
+                ClientUtils.HandleException("Certificate Validation", exception);
+            }
+        }
+
         //OPC client connection function.
         public void OPCConnectClient()
         {
@@ -326,5 +401,6 @@ namespace brokerService
         {
             //unsubscribe from specified data value
         }
+        
     }
 }
