@@ -5,31 +5,38 @@ using System.ServiceModel;
 
 namespace brokerService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
-    public interface IbrokerService
+    public interface IBrokerService
     {
-
-        [OperationContract]
-        string GetData(String value);
-
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         [OperationContract]
-        void CreateClientAsync(String brokerIP, int option);
+        void MQTTCreateClientAsync(String mqttIP, int option);
 
         [OperationContract]
-        void ConnectClientAsync(String brokerIP, int option);
+        void MQTTConnectClientAsync(String mqttIP, int option);
 
         [OperationContract]
-        void SubscribeTopicAsync(String topic);
+        void MQTTSubscribeTopicAsync(String topic);
 
         [OperationContract]
-        void UnsubscribeTopicAsync(String topic);
+        void MQTTUnsubscribeTopicAsync(String topic);
 
         [OperationContract]
-        void PublishTopicAsync(String topic, String message);
+        void MQTTPublishTopicAsync(String topic, String message);
+
+        [OperationContract]
+        void OPCCreateClient(String opcIP, bool securityCheck);
+
+        [OperationContract]
+        void OPCConnectClient();
+
+        [OperationContract]
+        void OPCSubscribeTopic();
+
+        [OperationContract]
+        void OPCUnsubscribeTopic();
     }
 
 

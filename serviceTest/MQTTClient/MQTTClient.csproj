@@ -115,14 +115,6 @@
       <Project>{443289ba-c188-41f3-a552-a9a7715baa49}</Project>
       <Name>brokerService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClassLibrary2\MQTTCore.csproj">
-      <Project>{93cd2d9b-820e-4a57-b81b-e9f0bd05c9e8}</Project>
-      <Name>MQTTCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MQTTService\MQTTService.csproj">
-      <Project>{de95a518-fd30-4de7-bdee-5f797e41c7eb}</Project>
-      <Name>MQTTService</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MQTTnet">

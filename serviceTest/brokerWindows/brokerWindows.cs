@@ -41,7 +41,7 @@ namespace brokerWindows
 
         private void startBroker()
         {
-            host = new ServiceHost(typeof(brokerService.brokerService));
+            host = new ServiceHost(typeof(brokerService.BrokerService));
             host.Open();
         }
 

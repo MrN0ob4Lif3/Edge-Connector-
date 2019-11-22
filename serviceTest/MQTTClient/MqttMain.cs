@@ -18,7 +18,8 @@ namespace MQTTClientForm
         //Startup registry key and value
         private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
         private static readonly string StartupValue = "MQTTBroker";
-
+        
+        //Sts WinFrom application to run at startup.
         private static void SetStartup()
         {
             //Set the application to run at startup
@@ -149,8 +150,8 @@ namespace MQTTClientForm
             pubTopic.Text = "If you want to publish new topic, enter topic name here.";
         }
 
-        //Starts service.
-        private void BtnStart_Click(object sender, EventArgs e)
+        //Starts MQTT service.
+        private void MqttStart_Click(object sender, EventArgs e)
         {
             try
             {
@@ -164,8 +165,8 @@ namespace MQTTClientForm
 
         }
         
-        //Stop service.
-        private void BtnStop_Click(object sender, EventArgs e)
+        //Stop MQTT service.
+        private void MqttStop_Click(object sender, EventArgs e)
         {
             try
             {
@@ -203,5 +204,28 @@ namespace MQTTClientForm
             
         }
 
+        private void OpcButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                labelMessage.Text = "Service Started";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Service already running.");
+            }
+        }
+
+        private void OpcStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                labelMessage.Text = "Service Started";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Service already running.");
+            }
+        }
     }
 }

@@ -57,6 +57,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -83,18 +84,34 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary2\MQTTCore.csproj">
-      <Project>{93cd2d9b-820e-4a57-b81b-e9f0bd05c9e8}</Project>
-      <Name>MQTTCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MQTTnet">
       <Version>3.0.8</Version>
     </PackageReference>
     <PackageReference Include="MQTTnet.Extensions.ManagedClient">
       <Version>3.0.8</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MQTTCore\MQTTCore.csproj">
+      <Project>{0bb977c9-ab95-4488-b5e9-d1cc42125fc7}</Project>
+      <Name>MQTTCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SampleApplications\Samples\ClientControls.Net4\UA Client Controls.csproj">
+      <Project>{a247d2ee-14fc-463d-a9ba-6cff1ef22b7a}</Project>
+      <Name>UA Client Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SampleApplications\SDK\Opc.Ua.Client\Opc.Ua.Client.csproj">
+      <Project>{15100583-bfef-431b-a1ea-1e5a843a39b1}</Project>
+      <Name>Opc.Ua.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SampleApplications\SDK\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj">
+      <Project>{a39614ca-8ebe-4408-a9d2-38c7e5ae2a1d}</Project>
+      <Name>Opc.Ua.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj">
+      <Project>{d918c0f6-39bd-4ed0-8323-e5a2eb9a85da}</Project>
+      <Name>Opc.Ua.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
