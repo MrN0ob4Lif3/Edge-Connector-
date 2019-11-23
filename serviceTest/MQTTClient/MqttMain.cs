@@ -207,9 +207,10 @@ namespace MQTTClientForm
 
         private void OpcStart_Click(object sender, EventArgs e)
         {
+            brokerIP = connectionString.Text;
             try
             {
-                client.OPCCreateClient("opc.tcp://localhost:62541/Quickstarts/ReferenceServer", false);
+                client.OPCCreateClient(brokerIP, false);
                 labelMessage.Text = "OPC connected";
             }
             catch (Exception ex)

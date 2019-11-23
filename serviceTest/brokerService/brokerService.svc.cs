@@ -5,6 +5,7 @@ using Opc.Ua;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 using System.Diagnostics;
+using Opc.Ua.Configuration;
 
 namespace brokerService
 {
@@ -17,6 +18,7 @@ namespace brokerService
         
         //OPC Client variables
         private ApplicationConfiguration m_configuration;
+        private ApplicationInstance application = new ApplicationInstance();
         private Session m_session;
         private int m_reconnectPeriod = 10;
         private int m_discoverTimeout = 5000;
@@ -205,6 +207,13 @@ namespace brokerService
         
         public async void OPCCreateClient(String opcIP, bool securityCheck)
         {
+            application.ApplicationType = ApplicationType.Client;
+            application.ConfigSectionName = "Quickstarts.ReferenceClient";
+            // load the application configuration.
+            application.LoadApplicationConfiguration(false).Wait();
+            // check the application certificate.
+            application.CheckApplicationInstanceCertificate(false, 0).Wait();
+            m_configuration = application.ApplicationConfiguration;
             if (m_configuration == null)
             {
                 throw new ArgumentNullException("m_configuration");
