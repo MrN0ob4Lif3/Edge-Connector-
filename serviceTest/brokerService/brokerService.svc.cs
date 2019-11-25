@@ -13,9 +13,12 @@ namespace brokerService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class BrokerService : IBrokerService
     {
+        #region MQTT Fields
         //Create a new ManagedMQTT Client.
         IManagedMqttClient managedMQTT = new MqttFactory().CreateManagedMqttClient();
-        
+        #endregion
+
+        #region OPC Fields
         //OPC Client variables
         private ApplicationConfiguration m_configuration;
         private ApplicationInstance application = new ApplicationInstance();
@@ -28,12 +31,12 @@ namespace brokerService
         private EventHandler m_ReconnectStarting;
         private EventHandler m_KeepAliveComplete;
         private EventHandler m_ConnectComplete;
-
         private Subscription m_subscription;
-        private MonitoredItem monitoredItem;
+        private MonitoredItem m_monitoredItem;
         private bool m_connectedOnce;
-        
-        
+        #endregion
+
+        #region MQTT Methods
         public CompositeType GetDataUsingDataContract(CompositeType composite)
         {
             if (composite == null)
@@ -204,8 +207,9 @@ namespace brokerService
             }
         }
         //OPC client creation function.
-        
-        public async void OPCCreateClient(String opcIP, bool securityCheck)
+        #endregion
+
+        public void OPCCreateClient(String opcIP, bool securityCheck)
         {
             application.ApplicationType = ApplicationType.Client;
             application.ConfigSectionName = "Quickstarts.ReferenceClient";
@@ -214,6 +218,7 @@ namespace brokerService
             // check the application certificate.
             application.CheckApplicationInstanceCertificate(false, 0).Wait();
             m_configuration = application.ApplicationConfiguration;
+
             if (m_configuration == null)
             {
                 throw new ArgumentNullException("m_configuration");
@@ -221,7 +226,7 @@ namespace brokerService
 
             m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
-            try
+            /*try
             {
                 //Find best endpoint
                 EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(opcIP, securityCheck, m_discoverTimeout);
@@ -250,9 +255,9 @@ namespace brokerService
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
             }
-
+            */
         }
-
+        #region OPC Client Creation Methods
         /// <summary>
         /// Gets or sets a flag indicating that the domain checks should be ignored when connecting.
         /// </summary>
@@ -393,6 +398,7 @@ namespace brokerService
                 ClientUtils.HandleException("Certificate Validation", exception);
             }
         }
+        #endregion
 
         //OPC client connection function.
         public void OPCConnectClient()
@@ -404,6 +410,10 @@ namespace brokerService
         public void OPCSubscribeTopic()
         {
             //subscribe to specified data value
+            if (m_session == null)
+            {
+                return;
+            }
         }
         //OPC topic unsubscription function.
         public void OPCUnsubscribeTopic()

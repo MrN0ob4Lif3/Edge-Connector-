@@ -33,6 +33,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Opc.Ua.Client, Version=1.4.354.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SampleApplications\SDK\Opc.Ua.Client\bin\Debug\net46\Opc.Ua.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Configuration, Version=1.4.354.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SampleApplications\SDK\Opc.Ua.Configuration\bin\Debug\net46\Opc.Ua.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Core, Version=1.4.354.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Stack\Opc.Ua.Core\bin\Debug\net46\Opc.Ua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Server">
+      <HintPath>..\SampleApplications\SDK\Opc.Ua.Server\bin\Debug\net46\Opc.Ua.Server.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
@@ -114,6 +129,14 @@
     <ProjectReference Include="..\brokerService\brokerService.csproj">
       <Project>{443289ba-c188-41f3-a552-a9a7715baa49}</Project>
       <Name>brokerService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SampleApplications\Samples\ClientControls.Net4\UA Client Controls.csproj">
+      <Project>{A247D2EE-14FC-463D-A9BA-6CFF1EF22B7A}</Project>
+      <Name>UA Client Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SampleApplications\Samples\Controls.Net4\UA Sample Controls.csproj">
+      <Project>{92AE819B-4938-4502-AC32-67063F9893CD}</Project>
+      <Name>UA Sample Controls</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

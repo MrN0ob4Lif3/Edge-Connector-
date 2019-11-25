@@ -4,7 +4,13 @@ using System.ServiceModel;
 using System.ServiceProcess;
 using Microsoft.Win32;
 using MQTTnet.Extensions.ManagedClient;
-
+using Opc.Ua;
+using Opc.Ua.Configuration;
+using Opc.Ua.Client;
+using Opc.Ua.Client.Controls;
+using System.Reflection;
+using Opc.Ua.Sample.Controls;
+using System.Drawing;
 
 namespace MQTTClientForm
 {
@@ -14,6 +20,14 @@ namespace MQTTClientForm
         public string brokerIP;
         brokerService.BrokerServiceClient client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
         ServiceController brokerWindows = new ServiceController("brokerWindows");
+        private Session m_session;
+        private bool m_connectedOnce;
+        private ApplicationConfiguration m_configuration;
+        private ApplicationConfiguration app_configuration;
+        private ServiceMessageContext context;
+        private ConfiguredEndpointCollection m_endpoints;
+        private SessionReconnectHandler m_reconnectHandler;
+        private int m_reconnectPeriod = 10;
 
         //Startup registry key and value
         private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -36,21 +50,42 @@ namespace MQTTClientForm
         private void MqttMain_Load(object sender, EventArgs e)
         {
             connectionChoice.SelectedIndex = 0;
-            connectionString.Text = "localhost";
+            connectionStringMQTT.Text = "localhost";
+
+            ApplicationInstance application = new ApplicationInstance();
+            application.ApplicationType = ApplicationType.Client;
+            application.ConfigSectionName = "Quickstarts.ReferenceClient";
+            // load the application configuration.
+            application.LoadApplicationConfiguration(false).Wait();
+            // check the application certificate.
+            application.CheckApplicationInstanceCertificate(false, 0).Wait();
+            m_configuration = app_configuration = application.ApplicationConfiguration;
+
+            opcSession.Configuration = m_configuration = app_configuration;
+            opcSession.MessageContext = context;
+            // get list of cached endpoints.
+            m_endpoints = m_configuration.LoadCachedEndpoints(true);
+            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
+            opcEndpoints.Initialize(m_endpoints, m_configuration);
+
+            if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+            {
+                app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+            }
         }
 
         //Connect to specified address.
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if (connectionString.Text != string.Empty)
+            if (connectionStringMQTT.Text != string.Empty)
             {
-                brokerIP = connectionString.Text;
+                brokerIP = connectionStringMQTT.Text;
                 if(client.InnerChannel.State != CommunicationState.Faulted)
                 {
                     if (connectionChoice.SelectedIndex == 0)
                         try
                         {
-                            client.MQTTConnectClientAsync(connectionString.Text, 0);
+                            client.MQTTConnectClientAsync(connectionStringMQTT.Text, 0);
                             labelMessage.Text = "MQTT connected";
                         }
                         catch (Exception ex)
@@ -60,7 +95,7 @@ namespace MQTTClientForm
                     else if (connectionChoice.SelectedIndex == 1)
                         try
                         {
-                            client.MQTTConnectClientAsync(connectionString.Text, 1);
+                            client.MQTTConnectClientAsync(connectionStringMQTT.Text, 1);
                         }
                         catch (Exception)
                         {
@@ -207,7 +242,7 @@ namespace MQTTClientForm
 
         private void OpcStart_Click(object sender, EventArgs e)
         {
-            brokerIP = connectionString.Text;
+            brokerIP = connectionStringMQTT.Text; 
             try
             {
                 client.OPCCreateClient(brokerIP, false);
@@ -228,6 +263,194 @@ namespace MQTTClientForm
             catch (Exception)
             {
                 MessageBox.Show("Service already running.");
+            }
+        }
+
+        private void opcConnect_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        void OpcEndpoints_ConnectEndpoint(object sender, ConnectEndpointEventArgs e)
+        {
+            try
+            {
+                Connect(e.Endpoint);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+                e.UpdateControl = false;
+            }
+        }
+
+        /// <summary>
+        /// Connects to a server.
+        /// </summary>
+        public async void Connect(ConfiguredEndpoint endpoint)
+        {
+            if (endpoint == null)
+            {
+                return;
+            }
+
+            Session session = await opcSession.Connect(endpoint);
+
+            if (session != null)
+            {
+                // stop any reconnect operation.
+                if (m_reconnectHandler != null)
+                {
+                    m_reconnectHandler.Dispose();
+                    m_reconnectHandler = null;
+                }
+
+                m_session = session;
+                m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+                StandardClient_KeepAlive(m_session, null);
+            }
+        }
+
+        #region Client Alive / Reconnect
+        /// <summary>
+        /// Updates the status control when a keep alive event occurs.
+        /// </summary>
+        void StandardClient_KeepAlive(Session sender, KeepAliveEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new KeepAliveEventHandler(StandardClient_KeepAlive), sender, e);
+                return;
+            }
+            else if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            if (sender != null && sender.Endpoint != null)
+            {
+                ServerUrlLB.Text = Utils.Format(
+                    "{0} ({1}) {2}",
+                    sender.Endpoint.EndpointUrl,
+                    sender.Endpoint.SecurityMode,
+                    (sender.EndpointConfiguration.UseBinaryEncoding) ? "UABinary" : "XML");
+            }
+            else
+            {
+                ServerUrlLB.Text = "None";
+            }
+
+            if (e != null && m_session != null)
+            {
+                if (ServiceResult.IsGood(e.Status))
+                {
+                    ServerStatusLB.Text = Utils.Format(
+                        "Server Status: {0} {1:yyyy-MM-dd HH:mm:ss} {2}/{3}",
+                        e.CurrentState,
+                        e.CurrentTime.ToLocalTime(),
+                        m_session.OutstandingRequestCount,
+                        m_session.DefunctRequestCount);
+
+                    ServerStatusLB.ForeColor = Color.Empty;
+                    ServerStatusLB.Font = new Font(ServerStatusLB.Font, FontStyle.Regular);
+                }
+                else
+                {
+                    ServerStatusLB.Text = String.Format(
+                        "{0} {1}/{2}", e.Status,
+                        m_session.OutstandingRequestCount,
+                        m_session.DefunctRequestCount);
+
+                    ServerStatusLB.ForeColor = Color.Red;
+                    ServerStatusLB.Font = new Font(ServerStatusLB.Font, FontStyle.Bold);
+
+                    if (m_reconnectPeriod <= 0)
+                    {
+                        return;
+                    }
+
+                    if (m_reconnectHandler == null && m_reconnectPeriod > 0)
+                    {
+                        m_reconnectHandler = new SessionReconnectHandler();
+                        m_reconnectHandler.BeginReconnect(m_session, m_reconnectPeriod * 1000, StandardClient_Server_ReconnectComplete);
+                    }
+                }
+            }
+        }
+        private void StandardClient_Server_ReconnectComplete(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new EventHandler(StandardClient_Server_ReconnectComplete), sender, e);
+                return;
+            }
+
+            try
+            {
+                // ignore callbacks from discarded objects.
+                if (!Object.ReferenceEquals(sender, m_reconnectHandler))
+                {
+                    return;
+                }
+
+                m_session = m_reconnectHandler.Session;
+                m_reconnectHandler.Dispose();
+                m_reconnectHandler = null;
+
+                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+
+                opcSession.Reload(m_session);
+
+                StandardClient_KeepAlive(m_session, null);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Prompts for user input if certificate validation has error.
+        /// </summary>
+        void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new CertificateValidationEventHandler(CertificateValidator_CertificateValidation), validator, e);
+                return;
+            }
+
+            try
+            {
+                GuiUtils.HandleCertificateValidationError(this, validator, e);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
+        }
+
+
+        private void OPC_ConnectComplete(object sender, EventArgs e)
+        {
+            try
+            {
+                m_session = opcConnect.Session;
+
+                // set a suitable initial state.
+                if (m_session != null && !m_connectedOnce)
+                {
+                    m_connectedOnce = true;
+                }
+
+                // browse the instances in the server.
+                //opcBrowse.Initialize(m_session, ObjectIds.ObjectsFolder, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
+            }
+            catch (Exception exception)
+            {
+                ClientUtils.HandleException(this.Text, exception);
             }
         }
     }

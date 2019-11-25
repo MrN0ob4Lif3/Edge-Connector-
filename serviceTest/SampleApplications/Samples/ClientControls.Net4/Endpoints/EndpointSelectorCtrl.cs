@@ -194,7 +194,7 @@ namespace Opc.Ua.Client.Controls
                         Initialize(m_endpoints, m_configuration);
                         SelectedEndpoint = endpoint;
                     }
-                }              
+                }  
             }
             catch (Exception exception)
             {

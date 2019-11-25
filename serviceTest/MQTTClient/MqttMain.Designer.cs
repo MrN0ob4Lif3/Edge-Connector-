@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MqttMain));
-            this.connectButton = new System.Windows.Forms.Button();
-            this.connectionString = new System.Windows.Forms.TextBox();
+            this.connectButtonMQTT = new System.Windows.Forms.Button();
+            this.connectionStringMQTT = new System.Windows.Forms.TextBox();
             this.connectionType = new System.Windows.Forms.Label();
             this.connectionChoice = new System.Windows.Forms.ComboBox();
             this.MqttTabs = new System.Windows.Forms.TabControl();
@@ -47,13 +47,20 @@
             this.pubTopic = new System.Windows.Forms.TextBox();
             this.publishText = new System.Windows.Forms.TextBox();
             this.PublishButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.publishTopic = new System.Windows.Forms.TextBox();
             this.mqttStart = new System.Windows.Forms.Button();
             this.mqttStop = new System.Windows.Forms.Button();
             this.labelMessage = new System.Windows.Forms.Label();
             this.mqttNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.opcStart = new System.Windows.Forms.Button();
             this.opcStop = new System.Windows.Forms.Button();
+            this.opcConnect = new Opc.Ua.Client.Controls.ConnectServerCtrl();
+            this.opcEndpoints = new Opc.Ua.Client.Controls.EndpointSelectorCtrl();
+            this.opcSession = new Opc.Ua.Sample.Controls.SessionTreeCtrl();
+            this.opcBrowse = new Opc.Ua.Sample.Controls.BrowseTreeCtrl();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ServerUrlLB = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ServerStatusLB = new System.Windows.Forms.ToolStripStatusLabel();
             this.MqttTabs.SuspendLayout();
             this.subscribeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -65,25 +72,26 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // connectButton
+            // connectButtonMQTT
             // 
-            this.connectButton.Location = new System.Drawing.Point(656, 51);
-            this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(75, 23);
-            this.connectButton.TabIndex = 0;
-            this.connectButton.Text = "Connect";
-            this.connectButton.UseVisualStyleBackColor = true;
-            this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
+            this.connectButtonMQTT.Location = new System.Drawing.Point(656, 51);
+            this.connectButtonMQTT.Name = "connectButtonMQTT";
+            this.connectButtonMQTT.Size = new System.Drawing.Size(75, 23);
+            this.connectButtonMQTT.TabIndex = 0;
+            this.connectButtonMQTT.Text = "Connect";
+            this.connectButtonMQTT.UseVisualStyleBackColor = true;
+            this.connectButtonMQTT.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
-            // connectionString
+            // connectionStringMQTT
             // 
-            this.connectionString.Location = new System.Drawing.Point(12, 53);
-            this.connectionString.Name = "connectionString";
-            this.connectionString.Size = new System.Drawing.Size(638, 20);
-            this.connectionString.TabIndex = 1;
-            this.connectionString.Text = "Enter MQTT Broker IP here";
+            this.connectionStringMQTT.Location = new System.Drawing.Point(12, 53);
+            this.connectionStringMQTT.Name = "connectionStringMQTT";
+            this.connectionStringMQTT.Size = new System.Drawing.Size(638, 20);
+            this.connectionStringMQTT.TabIndex = 1;
+            this.connectionStringMQTT.Text = "Enter MQTT Broker IP here";
             // 
             // connectionType
             // 
@@ -209,7 +217,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.pubTopic);
             this.splitContainer2.Panel2.Controls.Add(this.publishText);
             this.splitContainer2.Panel2.Controls.Add(this.PublishButton);
-            this.splitContainer2.Panel2.Controls.Add(this.textBox1);
+            this.splitContainer2.Panel2.Controls.Add(this.publishTopic);
             this.splitContainer2.Size = new System.Drawing.Size(762, 298);
             this.splitContainer2.SplitterDistance = 254;
             this.splitContainer2.TabIndex = 0;
@@ -248,13 +256,13 @@
             this.PublishButton.UseVisualStyleBackColor = true;
             this.PublishButton.Click += new System.EventHandler(this.PublishButton_Click);
             // 
-            // textBox1
+            // publishTopic
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(498, 262);
-            this.textBox1.TabIndex = 1;
+            this.publishTopic.Location = new System.Drawing.Point(3, 3);
+            this.publishTopic.Multiline = true;
+            this.publishTopic.Name = "publishTopic";
+            this.publishTopic.Size = new System.Drawing.Size(498, 262);
+            this.publishTopic.TabIndex = 1;
             // 
             // mqttStart
             // 
@@ -279,11 +287,11 @@
             // labelMessage
             // 
             this.labelMessage.AutoSize = true;
-            this.labelMessage.Location = new System.Drawing.Point(584, 29);
+            this.labelMessage.Location = new System.Drawing.Point(746, 19);
             this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(84, 13);
+            this.labelMessage.Size = new System.Drawing.Size(61, 13);
             this.labelMessage.TabIndex = 7;
-            this.labelMessage.Text = "PlaceholderText";
+            this.labelMessage.Text = "Status Text";
             // 
             // mqttNotify
             // 
@@ -293,7 +301,7 @@
             // 
             // opcStart
             // 
-            this.opcStart.Location = new System.Drawing.Point(23, 24);
+            this.opcStart.Location = new System.Drawing.Point(1291, 19);
             this.opcStart.Name = "opcStart";
             this.opcStart.Size = new System.Drawing.Size(75, 23);
             this.opcStart.TabIndex = 8;
@@ -303,7 +311,7 @@
             // 
             // opcStop
             // 
-            this.opcStop.Location = new System.Drawing.Point(104, 24);
+            this.opcStop.Location = new System.Drawing.Point(1372, 19);
             this.opcStop.Name = "opcStop";
             this.opcStop.Size = new System.Drawing.Size(75, 23);
             this.opcStop.TabIndex = 9;
@@ -311,11 +319,96 @@
             this.opcStop.UseVisualStyleBackColor = true;
             this.opcStop.Click += new System.EventHandler(this.OpcStop_Click);
             // 
+            // opcConnect
+            // 
+            this.opcConnect.Configuration = null;
+            this.opcConnect.DisableDomainCheck = false;
+            this.opcConnect.Location = new System.Drawing.Point(816, 53);
+            this.opcConnect.MaximumSize = new System.Drawing.Size(2048, 23);
+            this.opcConnect.MinimumSize = new System.Drawing.Size(500, 23);
+            this.opcConnect.Name = "opcConnect";
+            this.opcConnect.PreferredLocales = null;
+            this.opcConnect.ServerStatusControl = null;
+            this.opcConnect.ServerUrl = "";
+            this.opcConnect.SessionName = null;
+            this.opcConnect.Size = new System.Drawing.Size(649, 23);
+            this.opcConnect.StatusStrip = null;
+            this.opcConnect.StatusUpateTimeControl = null;
+            this.opcConnect.TabIndex = 13;
+            this.opcConnect.UserIdentity = null;
+            this.opcConnect.UseSecurity = true;
+            this.opcConnect.ConnectComplete += new System.EventHandler(this.OPC_ConnectComplete);
+            this.opcConnect.Load += new System.EventHandler(this.opcConnect_Load);
+            // 
+            // opcEndpoints
+            // 
+            this.opcEndpoints.Location = new System.Drawing.Point(816, 81);
+            this.opcEndpoints.MaximumSize = new System.Drawing.Size(2048, 28);
+            this.opcEndpoints.MinimumSize = new System.Drawing.Size(100, 28);
+            this.opcEndpoints.Name = "opcEndpoints";
+            this.opcEndpoints.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.opcEndpoints.SelectedEndpoint = null;
+            this.opcEndpoints.Size = new System.Drawing.Size(649, 28);
+            this.opcEndpoints.TabIndex = 14;
+            this.opcEndpoints.ConnectEndpoint += new Opc.Ua.Client.Controls.ConnectEndpointEventHandler(this.OpcEndpoints_ConnectEndpoint);
+            // 
+            // opcSession
+            // 
+            this.opcSession.AddressSpaceCtrl = null;
+            this.opcSession.Configuration = null;
+            this.opcSession.EnableDragging = false;
+            this.opcSession.Location = new System.Drawing.Point(816, 130);
+            this.opcSession.MessageContext = null;
+            this.opcSession.Name = "opcSession";
+            this.opcSession.NotificationMessagesCtrl = null;
+            this.opcSession.PreferredLocales = null;
+            this.opcSession.ServerStatusCtrl = null;
+            this.opcSession.Size = new System.Drawing.Size(208, 301);
+            this.opcSession.TabIndex = 15;
+            // 
+            // opcBrowse
+            // 
+            this.opcBrowse.AttributesCtrl = null;
+            this.opcBrowse.EnableDragging = false;
+            this.opcBrowse.Location = new System.Drawing.Point(1030, 130);
+            this.opcBrowse.Name = "opcBrowse";
+            this.opcBrowse.SessionTreeCtrl = null;
+            this.opcBrowse.Size = new System.Drawing.Size(435, 301);
+            this.opcBrowse.TabIndex = 16;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ServerUrlLB,
+            this.ServerStatusLB});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1505, 22);
+            this.statusStrip1.TabIndex = 17;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // ServerUrlLB
+            // 
+            this.ServerUrlLB.Name = "ServerUrlLB";
+            this.ServerUrlLB.Size = new System.Drawing.Size(79, 17);
+            this.ServerUrlLB.Text = "Disconnected";
+            // 
+            // ServerStatusLB
+            // 
+            this.ServerStatusLB.Name = "ServerStatusLB";
+            this.ServerStatusLB.Size = new System.Drawing.Size(49, 17);
+            this.ServerStatusLB.Text = "00:00:00";
+            // 
             // MqttMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1505, 450);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.opcBrowse);
+            this.Controls.Add(this.opcSession);
+            this.Controls.Add(this.opcEndpoints);
+            this.Controls.Add(this.opcConnect);
             this.Controls.Add(this.opcStop);
             this.Controls.Add(this.opcStart);
             this.Controls.Add(this.labelMessage);
@@ -324,8 +417,8 @@
             this.Controls.Add(this.MqttTabs);
             this.Controls.Add(this.connectionChoice);
             this.Controls.Add(this.connectionType);
-            this.Controls.Add(this.connectionString);
-            this.Controls.Add(this.connectButton);
+            this.Controls.Add(this.connectionStringMQTT);
+            this.Controls.Add(this.connectButtonMQTT);
             this.Name = "MqttMain";
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MqttMain_FormClosed);
@@ -344,6 +437,8 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,8 +446,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button connectButton;
-        private System.Windows.Forms.TextBox connectionString;
+        private System.Windows.Forms.Button connectButtonMQTT;
+        private System.Windows.Forms.TextBox connectionStringMQTT;
         private System.Windows.Forms.Label connectionType;
         private System.Windows.Forms.ComboBox connectionChoice;
         private System.Windows.Forms.TabControl MqttTabs;
@@ -362,7 +457,7 @@
         private System.Windows.Forms.TabPage publishTab;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button PublishButton;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox publishTopic;
         private System.Windows.Forms.ListBox topicListSub;
         private System.Windows.Forms.ListBox topicListPub;
         private System.Windows.Forms.TextBox publishText;
@@ -375,6 +470,13 @@
         private System.Windows.Forms.NotifyIcon mqttNotify;
         private System.Windows.Forms.Button opcStart;
         private System.Windows.Forms.Button opcStop;
+        private Opc.Ua.Client.Controls.ConnectServerCtrl opcConnect;
+        private Opc.Ua.Client.Controls.EndpointSelectorCtrl opcEndpoints;
+        private Opc.Ua.Sample.Controls.SessionTreeCtrl opcSession;
+        private Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel ServerUrlLB;
+        private System.Windows.Forms.ToolStripStatusLabel ServerStatusLB;
     }
 }
 
