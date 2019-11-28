@@ -13,9 +13,10 @@ namespace brokerService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class BrokerService : IBrokerService
     {
+
         #region MQTT Fields
         //Create a new ManagedMQTT Client.
-        IManagedMqttClient managedMQTT = new MqttFactory().CreateManagedMqttClient();
+        public IManagedMqttClient managedMQTT;
         #endregion
 
         #region OPC Fields
@@ -36,19 +37,12 @@ namespace brokerService
         private bool m_connectedOnce;
         #endregion
 
-        #region MQTT Methods
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        BrokerService()
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            this.managedMQTT = new MqttFactory().CreateManagedMqttClient();
         }
+
+        #region MQTT Methods
         //MQTT client creation function. Requires IP address of MQTT server and connection option type
         public async void MQTTCreateClientAsync(String mqttIP, int option)
         {

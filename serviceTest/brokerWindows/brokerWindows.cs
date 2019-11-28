@@ -11,7 +11,8 @@ namespace brokerWindows
     public partial class brokerWindows : ServiceBase
     {
         ServiceHost host;
-
+        brokerService.BrokerService instance;
+        
         public brokerWindows()
         {
             InitializeComponent();
@@ -41,7 +42,53 @@ namespace brokerWindows
         {
             host = new ServiceHost(typeof(brokerService.BrokerService));
             host.Open();
+            MQTTCreateClientAsync("localhost", 0);
         }
+
+        #region MQTT Methods
+        //MQTT client creation function. Requires IP address of MQTT server and connection option type
+        public async void MQTTCreateClientAsync(String mqttIP, int option)
+        {
+            if (option == 0)
+            {
+                try
+                {
+                    // Use TCP connection.
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(instance.managedMQTT, mqttIP);
+                }
+                catch (Exception e)
+                {
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog
+                    {
+                        Source = "brokerServiceMQTTTCP"
+                    };
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+                }
+            }
+            else if (option == 1)
+            {
+                try
+                {
+                    // Use WebSocket connection.
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(serviceInstance.managedMQTT, mqttIP);
+                }
+
+                catch (Exception e)
+                {
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog
+                    {
+                        Source = "brokerServiceMQTTWebSocket"
+                    };
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+                }
+            }
+
+        }
+        #endregion
 
         protected override void OnStop()
         {

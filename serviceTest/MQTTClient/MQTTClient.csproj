@@ -99,17 +99,11 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Connected Services\brokerService\brokerService.wsdl" />
-    <None Include="Connected Services\brokerService\item.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\brokerService\item1.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\brokerService\item2.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\brokerService\MQTTClientForm.brokerService.CompositeType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Properties\DataSources\brokerService.CompositeType.datasource" />
     <None Include="Properties\Settings.settings">

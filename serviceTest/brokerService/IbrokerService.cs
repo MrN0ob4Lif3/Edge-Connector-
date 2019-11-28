@@ -9,9 +9,6 @@ namespace brokerService
     public interface IBrokerService
     {
         [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
-
-        [OperationContract]
         void MQTTCreateClientAsync(String mqttIP, int option);
 
         [OperationContract]
