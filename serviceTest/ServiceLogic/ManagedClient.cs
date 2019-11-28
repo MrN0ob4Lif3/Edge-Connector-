@@ -4,17 +4,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
-
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
-using MQTTnet.Client.Receiving;
-using MQTTnet.Client.Subscribing;
 using MQTTnet.Server;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Protocol;
 
-namespace MQTTCore
+namespace ServiceLogic
 {
     public class ManagedClient
     {
@@ -79,7 +76,7 @@ namespace MQTTCore
             managedMqttClient.UseApplicationMessageReceivedHandler(e =>
             {
                 Console.WriteLine("### RECEIVED APPLICATION MESSAGE ###");
-                Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");   
+                Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");
                 Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
                 Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
                 Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");

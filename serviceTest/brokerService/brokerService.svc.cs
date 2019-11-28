@@ -57,17 +57,17 @@ namespace brokerService
                 try
                 {
                     // Use TCP connection.
-                    await MQTTCore.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
 
                     // Message options
                     string mqttTopic = "TCPTopic";
                     string mqttMessage = "TCPMessage";
 
                     //Subscription
-                    MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
+                    ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
 
                     // Publishing
-                    await MQTTCore.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
+                    await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
                 }
                 catch (Exception e)
                 {
@@ -85,17 +85,17 @@ namespace brokerService
                 try
                 {
                     // Use WebSocket connection.
-                    await MQTTCore.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
 
                     // Message options
                     string mqttTopic = "WebSocketTopic";
                     string mqttMessage = "WebSocketMessage";
 
                     //Subscription
-                    MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
+                    ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
 
                     // Publishing
-                    await MQTTCore.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
+                    await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
                 }
 
                 catch (Exception e)
@@ -119,7 +119,7 @@ namespace brokerService
                 try
                 {
                     // Use TCP connection.
-                    await MQTTCore.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
                 }
                 catch (Exception e)
                 {
@@ -137,7 +137,7 @@ namespace brokerService
                 try
                 {
                     // Use WebSocket connection.
-                    await MQTTCore.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
                 }
 
                 catch (Exception e)
@@ -157,7 +157,7 @@ namespace brokerService
         {
             try
             {
-                MQTTCore.ManagedClient.ManagedMqttSubscribe(managedMQTT, topic);
+                ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, topic);
             }
             catch (Exception e)
             {
@@ -175,7 +175,7 @@ namespace brokerService
         {
             try
             {
-                MQTTCore.ManagedClient.ManagedMqttUnsubscribe(managedMQTT, topic);
+                ServiceLogic.ManagedClient.ManagedMqttUnsubscribe(managedMQTT, topic);
             }
             catch (Exception e)
             {
@@ -193,7 +193,7 @@ namespace brokerService
         {
             try
             {
-                await MQTTCore.ManagedClient.ManagedMqttPublish(managedMQTT, topic, message);
+                await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, topic, message);
             }
             catch (Exception e)
             {
