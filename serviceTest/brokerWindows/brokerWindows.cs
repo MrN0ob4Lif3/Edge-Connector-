@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.ServiceModel;
 using System.Threading;
-
+using ServiceLogic;
 
 
 namespace brokerWindows
@@ -21,10 +21,8 @@ namespace brokerWindows
         {   
             try
             {
-                //System.Diagnostics.Debugger.Break();
-
                 // Create the thread object that will do the service's work.
-                Thread brokerThread = new Thread(startBroker);
+                Thread brokerThread = new Thread(StartBroker);
 
                 // Start the thread.
                 brokerThread.Start();
@@ -39,7 +37,7 @@ namespace brokerWindows
             }                 
         }
 
-        private void startBroker()
+        private void StartBroker()
         {
             host = new ServiceHost(typeof(brokerService.BrokerService));
             host.Open();

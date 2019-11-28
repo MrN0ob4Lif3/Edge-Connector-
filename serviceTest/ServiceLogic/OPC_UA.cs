@@ -1,22 +1,25 @@
 ﻿using System;
-using MQTTnet;
-using MQTTnet.Extensions.ManagedClient;
+using System.Collections.Generic;
+using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
-using System.Diagnostics;
 using Opc.Ua.Configuration;
 
-namespace brokerService
+namespace ServiceLogic
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class BrokerService : IBrokerService
+    public interface IOPC_UA
     {
-        #region MQTT Fields
-        //Create a new ManagedMQTT Client.
-        IManagedMqttClient managedMQTT = new MqttFactory().CreateManagedMqttClient();
-        #endregion
+        void OnStart();
+        void OnStop();
+    }
+
+
+    public abstract class OPC_UA : IOPC_UA
+    {
+        public abstract void OnStart();
+
+        public abstract void OnStop();
 
         #region OPC Fields
         //OPC Client variables
@@ -36,180 +39,6 @@ namespace brokerService
         private bool m_connectedOnce;
         #endregion
 
-        #region MQTT Methods
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
-        {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
-        }
-        //MQTT client creation function. Requires IP address of MQTT server and connection option type
-        public async void MQTTCreateClientAsync(String mqttIP, int option)
-        {
-            if (option == 0)
-            {
-                try
-                {
-                    // Use TCP connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
-
-                    // Message options
-                    string mqttTopic = "TCPTopic";
-                    string mqttMessage = "TCPMessage";
-
-                    //Subscription
-                    ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
-
-                    // Publishing
-                    await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTTCP"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-            else if (option == 1)
-            {
-                try
-                {
-                    // Use WebSocket connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
-
-                    // Message options
-                    string mqttTopic = "WebSocketTopic";
-                    string mqttMessage = "WebSocketMessage";
-
-                    //Subscription
-                    ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
-
-                    // Publishing
-                    await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
-                }
-
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTWebSocket"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-
-        }
-        //MQTT client connection function. Requires IP address of MQTT server and connection option type
-        public async void MQTTConnectClientAsync(String mqttIP, int option)
-        {
-            if (option == 0)
-            {
-                try
-                {
-                    // Use TCP connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTTCP"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-            else if (option == 1)
-            {
-                try
-                {
-                    // Use WebSocket connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
-                }
-
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTWebSocket"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-        }
-        //MQTT topic subscription function. Requires topic to subscribe to.
-        public void MQTTSubscribeTopicAsync(String topic)
-        {
-            try
-            {
-                ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, topic);
-            }
-            catch (Exception e)
-            {
-                // Create an EventLog instance and assign its source.
-                EventLog myLog = new EventLog
-                {
-                    Source = "brokerServiceMQTTSubscribe"
-                };
-                // Write an informational entry to the event log.
-                myLog.WriteEntry(e.Message);
-            }
-        }
-        //MQTT topic unsubscription function. Requires topic to subscribe to.
-        public void MQTTUnsubscribeTopicAsync(String topic)
-        {
-            try
-            {
-                ServiceLogic.ManagedClient.ManagedMqttUnsubscribe(managedMQTT, topic);
-            }
-            catch (Exception e)
-            {
-                // Create an EventLog instance and assign its source.
-                EventLog myLog = new EventLog
-                {
-                    Source = "brokerServiceMQTTSubscribe"
-                };
-                // Write an informational entry to the event log.
-                myLog.WriteEntry(e.Message);
-            }
-        }
-        //MQTT message publishing function. Requires topic to publish message to.
-        public async void MQTTPublishTopicAsync(String topic, String message)
-        {
-            try
-            {
-                await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, topic, message);
-            }
-            catch (Exception e)
-            {
-                // Create an EventLog instance and assign its source.
-                EventLog myLog = new EventLog
-                {
-                    Source = "brokerServiceMQTTPublish"
-                };
-                // Write an informational entry to the event log.
-                myLog.WriteEntry(e.Message);
-            }
-        }
-        //OPC client creation function.
-        #endregion
-
-        #region OPC Methods
         //OPC Client / Session creation.
         public void OPCCreateClient(String opcIP, bool securityCheck)
         {
@@ -259,6 +88,7 @@ namespace brokerService
             }
             */
         }
+
         #region OPC Session Creation Methods
         /// <summary>
         /// Gets or sets a flag indicating that the domain checks should be ignored when connecting.
@@ -328,7 +158,7 @@ namespace brokerService
             }
             catch (Exception exception)
             {
-                ClientUtils.HandleException("Certificate Validation", exception);
+                //ClientUtils.HandleException("Certificate Validation", exception);
             }
         }
         #endregion
@@ -372,8 +202,7 @@ namespace brokerService
             }
             catch (Exception exception)
             {
-                //ClientUtils.HandleException(this.Text, exception);
-                ClientUtils.HandleException("reconnect", exception);
+                //ClientUtils.HandleException("reconnect", exception);
             }
         }
 
@@ -399,31 +228,10 @@ namespace brokerService
             }
             catch (Exception exception)
             {
-                ClientUtils.HandleException("reconnect", exception);
+                //ClientUtils.HandleException("reconnect", exception);
             }
         }
         #endregion
 
-        //OPC client connection.
-        public void OPCConnectClient()
-        {
-            //Endpoint find
-            //Connect to endpoint
-        }
-        //OPC topic subscription.
-        public void OPCSubscribeTopic()
-        {
-            //subscribe to specified data value
-            if (m_session == null)
-            {
-                return;
-            }
-        }
-        //OPC topic unsubscription.
-        public void OPCUnsubscribeTopic()
-        {
-            //unsubscribe from specified data value
-        }
-        #endregion
     }
 }

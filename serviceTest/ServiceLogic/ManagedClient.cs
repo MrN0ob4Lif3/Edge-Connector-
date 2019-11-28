@@ -13,8 +13,9 @@ using MQTTnet.Protocol;
 
 namespace ServiceLogic
 {
-    public class ManagedClient
+    public class ManagedClient 
     {
+
         //Creating a new MQTT client.
         public static IManagedMqttClient CreateManagedClient()
         {

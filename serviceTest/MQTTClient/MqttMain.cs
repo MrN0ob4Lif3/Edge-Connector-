@@ -435,27 +435,6 @@ namespace MQTTClientForm
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
-
-        private void OPC_ConnectComplete(object sender, EventArgs e)
-        {
-            try
-            {
-                m_session = opcConnect.Session;
-
-                // set a suitable initial state.
-                if (m_session != null && !m_connectedOnce)
-                {
-                    m_connectedOnce = true;
-                }
-
-                // browse the instances in the server.
-                //opcBrowse.Initialize(m_session, ObjectIds.ObjectsFolder, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
-            }
-            catch (Exception exception)
-            {
-                ClientUtils.HandleException(this.Text, exception);
-            }
-        }
         #endregion
     }
 }

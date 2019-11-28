@@ -70,6 +70,10 @@
       <Project>{443289ba-c188-41f3-a552-a9a7715baa49}</Project>
       <Name>brokerService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceLogic\ServiceLogic.csproj">
+      <Project>{804a4d28-85e5-447e-98f4-c0bce79be509}</Project>
+      <Name>ServiceLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="serviceInstaller.resx">
