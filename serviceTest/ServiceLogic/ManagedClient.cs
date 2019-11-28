@@ -26,13 +26,13 @@ namespace ServiceLogic
         //MQTTClient connector (Throw in constructed client, brokerIP) [TCP]
         public static async Task ManagedMqttConnectTCPAsync(IManagedMqttClient managedMqttClient, string brokerIP)
         {
-
+            string clientID = Guid.NewGuid().ToString();
             var ms = new ClientRetainedMessageHandler();
             var options = new ManagedMqttClientOptions
             {
                 ClientOptions = new MqttClientOptions
                 {
-                    ClientId = "MQTTnetManagedClient (TCP)",
+                    ClientId = "MQTTnetManagedClient "+clientID+" (TCP)",
                     ChannelOptions = new MqttClientTcpOptions
                     {
                         Server = brokerIP
