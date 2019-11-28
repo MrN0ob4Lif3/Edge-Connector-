@@ -213,8 +213,9 @@ namespace brokerService
         //OPC Client / Session creation.
         public void OPCCreateClient(String opcIP, bool securityCheck)
         {
-            application.ApplicationType = ApplicationType.Client;
-            application.ConfigSectionName = "Quickstarts.ReferenceClient";
+            application.ApplicationName = "MQTT-OPC Broker";
+            application.ApplicationType = ApplicationType.ClientAndServer;
+            application.ConfigSectionName = "Opc.Ua.SampleClient";
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.

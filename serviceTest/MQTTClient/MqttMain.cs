@@ -17,7 +17,6 @@ namespace MQTTClientForm
     public partial class MqttMain : Form
     {
         #region Form Variables
-        public IManagedMqttClient managedMqttClient;
         public string brokerIP;
         brokerService.BrokerServiceClient client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
         ServiceController brokerWindows = new ServiceController("brokerWindows");
@@ -54,10 +53,20 @@ namespace MQTTClientForm
         {
             connectionChoice.SelectedIndex = 0;
             connectionStringMQTT.Text = "localhost";
-
-            ApplicationInstance application = new ApplicationInstance();
-            application.ApplicationType = ApplicationType.Client;
-            application.ConfigSectionName = "Quickstarts.ReferenceClient";
+            try
+            {
+                client.MQTTConnectClientAsync(connectionStringMQTT.Text, 0);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            ApplicationInstance application = new ApplicationInstance
+            {
+                ApplicationName = "MQTT-OPC Broker",
+                ApplicationType = ApplicationType.ClientAndServer,
+                ConfigSectionName = "Opc.Ua.SampleClient"
+            };
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
@@ -91,7 +100,6 @@ namespace MQTTClientForm
                         try
                         {
                             client.MQTTConnectClientAsync(connectionStringMQTT.Text, 0);
-                            labelMessage.Text = "MQTT connected";
                         }
                         catch (Exception ex)
                         {
@@ -192,7 +200,6 @@ namespace MQTTClientForm
             try
             {
                 brokerWindows.Start();
-                labelMessage.Text = "Service Started";
             }
             catch (Exception)
             {
@@ -206,7 +213,6 @@ namespace MQTTClientForm
             try
             {
                 brokerWindows.Stop();
-                labelMessage.Text = "Service Stopped";
             }
             catch (Exception)
             {
@@ -250,7 +256,6 @@ namespace MQTTClientForm
             try
             {
                 client.OPCCreateClient(brokerIP, false);
-                labelMessage.Text = "OPC connected";
             }
             catch (Exception ex)
             {
@@ -262,7 +267,7 @@ namespace MQTTClientForm
         {
             try
             {
-                labelMessage.Text = "Service Started";
+                
             }
             catch (Exception)
             {
@@ -270,11 +275,7 @@ namespace MQTTClientForm
             }
         }
 
-        private void OpcConnect_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        #region OPC Connect
         void OpcEndpoints_ConnectEndpoint(object sender, ConnectEndpointEventArgs e)
         {
             try
@@ -315,6 +316,7 @@ namespace MQTTClientForm
                 StandardClient_KeepAlive(m_session, null);
             }
         }
+        #endregion
 
         #region OPC Client Alive / Reconnect
         /// <summary>

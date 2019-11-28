@@ -50,7 +50,6 @@
             this.publishTopic = new System.Windows.Forms.TextBox();
             this.mqttStart = new System.Windows.Forms.Button();
             this.mqttStop = new System.Windows.Forms.Button();
-            this.labelMessage = new System.Windows.Forms.Label();
             this.mqttNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.opcStart = new System.Windows.Forms.Button();
             this.opcStop = new System.Windows.Forms.Button();
@@ -265,7 +264,7 @@
             // 
             // mqttStart
             // 
-            this.mqttStart.Location = new System.Drawing.Point(346, 24);
+            this.mqttStart.Location = new System.Drawing.Point(12, 12);
             this.mqttStart.Name = "mqttStart";
             this.mqttStart.Size = new System.Drawing.Size(75, 23);
             this.mqttStart.TabIndex = 5;
@@ -275,22 +274,13 @@
             // 
             // mqttStop
             // 
-            this.mqttStop.Location = new System.Drawing.Point(471, 24);
+            this.mqttStop.Location = new System.Drawing.Point(93, 12);
             this.mqttStop.Name = "mqttStop";
             this.mqttStop.Size = new System.Drawing.Size(75, 23);
             this.mqttStop.TabIndex = 6;
             this.mqttStop.Text = "MQTT Stop";
             this.mqttStop.UseVisualStyleBackColor = true;
             this.mqttStop.Click += new System.EventHandler(this.MqttStop_Click);
-            // 
-            // labelMessage
-            // 
-            this.labelMessage.AutoSize = true;
-            this.labelMessage.Location = new System.Drawing.Point(746, 19);
-            this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(61, 13);
-            this.labelMessage.TabIndex = 7;
-            this.labelMessage.Text = "Status Text";
             // 
             // mqttNotify
             // 
@@ -300,7 +290,7 @@
             // 
             // opcStart
             // 
-            this.opcStart.Location = new System.Drawing.Point(1291, 19);
+            this.opcStart.Location = new System.Drawing.Point(816, 12);
             this.opcStart.Name = "opcStart";
             this.opcStart.Size = new System.Drawing.Size(75, 23);
             this.opcStart.TabIndex = 8;
@@ -310,7 +300,7 @@
             // 
             // opcStop
             // 
-            this.opcStop.Location = new System.Drawing.Point(1372, 19);
+            this.opcStop.Location = new System.Drawing.Point(897, 12);
             this.opcStop.Name = "opcStop";
             this.opcStop.Size = new System.Drawing.Size(75, 23);
             this.opcStop.TabIndex = 9;
@@ -388,7 +378,6 @@
             this.Controls.Add(this.opcEndpoints);
             this.Controls.Add(this.opcStop);
             this.Controls.Add(this.opcStart);
-            this.Controls.Add(this.labelMessage);
             this.Controls.Add(this.mqttStop);
             this.Controls.Add(this.mqttStart);
             this.Controls.Add(this.MqttTabs);
@@ -443,7 +432,6 @@
         private System.Windows.Forms.TextBox pubTopic;
         private System.Windows.Forms.Button mqttStart;
         private System.Windows.Forms.Button mqttStop;
-        private System.Windows.Forms.Label labelMessage;
         private System.Windows.Forms.NotifyIcon mqttNotify;
         private System.Windows.Forms.Button opcStart;
         private System.Windows.Forms.Button opcStop;

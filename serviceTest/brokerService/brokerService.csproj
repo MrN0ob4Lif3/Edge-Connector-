@@ -63,7 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="brokerService.svc" />
-    <Content Include="Quickstarts.ReferenceClient.Config.xml" />
+    <Content Include="Opc.Ua.SampleClient.Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +79,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Quickstarts.ReferenceClient.exe.config" />
+    <Content Include="Opc.Ua.SampleClient.exe.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
