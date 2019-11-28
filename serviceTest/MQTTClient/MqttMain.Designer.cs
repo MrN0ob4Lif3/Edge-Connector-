@@ -54,7 +54,6 @@
             this.mqttNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.opcStart = new System.Windows.Forms.Button();
             this.opcStop = new System.Windows.Forms.Button();
-            this.opcConnect = new Opc.Ua.Client.Controls.ConnectServerCtrl();
             this.opcEndpoints = new Opc.Ua.Client.Controls.EndpointSelectorCtrl();
             this.opcSession = new Opc.Ua.Sample.Controls.SessionTreeCtrl();
             this.opcBrowse = new Opc.Ua.Sample.Controls.BrowseTreeCtrl();
@@ -319,30 +318,9 @@
             this.opcStop.UseVisualStyleBackColor = true;
             this.opcStop.Click += new System.EventHandler(this.OpcStop_Click);
             // 
-            // opcConnect
-            // 
-            this.opcConnect.Configuration = null;
-            this.opcConnect.DisableDomainCheck = false;
-            this.opcConnect.Location = new System.Drawing.Point(816, 53);
-            this.opcConnect.MaximumSize = new System.Drawing.Size(2048, 23);
-            this.opcConnect.MinimumSize = new System.Drawing.Size(500, 23);
-            this.opcConnect.Name = "opcConnect";
-            this.opcConnect.PreferredLocales = null;
-            this.opcConnect.ServerStatusControl = null;
-            this.opcConnect.ServerUrl = "";
-            this.opcConnect.SessionName = null;
-            this.opcConnect.Size = new System.Drawing.Size(649, 23);
-            this.opcConnect.StatusStrip = null;
-            this.opcConnect.StatusUpateTimeControl = null;
-            this.opcConnect.TabIndex = 13;
-            this.opcConnect.UserIdentity = null;
-            this.opcConnect.UseSecurity = true;
-            this.opcConnect.ConnectComplete += new System.EventHandler(this.OPC_ConnectComplete);
-            this.opcConnect.Load += new System.EventHandler(this.opcConnect_Load);
-            // 
             // opcEndpoints
             // 
-            this.opcEndpoints.Location = new System.Drawing.Point(816, 81);
+            this.opcEndpoints.Location = new System.Drawing.Point(816, 53);
             this.opcEndpoints.MaximumSize = new System.Drawing.Size(2048, 28);
             this.opcEndpoints.MinimumSize = new System.Drawing.Size(100, 28);
             this.opcEndpoints.Name = "opcEndpoints";
@@ -372,7 +350,7 @@
             this.opcBrowse.EnableDragging = false;
             this.opcBrowse.Location = new System.Drawing.Point(1030, 130);
             this.opcBrowse.Name = "opcBrowse";
-            this.opcBrowse.SessionTreeCtrl = null;
+            this.opcBrowse.SessionTreeCtrl = this.opcSession;
             this.opcBrowse.Size = new System.Drawing.Size(435, 301);
             this.opcBrowse.TabIndex = 16;
             // 
@@ -408,7 +386,6 @@
             this.Controls.Add(this.opcBrowse);
             this.Controls.Add(this.opcSession);
             this.Controls.Add(this.opcEndpoints);
-            this.Controls.Add(this.opcConnect);
             this.Controls.Add(this.opcStop);
             this.Controls.Add(this.opcStart);
             this.Controls.Add(this.labelMessage);
@@ -470,7 +447,6 @@
         private System.Windows.Forms.NotifyIcon mqttNotify;
         private System.Windows.Forms.Button opcStart;
         private System.Windows.Forms.Button opcStop;
-        private Opc.Ua.Client.Controls.ConnectServerCtrl opcConnect;
         private Opc.Ua.Client.Controls.EndpointSelectorCtrl opcEndpoints;
         private Opc.Ua.Sample.Controls.SessionTreeCtrl opcSession;
         private Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse;

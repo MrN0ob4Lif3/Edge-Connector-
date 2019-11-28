@@ -16,6 +16,7 @@ namespace MQTTClientForm
 {
     public partial class MqttMain : Form
     {
+        #region Form Variables
         public IManagedMqttClient managedMqttClient;
         public string brokerIP;
         brokerService.BrokerServiceClient client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
@@ -28,7 +29,9 @@ namespace MQTTClientForm
         private ConfiguredEndpointCollection m_endpoints;
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
+        #endregion
 
+        #region Startup Settings
         //Startup registry key and value
         private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
         private static readonly string StartupValue = "MQTTBroker";
@@ -73,7 +76,9 @@ namespace MQTTClientForm
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
         }
+        #endregion
 
+        #region MQTT Controls
         //Connect to specified address.
         private void ConnectButton_Click(object sender, EventArgs e)
         {
@@ -109,7 +114,6 @@ namespace MQTTClientForm
 
             }
         }
-
         //Subscribe to topic.
         private void SubscribeButton_Click(object sender, EventArgs e)
         {
@@ -127,8 +131,7 @@ namespace MQTTClientForm
             {
                 MessageBox.Show("Error subscribing.");
             }
-        }
-        
+        }      
         //Unsubscribes from topic.
         private void UnsubscribeButton_Click(object sender, EventArgs e)
         {
@@ -154,7 +157,6 @@ namespace MQTTClientForm
                 MessageBox.Show("Error unsubscribing");
             }
         }
-
         //Publishes message to selected topic.
         private void PublishButton_Click(object sender, EventArgs e)
         {
@@ -177,7 +179,6 @@ namespace MQTTClientForm
                 MessageBox.Show("Error publishing.");
             }
         }
-
         //Refreshes elements after tab switch.
         private void MqttTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -185,7 +186,6 @@ namespace MQTTClientForm
             topicListPub.SelectedItem = null;
             pubTopic.Text = "If you want to publish new topic, enter topic name here.";
         }
-
         //Starts MQTT service.
         private void MqttStart_Click(object sender, EventArgs e)
         {
@@ -199,8 +199,7 @@ namespace MQTTClientForm
                 MessageBox.Show("Service already running.");
             }
 
-        }
-        
+        }       
         //Stop MQTT service.
         private void MqttStop_Click(object sender, EventArgs e)
         {
@@ -214,7 +213,10 @@ namespace MQTTClientForm
                 MessageBox.Show("Service already stopped.");
             }
         }
+        #endregion
 
+        #region Form Controls (Close, Resize, etc.)
+        //Form Resizing 
         private void MqttMain_Resize(object sender, EventArgs e)
         {
             //if the form is minimized  
@@ -239,7 +241,9 @@ namespace MQTTClientForm
         {
             
         }
+        #endregion
 
+        #region OPC Controls
         private void OpcStart_Click(object sender, EventArgs e)
         {
             brokerIP = connectionStringMQTT.Text; 
@@ -266,7 +270,7 @@ namespace MQTTClientForm
             }
         }
 
-        private void opcConnect_Load(object sender, EventArgs e)
+        private void OpcConnect_Load(object sender, EventArgs e)
         {
 
         }
@@ -312,7 +316,7 @@ namespace MQTTClientForm
             }
         }
 
-        #region Client Alive / Reconnect
+        #region OPC Client Alive / Reconnect
         /// <summary>
         /// Updates the status control when a keep alive event occurs.
         /// </summary>
@@ -432,7 +436,6 @@ namespace MQTTClientForm
             }
         }
 
-
         private void OPC_ConnectComplete(object sender, EventArgs e)
         {
             try
@@ -453,5 +456,6 @@ namespace MQTTClientForm
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+        #endregion
     }
 }
