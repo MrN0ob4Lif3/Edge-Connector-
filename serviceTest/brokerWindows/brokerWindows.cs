@@ -42,7 +42,7 @@ namespace brokerWindows
         {
             host = new ServiceHost(typeof(brokerService.BrokerService));
             host.Open();
-            MQTTCreateClientAsync("localhost", 0);
+            //MQTTCreateClientAsync("localhost", 0);
         }
 
         #region MQTT Methods
@@ -72,7 +72,7 @@ namespace brokerWindows
                 try
                 {
                     // Use WebSocket connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(serviceInstance.managedMQTT, mqttIP);
+                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(instance.managedMQTT, mqttIP);
                 }
 
                 catch (Exception e)

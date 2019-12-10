@@ -51,16 +51,9 @@ namespace MQTTClientForm
         //Initializes specific form elements.
         private void MqttMain_Load(object sender, EventArgs e)
         {
-            connectionChoice.SelectedIndex = 0;
-            connectionStringMQTT.Text = "localhost";
-            try
-            {
-                client.MQTTConnectClientAsync(connectionStringMQTT.Text, 0);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            connectionChoice.SelectedIndex = 1;
+            connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+            
             ApplicationInstance application = new ApplicationInstance
             {
                 ApplicationName = "MQTT-OPC Broker",
@@ -84,6 +77,7 @@ namespace MQTTClientForm
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
+            
         }
         #endregion
 

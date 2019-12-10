@@ -39,7 +39,26 @@ namespace brokerService
 
         BrokerService()
         {
+            //MQTT Client creation & connection
             this.managedMQTT = new MqttFactory().CreateManagedMqttClient();
+            MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
+
+            //OPC-UA Client creation & connection
+            application.ApplicationName = "MQTT-OPC Broker";
+            application.ApplicationType = ApplicationType.ClientAndServer;
+            application.ConfigSectionName = "Opc.Ua.SampleClient";
+            // load the application configuration.
+            application.LoadApplicationConfiguration(false).Wait();
+            // check the application certificate.
+            application.CheckApplicationInstanceCertificate(false, 0).Wait();
+            m_configuration = application.ApplicationConfiguration;
+
+            if (m_configuration == null)
+            {
+                throw new ArgumentNullException("m_configuration");
+            }
+
+            m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
         }
 
         #region MQTT Methods

@@ -26,6 +26,7 @@ namespace ServiceLogic
         //MQTTClient connector (Throw in constructed client, brokerIP) [TCP]
         public static async Task ManagedMqttConnectTCPAsync(IManagedMqttClient managedMqttClient, string brokerIP)
         {
+            // Use TCP connection.
             string clientID = Guid.NewGuid().ToString();
             var ms = new ClientRetainedMessageHandler();
             var options = new ManagedMqttClientOptions
@@ -48,12 +49,13 @@ namespace ServiceLogic
         public static async Task ManagedMqttConnectWebSocket(IManagedMqttClient managedMqttClient, string brokerIP)
         {
             // Use WebSocket connection.
+            string clientID = Guid.NewGuid().ToString();
             var ms = new ClientRetainedMessageHandler();
             var options = new ManagedMqttClientOptions
             {
                 ClientOptions = new MqttClientOptions
                 {
-                    ClientId = "MQTTnetManagedClient (WebSocket)",
+                    ClientId = "MQTTnetManagedClient " + clientID + " (WebSocket)",
                     ChannelOptions = new MqttClientWebSocketOptions
                     {
                         Uri = brokerIP

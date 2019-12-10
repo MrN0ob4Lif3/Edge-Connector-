@@ -177,7 +177,7 @@
             this.topicSubscribe.Name = "topicSubscribe";
             this.topicSubscribe.Size = new System.Drawing.Size(497, 20);
             this.topicSubscribe.TabIndex = 1;
-            this.topicSubscribe.Text = "Enter the name of the topic to subscribe / unsubscribe";
+            this.topicSubscribe.Text = "Artc/Harmony/Connector/EdgeToCloud";
             // 
             // SubscribeButton
             // 
