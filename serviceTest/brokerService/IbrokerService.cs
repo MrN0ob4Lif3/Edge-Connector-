@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using Opc.Ua;
+using Opc.Ua.Sample.Controls;
 
 namespace brokerService
 {
@@ -14,10 +16,10 @@ namespace brokerService
         void MQTTConnectClientAsync(String mqttIP, int option);
 
         [OperationContract]
-        void MQTTSubscribeTopicAsync(String topic);
+        void MQTTSubscribeTopic(String topic);
 
         [OperationContract]
-        void MQTTUnsubscribeTopicAsync(String topic);
+        void MQTTUnsubscribeTopic(String topic);
 
         [OperationContract]
         void MQTTPublishTopicAsync(String topic, String message);
@@ -26,7 +28,7 @@ namespace brokerService
         void OPCCreateClient(String opcIP, bool securityCheck);
 
         [OperationContract]
-        void OPCConnectClient();
+        void OPCConnectClient(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse);
 
         [OperationContract]
         void OPCSubscribeTopic();

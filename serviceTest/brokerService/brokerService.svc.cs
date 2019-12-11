@@ -15,12 +15,12 @@ namespace brokerService
     public class BrokerService : IBrokerService
     {
 
-        #region MQTT Fields
+        #region MQTT Variables
         //Create a new ManagedMQTT Client.
         public IManagedMqttClient managedMQTT;
         #endregion
 
-        #region OPC Fields
+        #region OPC Variables
         //OPC Client variables
         private ApplicationConfiguration m_configuration;
         private ApplicationInstance application = new ApplicationInstance();
@@ -167,7 +167,7 @@ namespace brokerService
             }
         }
         //MQTT topic subscription function. Requires topic to subscribe to.
-        public void MQTTSubscribeTopicAsync(String topic)
+        public void MQTTSubscribeTopic(String topic)
         {
             try
             {
@@ -185,7 +185,7 @@ namespace brokerService
             }
         }
         //MQTT topic unsubscription function. Requires topic to subscribe to.
-        public void MQTTUnsubscribeTopicAsync(String topic)
+        public void MQTTUnsubscribeTopic(String topic)
         {
             try
             {
@@ -348,6 +348,34 @@ namespace brokerService
         }
         #endregion
 
+        //OPC client connection.
+        public void OPCConnectClient(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse)
+        {
+            try
+            {
+                Connect(endpoint, opcSession, opcBrowse);
+            }
+            catch (Exception exception)
+            {
+
+            }
+        }
+        //OPC topic subscription.
+        public void OPCSubscribeTopic()
+        {
+            //subscribe to specified data value
+            if (m_session == null)
+            {
+                return;
+            }
+        }
+        //OPC topic unsubscription.
+        public void OPCUnsubscribeTopic()
+        {
+            //unsubscribe from specified data value
+        }
+        #endregion
+
         /// <summary>
         /// Connects to a server.
         /// </summary>
@@ -370,7 +398,7 @@ namespace brokerService
                 }
 
                 m_session = session;
-               // m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                // m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
                 opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
                 //StandardClient_KeepAlive(m_session, null);
             }
@@ -380,8 +408,7 @@ namespace brokerService
         #region Session alive / re-connect
         /// <summary>
         /// Handles a keep alive event from a session.
-        /// </summary>
-        /*
+        /// </summary> 
         private void Session_KeepAlive(Session session, KeepAliveEventArgs e)
         {
             try
@@ -421,8 +448,7 @@ namespace brokerService
                 ClientUtils.HandleException("reconnect", exception);
             }
         }
-        */
-
+        
         /// <summary>
         /// Updates the status control when a keep alive event occurs.
         /// </summary> 
@@ -517,25 +543,9 @@ namespace brokerService
         }
         #endregion
 
-        //OPC client connection.
-        public void OPCConnectClient()
-        {
 
-        }
-        //OPC topic subscription.
-        public void OPCSubscribeTopic()
-        {
-            //subscribe to specified data value
-            if (m_session == null)
-            {
-                return;
-            }
-        }
-        //OPC topic unsubscription.
-        public void OPCUnsubscribeTopic()
-        {
-            //unsubscribe from specified data value
-        }
-        #endregion
+
+
+
     }
 }

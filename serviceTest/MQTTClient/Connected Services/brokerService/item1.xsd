@@ -26,26 +26,26 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="MQTTSubscribeTopicAsync">
+  <xs:element name="MQTTSubscribeTopic">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="MQTTSubscribeTopicAsyncResponse">
+  <xs:element name="MQTTSubscribeTopicResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="MQTTUnsubscribeTopicAsync">
+  <xs:element name="MQTTUnsubscribeTopic">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="topic" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="MQTTUnsubscribeTopicAsyncResponse">
+  <xs:element name="MQTTUnsubscribeTopicResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>

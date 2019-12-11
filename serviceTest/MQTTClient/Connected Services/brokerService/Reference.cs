@@ -27,17 +27,17 @@ namespace MQTTClientForm.brokerService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTConnectClientAsyncResponse")]
         System.Threading.Tasks.Task MQTTConnectClientAsyncAsync(string mqttIP, int option);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsyncResponse")]
-        void MQTTSubscribeTopicAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicResponse")]
+        void MQTTSubscribeTopic(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsyncResponse")]
-        System.Threading.Tasks.Task MQTTSubscribeTopicAsyncAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicResponse")]
+        System.Threading.Tasks.Task MQTTSubscribeTopicAsync(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsyncResponse")]
-        void MQTTUnsubscribeTopicAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicResponse")]
+        void MQTTUnsubscribeTopic(string topic);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsyncResponse")]
-        System.Threading.Tasks.Task MQTTUnsubscribeTopicAsyncAsync(string topic);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicResponse")]
+        System.Threading.Tasks.Task MQTTUnsubscribeTopicAsync(string topic);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsyncResponse")]
         void MQTTPublishTopicAsync(string topic, string message);
@@ -113,20 +113,20 @@ namespace MQTTClientForm.brokerService {
             return base.Channel.MQTTConnectClientAsyncAsync(mqttIP, option);
         }
         
-        public void MQTTSubscribeTopicAsync(string topic) {
-            base.Channel.MQTTSubscribeTopicAsync(topic);
+        public void MQTTSubscribeTopic(string topic) {
+            base.Channel.MQTTSubscribeTopic(topic);
         }
         
-        public System.Threading.Tasks.Task MQTTSubscribeTopicAsyncAsync(string topic) {
-            return base.Channel.MQTTSubscribeTopicAsyncAsync(topic);
+        public System.Threading.Tasks.Task MQTTSubscribeTopicAsync(string topic) {
+            return base.Channel.MQTTSubscribeTopicAsync(topic);
         }
         
-        public void MQTTUnsubscribeTopicAsync(string topic) {
-            base.Channel.MQTTUnsubscribeTopicAsync(topic);
+        public void MQTTUnsubscribeTopic(string topic) {
+            base.Channel.MQTTUnsubscribeTopic(topic);
         }
         
-        public System.Threading.Tasks.Task MQTTUnsubscribeTopicAsyncAsync(string topic) {
-            return base.Channel.MQTTUnsubscribeTopicAsyncAsync(topic);
+        public System.Threading.Tasks.Task MQTTUnsubscribeTopicAsync(string topic) {
+            return base.Channel.MQTTUnsubscribeTopicAsync(topic);
         }
         
         public void MQTTPublishTopicAsync(string topic, string message) {

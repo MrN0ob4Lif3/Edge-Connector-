@@ -47,17 +47,17 @@
   <wsdl:message name="IBrokerService_MQTTConnectClientAsync_OutputMessage">
     <wsdl:part name="parameters" element="tns:MQTTConnectClientAsyncResponse" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_MQTTSubscribeTopicAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:MQTTSubscribeTopicAsync" />
+  <wsdl:message name="IBrokerService_MQTTSubscribeTopic_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTSubscribeTopic" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_MQTTSubscribeTopicAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:MQTTSubscribeTopicAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTSubscribeTopic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTSubscribeTopicResponse" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_MQTTUnsubscribeTopicAsync_InputMessage">
-    <wsdl:part name="parameters" element="tns:MQTTUnsubscribeTopicAsync" />
+  <wsdl:message name="IBrokerService_MQTTUnsubscribeTopic_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTUnsubscribeTopic" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_MQTTUnsubscribeTopicAsync_OutputMessage">
-    <wsdl:part name="parameters" element="tns:MQTTUnsubscribeTopicAsyncResponse" />
+  <wsdl:message name="IBrokerService_MQTTUnsubscribeTopic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTUnsubscribeTopicResponse" />
   </wsdl:message>
   <wsdl:message name="IBrokerService_MQTTPublishTopicAsync_InputMessage">
     <wsdl:part name="parameters" element="tns:MQTTPublishTopicAsync" />
@@ -98,13 +98,13 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync" message="tns:IBrokerService_MQTTConnectClientAsync_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsyncResponse" message="tns:IBrokerService_MQTTConnectClientAsync_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="MQTTSubscribeTopicAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync" message="tns:IBrokerService_MQTTSubscribeTopicAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsyncResponse" message="tns:IBrokerService_MQTTSubscribeTopicAsync_OutputMessage" />
+    <wsdl:operation name="MQTTSubscribeTopic">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopic" message="tns:IBrokerService_MQTTSubscribeTopic_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribeTopicResponse" message="tns:IBrokerService_MQTTSubscribeTopic_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="MQTTUnsubscribeTopicAsync">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync" message="tns:IBrokerService_MQTTUnsubscribeTopicAsync_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsyncResponse" message="tns:IBrokerService_MQTTUnsubscribeTopicAsync_OutputMessage" />
+    <wsdl:operation name="MQTTUnsubscribeTopic">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopic" message="tns:IBrokerService_MQTTUnsubscribeTopic_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicResponse" message="tns:IBrokerService_MQTTUnsubscribeTopic_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="MQTTPublishTopicAsync">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" message="tns:IBrokerService_MQTTPublishTopicAsync_InputMessage" />
@@ -147,8 +147,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="MQTTSubscribeTopicAsync">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTSubscribeTopic">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopic" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -156,8 +156,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="MQTTUnsubscribeTopicAsync">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTUnsubscribeTopic">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopic" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -232,8 +232,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="MQTTSubscribeTopicAsync">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTSubscribeTopic">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribeTopic" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -241,8 +241,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="MQTTUnsubscribeTopicAsync">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopicAsync" style="document" />
+    <wsdl:operation name="MQTTUnsubscribeTopic">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTUnsubscribeTopic" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
