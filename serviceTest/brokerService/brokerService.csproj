@@ -100,6 +100,10 @@
       <Project>{a247d2ee-14fc-463d-a9ba-6cff1ef22b7a}</Project>
       <Name>UA Client Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SampleApplications\Samples\Controls.Net4\UA Sample Controls.csproj">
+      <Project>{92AE819B-4938-4502-AC32-67063F9893CD}</Project>
+      <Name>UA Sample Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SampleApplications\SDK\Opc.Ua.Client\Opc.Ua.Client.csproj">
       <Project>{15100583-bfef-431b-a1ea-1e5a843a39b1}</Project>
       <Name>Opc.Ua.Client</Name>

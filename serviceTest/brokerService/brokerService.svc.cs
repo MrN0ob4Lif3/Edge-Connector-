@@ -6,6 +6,7 @@ using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 using System.Diagnostics;
 using Opc.Ua.Configuration;
+using Opc.Ua.Sample.Controls;
 
 namespace brokerService
 {
@@ -347,10 +348,40 @@ namespace brokerService
         }
         #endregion
 
+        /// <summary>
+        /// Connects to a server.
+        /// </summary>
+        public async void Connect(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse)
+        {
+            if (endpoint == null)
+            {
+                return;
+            }
+
+            Session session = await opcSession.Connect(endpoint);
+
+            if (session != null)
+            {
+                // stop any reconnect operation.
+                if (m_reconnectHandler != null)
+                {
+                    m_reconnectHandler.Dispose();
+                    m_reconnectHandler = null;
+                }
+
+                m_session = session;
+               // m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+                //StandardClient_KeepAlive(m_session, null);
+            }
+        }
+
+
         #region Session alive / re-connect
         /// <summary>
         /// Handles a keep alive event from a session.
         /// </summary>
+        /*
         private void Session_KeepAlive(Session session, KeepAliveEventArgs e)
         {
             try
@@ -390,7 +421,75 @@ namespace brokerService
                 ClientUtils.HandleException("reconnect", exception);
             }
         }
+        */
 
+        /// <summary>
+        /// Updates the status control when a keep alive event occurs.
+        /// </summary> 
+        /*
+        void StandardClient_KeepAlive(Session sender, KeepAliveEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new KeepAliveEventHandler(StandardClient_KeepAlive), sender, e);
+                return;
+            }
+            else if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            if (sender != null && sender.Endpoint != null)
+            {
+                ServerUrlLB.Text = Utils.Format(
+                    "{0} ({1}) {2}",
+                    sender.Endpoint.EndpointUrl,
+                    sender.Endpoint.SecurityMode,
+                    (sender.EndpointConfiguration.UseBinaryEncoding) ? "UABinary" : "XML");
+            }
+            else
+            {
+                ServerUrlLB.Text = "None";
+            }
+
+            if (e != null && m_session != null)
+            {
+                if (ServiceResult.IsGood(e.Status))
+                {
+                    ServerStatusLB.Text = Utils.Format(
+                        "Server Status: {0} {1:yyyy-MM-dd HH:mm:ss} {2}/{3}",
+                        e.CurrentState,
+                        e.CurrentTime.ToLocalTime(),
+                        m_session.OutstandingRequestCount,
+                        m_session.DefunctRequestCount);
+
+                    ServerStatusLB.ForeColor = Color.Empty;
+                    ServerStatusLB.Font = new Font(ServerStatusLB.Font, FontStyle.Regular);
+                }
+                else
+                {
+                    ServerStatusLB.Text = String.Format(
+                        "{0} {1}/{2}", e.Status,
+                        m_session.OutstandingRequestCount,
+                        m_session.DefunctRequestCount);
+
+                    ServerStatusLB.ForeColor = Color.Red;
+                    ServerStatusLB.Font = new Font(ServerStatusLB.Font, FontStyle.Bold);
+
+                    if (m_reconnectPeriod <= 0)
+                    {
+                        return;
+                    }
+
+                    if (m_reconnectHandler == null && m_reconnectPeriod > 0)
+                    {
+                        m_reconnectHandler = new SessionReconnectHandler();
+                        m_reconnectHandler.BeginReconnect(m_session, m_reconnectPeriod * 1000, StandardClient_Server_ReconnectComplete);
+                    }
+                }
+            }
+        }
+        */
         /// <summary>
         /// Handles a reconnect event complete from the reconnect handler.
         /// </summary>
@@ -421,8 +520,7 @@ namespace brokerService
         //OPC client connection.
         public void OPCConnectClient()
         {
-            //Endpoint find
-            //Connect to endpoint
+
         }
         //OPC topic subscription.
         public void OPCSubscribeTopic()
