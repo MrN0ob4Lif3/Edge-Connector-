@@ -70,6 +70,7 @@ namespace Opc.Ua
         /// <summary>
         /// The description of the endpoint.
         /// </summary>
+        [DataMember]
         public EndpointDescription Endpoint
         {
             get
@@ -83,11 +84,16 @@ namespace Opc.Ua
 
                 return null;
             }
+            set
+            {
+                TransportChannel.EndpointDescription = value;
+            }
         }
 
         /// <summary>
         /// The configuration for the endpoint.
         /// </summary>
+        [DataMember]
         public EndpointConfiguration EndpointConfiguration
         {
             get
@@ -101,12 +107,17 @@ namespace Opc.Ua
 
                 return null;
             }
+            set
+            {
+                TransportChannel.EndpointConfiguration = value;
+            }
         }
 
         /// <summary>
         /// The message context used when serializing messages.
         /// </summary>
         /// <value>The message context.</value>
+        [DataMember]
         public ServiceMessageContext MessageContext
         {
             get
@@ -120,12 +131,17 @@ namespace Opc.Ua
 
                 return null;
             }
+            set
+            {
+                TransportChannel.MessageContext = value;
+            }
         }
 
         /// <summary>
         /// Gets or set the channel being wrapped by the client object.
         /// </summary>
         /// <value>The transport channel.</value>
+        [DataMember]
         public ITransportChannel TransportChannel
         {
             get
@@ -168,6 +184,7 @@ namespace Opc.Ua
         /// <summary>
         /// The channel being wrapped by the client object.
         /// </summary>
+        [DataMember]
         internal IChannelBase InnerChannel
         {
             get
@@ -181,12 +198,17 @@ namespace Opc.Ua
 
                 return null;
             }
+            set
+            {
+                m_channel = value;
+            }
         }
 
         /// <summary>
         /// What diagnostics the server should return in the response.
         /// </summary>
         /// <value>The diagnostics.</value>
+        [DataMember]
         public DiagnosticsMasks ReturnDiagnostics
         {
             get
@@ -203,6 +225,7 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the timeout for an operation.
         /// </summary>
+        [DataMember]
         public int OperationTimeout
         {
             get
@@ -231,6 +254,7 @@ namespace Opc.Ua
         /// <summary>
         /// Gets a value that indicates whether to use the TransportChannel when sending requests.
         /// </summary>
+        [DataMember]
         protected bool UseTransportChannel
         {
             get
@@ -243,6 +267,10 @@ namespace Opc.Ua
                 }
 
                 return m_useTransportChannel;
+            }
+            set
+            {
+                m_useTransportChannel = value;
             }
         }
         #endregion
@@ -629,11 +657,16 @@ namespace Opc.Ua
         /// The server assigned identifier for the current session.
         /// </summary>
         /// <value>The session id.</value>
+        [DataMember]
         public NodeId SessionId
         {
             get
             {
                 return m_sessionId;
+            }
+            set
+            {
+                m_sessionId = value;
             }
         }
 
@@ -641,11 +674,15 @@ namespace Opc.Ua
         /// Whether a session has beed created with the server.
         /// </summary>
         /// <value><c>true</c> if connected; otherwise, <c>false</c>.</value>
+        [DataMember]
         public bool Connected
         {
             get
             {
                 return m_sessionId != null;
+            }
+            set
+            {
             }
         }
         #endregion

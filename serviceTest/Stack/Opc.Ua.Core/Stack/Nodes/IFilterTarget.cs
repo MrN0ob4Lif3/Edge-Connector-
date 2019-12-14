@@ -173,18 +173,22 @@ namespace Opc.Ua
         /// The namespace table to use when evaluating filters.
         /// </summary>
         /// <value>The namespace URIs.</value>
+        [DataMember]
         public NamespaceTable NamespaceUris
         {
             get { return m_namespaceUris; }
+            set { m_namespaceUris = value; }
         }
 
         /// <summary>
         /// The type tree to use when evaluating filters.
         /// </summary>
         /// <value>The type tree.</value>
+        [DataMember]
         public ITypeTable TypeTree
         {
             get { return m_typeTree; }
+            set { m_typeTree = value; }
         }
         #endregion
 

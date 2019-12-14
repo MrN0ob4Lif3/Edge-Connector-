@@ -57,21 +57,27 @@ namespace Opc.Ua.Client
 
         #region INodeTable Members
         /// <summary cref="INodeTable.NamespaceUris" />
+        [DataMember]
         public NamespaceTable NamespaceUris
         {
             get { return m_session.NamespaceUris; }
+            set { m_session.NamespaceUris = value; }
         }
-        
+
         /// <summary cref="INodeTable.ServerUris" />
+        [DataMember]
         public StringTable ServerUris
         {
             get { return m_session.ServerUris; }
+            set { m_session.ServerUris = value; }
         }
-        
+
         /// <summary cref="INodeTable.TypeTree" />
+        [DataMember]
         public ITypeTable TypeTree 
         {
             get { return this; }
+            set { this = value; }
         }
 
         /// <summary cref="INodeTable.Exists(ExpandedNodeId)" />
@@ -79,7 +85,7 @@ namespace Opc.Ua.Client
         {
             return Find(nodeId) != null;
         }
-        
+
         /// <summary cref="INodeTable.Find(ExpandedNodeId)" />
         public INode Find(ExpandedNodeId nodeId)
         {
@@ -113,7 +119,7 @@ namespace Opc.Ua.Client
                 return null;
             }
         }
-        
+
         /// <summary cref="INodeTable.Find(ExpandedNodeId,NodeId,bool,bool,QualifiedName)" />
         public INode Find(
             ExpandedNodeId sourceId, 
@@ -187,7 +193,7 @@ namespace Opc.Ua.Client
             return hits;
         }
         #endregion
-        
+
         #region ITypeTable Methods
         /// <summary>
         /// Determines whether a node id is a known type id.
