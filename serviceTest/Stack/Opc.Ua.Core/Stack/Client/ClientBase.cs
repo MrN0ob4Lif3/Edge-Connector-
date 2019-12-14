@@ -86,7 +86,6 @@ namespace Opc.Ua
             }
             set
             {
-                TransportChannel.EndpointDescription = value;
             }
         }
 
@@ -109,7 +108,6 @@ namespace Opc.Ua
             }
             set
             {
-                TransportChannel.EndpointConfiguration = value;
             }
         }
 
@@ -133,7 +131,6 @@ namespace Opc.Ua
             }
             set
             {
-                TransportChannel.MessageContext = value;
             }
         }
 
@@ -200,7 +197,6 @@ namespace Opc.Ua
             }
             set
             {
-                m_channel = value;
             }
         }
 

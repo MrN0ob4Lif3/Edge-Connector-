@@ -170,6 +170,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListOfLocalizedText" nillable="true" type="tns:ListOfLocalizedText" />
+  <xs:complexType name="NodeId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NodeId" nillable="true" type="tns:NodeId" />
   <xs:complexType name="Subscription">
     <xs:sequence>
       <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
@@ -215,12 +221,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="MonitoredItem" nillable="true" type="tns:MonitoredItem" />
-  <xs:complexType name="NodeId">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="NodeId" nillable="true" type="tns:NodeId" />
   <xs:simpleType name="NodeClass">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Unspecified_0" />

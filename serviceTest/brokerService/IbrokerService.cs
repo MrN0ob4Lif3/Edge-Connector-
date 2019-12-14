@@ -52,8 +52,7 @@ namespace brokerService
         [OperationContract]
         Browser GetBrowser();
     }
-
-    [KnownType(typeof(Session))]
+    
     [DataContract(Name = "Session")]
     public class SessionSurrogate
     {

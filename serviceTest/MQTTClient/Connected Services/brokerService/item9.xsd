@@ -37,7 +37,11 @@
   </xs:complexType>
   <xs:element name="Session" nillable="true" type="tns:Session" />
   <xs:complexType name="NodeCache">
-    <xs:sequence />
+    <xs:sequence>
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Opc.Ua" minOccurs="0" name="NamespaceUris" nillable="true" type="q7:NamespaceTable" />
+      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Opc.Ua" minOccurs="0" name="ServerUris" nillable="true" type="q8:StringTable" />
+      <xs:element minOccurs="0" name="TypeTree" nillable="true" type="xs:anyType" />
+    </xs:sequence>
   </xs:complexType>
   <xs:element name="NodeCache" nillable="true" type="tns:NodeCache" />
 </xs:schema>

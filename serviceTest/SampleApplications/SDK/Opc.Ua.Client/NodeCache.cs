@@ -77,7 +77,7 @@ namespace Opc.Ua.Client
         public ITypeTable TypeTree 
         {
             get { return this; }
-            set { this = value; }
+            set { ; }
         }
 
         /// <summary cref="INodeTable.Exists(ExpandedNodeId)" />
