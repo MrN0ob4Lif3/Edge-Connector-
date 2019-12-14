@@ -33,6 +33,13 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd7" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IBrokerService_MQTTCreateClientAsync_InputMessage">
@@ -89,6 +96,36 @@
   <wsdl:message name="IBrokerService_OPCUnsubscribeTopic_OutputMessage">
     <wsdl:part name="parameters" element="tns:OPCUnsubscribeTopicResponse" />
   </wsdl:message>
+  <wsdl:message name="IBrokerService_Connect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Connect" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_Connect_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetApplicationInstance_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetApplicationInstance" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetApplicationInstance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetApplicationInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetEndpoints_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetEndpoints" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetEndpoints_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetEndpointsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSession" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSessionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetBrowser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBrowser" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_GetBrowser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBrowserResponse" />
+  </wsdl:message>
   <wsdl:portType name="IBrokerService">
     <wsdl:operation name="MQTTCreateClientAsync">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsync" message="tns:IBrokerService_MQTTCreateClientAsync_InputMessage" />
@@ -125,6 +162,26 @@
     <wsdl:operation name="OPCUnsubscribeTopic">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" message="tns:IBrokerService_OPCUnsubscribeTopic_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse" message="tns:IBrokerService_OPCUnsubscribeTopic_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/Connect" message="tns:IBrokerService_Connect_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/ConnectResponse" message="tns:IBrokerService_Connect_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInstance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetApplicationInstance" message="tns:IBrokerService_GetApplicationInstance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetApplicationInstanceResponse" message="tns:IBrokerService_GetApplicationInstance_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEndpoints">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetEndpoints" message="tns:IBrokerService_GetEndpoints_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetEndpointsResponse" message="tns:IBrokerService_GetEndpoints_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetSession" message="tns:IBrokerService_GetSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetSessionResponse" message="tns:IBrokerService_GetSession_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBrowser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetBrowser" message="tns:IBrokerService_GetBrowser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetBrowserResponse" message="tns:IBrokerService_GetBrowser_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IBrokerService" type="tns:IBrokerService">
@@ -210,6 +267,51 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/Connect" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInstance">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetApplicationInstance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEndpoints">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetEndpoints" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSession">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBrowser">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetBrowser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IBrokerService" type="tns:IBrokerService">
     <wsp:PolicyReference URI="#NetTcpBinding_IBrokerService_policy" />
@@ -288,6 +390,51 @@
     </wsdl:operation>
     <wsdl:operation name="OPCUnsubscribeTopic">
       <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/Connect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInstance">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetApplicationInstance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEndpoints">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetEndpoints" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSession">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetSession" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBrowser">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetBrowser" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
   <xs:element name="MQTTCreateClientAsync">
     <xs:complexType>
       <xs:sequence>
@@ -104,6 +107,64 @@
   <xs:element name="OPCUnsubscribeTopicResponse">
     <xs:complexType>
       <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Connect">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="endpoint" nillable="true" type="q1:ConfiguredEndpoint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConnectResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetApplicationInstance">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetApplicationInstanceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" minOccurs="0" name="GetApplicationInstanceResult" nillable="true" type="q2:ApplicationInstance" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetEndpoints">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetEndpointsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="GetEndpointsResult" nillable="true" type="q3:ConfiguredEndpointCollection" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSession">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSessionResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBrowser">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBrowserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetBrowserResult" nillable="true" type="q4:Browser" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>

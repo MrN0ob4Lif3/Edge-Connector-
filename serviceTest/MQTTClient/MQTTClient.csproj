@@ -99,13 +99,38 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Connected Services\brokerService\brokerService.wsdl" />
+    <None Include="Connected Services\brokerService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\brokerService\item1.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\brokerService\item2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\brokerService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\brokerService\item8.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\brokerService.CompositeType.datasource" />
+    <None Include="Properties\DataSources\brokerService.OPCInstance.datasource" />
+    <None Include="Properties\DataSources\Opc.Ua.Client.Browser.datasource" />
+    <None Include="Properties\DataSources\Opc.Ua.Configuration.ApplicationInstance.datasource" />
+    <None Include="Properties\DataSources\Opc.Ua.ConfiguredEndpointCollection.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

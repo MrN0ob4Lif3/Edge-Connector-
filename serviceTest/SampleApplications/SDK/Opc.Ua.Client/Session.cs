@@ -46,6 +46,7 @@ namespace Opc.Ua.Client
     /// <summary>
     /// Manages a session with a server.
     /// </summary>
+    [Serializable]
     public class Session : SessionClient, IDisposable
     {
         #region Constructors
@@ -486,6 +487,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the endpoint used to connect to the server.
         /// </summary>
+        [DataMember]
         public ConfiguredEndpoint ConfiguredEndpoint
         {
             get
@@ -497,6 +499,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the name assigned to the session.
         /// </summary>
+        [DataMember]
         public string SessionName
         {
             get
@@ -508,6 +511,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the period for wich the server will maintain the session if there is no communication from the client.
         /// </summary>
+        [DataMember]
         public double SessionTimeout
         {
             get
@@ -519,6 +523,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the local handle assigned to the session
         /// </summary>
+        [DataMember]
         public object Handle
         {
             get { return m_handle; }
@@ -528,6 +533,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the user identity currently used for the session.
         /// </summary>
+        [DataMember]
         public IUserIdentity Identity
         {
             get
@@ -539,6 +545,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets a list of user identities that can be used to connect to the server.
         /// </summary>
+        [DataMember]
         public IEnumerable<IUserIdentity> IdentityHistory
         {
             get { return m_identityHistory; }
@@ -547,6 +554,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the table of namespace uris known to the server.
         /// </summary>
+        [DataMember]
         public NamespaceTable NamespaceUris
         {
             get { return m_namespaceUris; }
@@ -555,6 +563,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gest the table of remote server uris known to the server.
         /// </summary>
+        [DataMember]
         public StringTable ServerUris
         {
             get { return m_serverUris; }
@@ -563,6 +572,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the system context for use with the session.
         /// </summary>
+        [DataMember]
         public ISystemContext SystemContext
         {
             get { return m_systemContext; }
@@ -571,6 +581,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the factory used to create encodeable objects that the server understands.
         /// </summary>
+        [DataMember]
         public EncodeableFactory Factory
         {
             get { return m_factory; }
@@ -579,6 +590,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the cache of the server's type tree.
         /// </summary>
+        [DataMember]
         public ITypeTable TypeTree
         {
             get { return m_nodeCache.TypeTree; }
@@ -587,6 +599,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the cache of nodes fetched from the server.
         /// </summary>
+        [DataMember]
         public NodeCache NodeCache
         {
             get { return m_nodeCache; }
@@ -595,6 +608,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the context to use for filter operations.
         /// </summary>
+        [DataMember]
         public FilterContext FilterContext
         {
             get { return new FilterContext(m_namespaceUris, m_nodeCache.TypeTree, m_preferredLocales); }
@@ -603,6 +617,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the locales that the server should use when returning localized text.
         /// </summary>
+        [DataMember]
         public StringCollection PreferredLocales
         {
             get { return m_preferredLocales; }
@@ -611,6 +626,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the subscriptions owned by the session.
         /// </summary>
+        [DataMember]
         public IEnumerable<Subscription> Subscriptions
         {
             get
@@ -625,6 +641,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the number of subscriptions owned by the session.
         /// </summary>
+        [DataMember]
         public int SubscriptionCount
         {
             get
@@ -639,6 +656,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets or Sets the default subscription for the session.
         /// </summary>
+        [DataMember]
         public Subscription DefaultSubscription
         {
             get { return m_defaultSubscription; }
@@ -652,6 +670,7 @@ namespace Opc.Ua.Client
         /// This interval controls how much time elaspes before a communication error is detected.
         /// If everything is ok the KeepAlive event will be raised each time this period elapses.
         /// </remarks>
+        [DataMember]
         public int KeepAliveInterval
         {
             get
@@ -673,6 +692,7 @@ namespace Opc.Ua.Client
         /// Set to true if the server does not respond for 2 times the KeepAliveInterval.
         /// Set to false is communication recovers.
         /// </remarks>
+        [DataMember]
         public bool KeepAliveStopped
         {
             get
@@ -690,6 +710,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the time of the last keep alive.
         /// </summary>
+        [DataMember]
         public DateTime LastKeepAliveTime
         {
             get { return m_lastKeepAliveTime; }
@@ -698,6 +719,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the number of outstanding publish or keep alive requests.
         /// </summary>
+        [DataMember]
         public int OutstandingRequestCount
         {
             get
@@ -712,6 +734,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the number of outstanding publish or keep alive requests which appear to hung.
         /// </summary>
+        [DataMember]
         public int DefunctRequestCount
         {
             get
@@ -736,6 +759,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the number of good outstanding publish requests.
         /// </summary>
+        [DataMember]
         public int GoodPublishRequestCount
         {
             get

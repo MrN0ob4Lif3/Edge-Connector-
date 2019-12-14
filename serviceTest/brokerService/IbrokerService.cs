@@ -2,7 +2,8 @@
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using Opc.Ua;
-using Opc.Ua.Sample.Controls;
+using Opc.Ua.Client;
+using Opc.Ua.Configuration;
 
 namespace brokerService
 {
@@ -28,36 +29,42 @@ namespace brokerService
         void OPCCreateClient(String opcIP, bool securityCheck);
 
         [OperationContract]
-        void OPCConnectClient(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse);
+        void OPCConnectClient();
 
         [OperationContract]
         void OPCSubscribeTopic();
 
         [OperationContract]
         void OPCUnsubscribeTopic();
-        
+
+        [OperationContract]
+        void Connect(ConfiguredEndpoint endpoint);
+
+        [OperationContract]
+        ApplicationInstance GetApplicationInstance();
+
+        [OperationContract]
+        ConfiguredEndpointCollection GetEndpoints();
+
+        [OperationContract]
+        void GetSession();
+
+        [OperationContract]
+        Browser GetBrowser();
     }
 
-
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
+    [KnownType(typeof(Session))]
     [DataContract]
-    public class CompositeType
+    public class SessionType
     {
-        bool boolValue = true;
-        string stringValue = "Hello ";
+        Session session;
 
         [DataMember]
-        public bool BoolValue
+        public Session OPCSession
         {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
-
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
+            get { return session; }
+            set { session = value; }
         }
     }
+
 }

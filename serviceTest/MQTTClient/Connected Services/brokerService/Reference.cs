@@ -9,7 +9,114 @@
 //------------------------------------------------------------------------------
 
 namespace MQTTClientForm.brokerService {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfString", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="String")]
+    [System.SerializableAttribute()]
+    public class ListOfString : System.Collections.Generic.List<string> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfUserTokenPolicy", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="UserTokenPolicy")]
+    [System.SerializableAttribute()]
+    public class ListOfUserTokenPolicy : System.Collections.Generic.List<Opc.Ua.UserTokenPolicy> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfXmlElement", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="XmlElement")]
+    [System.SerializableAttribute()]
+    public class ListOfXmlElement : System.Collections.Generic.List<System.Xml.Linq.XElement> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfCertificateIdentifier", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="CertificateIdentifier")]
+    [System.SerializableAttribute()]
+    public class ListOfCertificateIdentifier : System.Collections.Generic.List<Opc.Ua.CertificateIdentifier> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfTransportConfiguration", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="TransportConfiguration")]
+    [System.SerializableAttribute()]
+    public class ListOfTransportConfiguration : System.Collections.Generic.List<Opc.Ua.TransportConfiguration> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfServerSecurityPolicy", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="ServerSecurityPolicy")]
+    [System.SerializableAttribute()]
+    public class ListOfServerSecurityPolicy : System.Collections.Generic.List<Opc.Ua.ServerSecurityPolicy> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfLocalizedText", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="LocalizedText")]
+    [System.SerializableAttribute()]
+    public class ListOfLocalizedText : System.Collections.Generic.List<Opc.Ua.LocalizedText> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfServerRegistration", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="ServerRegistration")]
+    [System.SerializableAttribute()]
+    public class ListOfServerRegistration : System.Collections.Generic.List<Opc.Ua.ServerRegistration> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfSamplingRateGroup", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="SamplingRateGroup")]
+    [System.SerializableAttribute()]
+    public class ListOfSamplingRateGroup : System.Collections.Generic.List<Opc.Ua.SamplingRateGroup> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfEndpointDescription", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="EndpointDescription")]
+    [System.SerializableAttribute()]
+    public class ListOfEndpointDescription : System.Collections.Generic.List<Opc.Ua.EndpointDescription> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfCertificateIdentifier", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="CertificateIdentifier")]
+    [System.SerializableAttribute()]
+    public class ListOfCertificateIdentifier1 : System.Collections.Generic.List<Opc.Ua.Security.CertificateIdentifier> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfBaseAddresses", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="BaseAddress")]
+    [System.SerializableAttribute()]
+    public class ListOfBaseAddresses : System.Collections.Generic.List<string> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfSecurityProfiles", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="SecurityProfile")]
+    [System.SerializableAttribute()]
+    public class ListOfSecurityProfiles : System.Collections.Generic.List<Opc.Ua.Security.SecurityProfile> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfExtensions", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="Extension")]
+    [System.SerializableAttribute()]
+    public class ListOfExtensions : System.Collections.Generic.List<System.Xml.Linq.XElement> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfApplicationAccessRule", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="ApplicationAccessRule")]
+    [System.SerializableAttribute()]
+    public class ListOfApplicationAccessRule : System.Collections.Generic.List<Opc.Ua.ApplicationAccessRule> {
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="brokerService.IBrokerService")]
@@ -68,6 +175,40 @@ namespace MQTTClientForm.brokerService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse")]
         System.Threading.Tasks.Task OPCUnsubscribeTopicAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/Connect", ReplyAction="http://tempuri.org/IBrokerService/ConnectResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.IssuedIdentityToken))]
+        void Connect(Opc.Ua.ConfiguredEndpoint endpoint);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/Connect", ReplyAction="http://tempuri.org/IBrokerService/ConnectResponse")]
+        System.Threading.Tasks.Task ConnectAsync(Opc.Ua.ConfiguredEndpoint endpoint);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetApplicationInstance", ReplyAction="http://tempuri.org/IBrokerService/GetApplicationInstanceResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateTrustList))]
+        Opc.Ua.Configuration.ApplicationInstance GetApplicationInstance();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetApplicationInstance", ReplyAction="http://tempuri.org/IBrokerService/GetApplicationInstanceResponse")]
+        System.Threading.Tasks.Task<Opc.Ua.Configuration.ApplicationInstance> GetApplicationInstanceAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetEndpoints", ReplyAction="http://tempuri.org/IBrokerService/GetEndpointsResponse")]
+        Opc.Ua.ConfiguredEndpointCollection GetEndpoints();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetEndpoints", ReplyAction="http://tempuri.org/IBrokerService/GetEndpointsResponse")]
+        System.Threading.Tasks.Task<Opc.Ua.ConfiguredEndpointCollection> GetEndpointsAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
+        void GetSession();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
+        System.Threading.Tasks.Task GetSessionAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetBrowser", ReplyAction="http://tempuri.org/IBrokerService/GetBrowserResponse")]
+        Opc.Ua.Client.Browser GetBrowser();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetBrowser", ReplyAction="http://tempuri.org/IBrokerService/GetBrowserResponse")]
+        System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -167,6 +308,46 @@ namespace MQTTClientForm.brokerService {
         
         public System.Threading.Tasks.Task OPCUnsubscribeTopicAsync() {
             return base.Channel.OPCUnsubscribeTopicAsync();
+        }
+        
+        public void Connect(Opc.Ua.ConfiguredEndpoint endpoint) {
+            base.Channel.Connect(endpoint);
+        }
+        
+        public System.Threading.Tasks.Task ConnectAsync(Opc.Ua.ConfiguredEndpoint endpoint) {
+            return base.Channel.ConnectAsync(endpoint);
+        }
+        
+        public Opc.Ua.Configuration.ApplicationInstance GetApplicationInstance() {
+            return base.Channel.GetApplicationInstance();
+        }
+        
+        public System.Threading.Tasks.Task<Opc.Ua.Configuration.ApplicationInstance> GetApplicationInstanceAsync() {
+            return base.Channel.GetApplicationInstanceAsync();
+        }
+        
+        public Opc.Ua.ConfiguredEndpointCollection GetEndpoints() {
+            return base.Channel.GetEndpoints();
+        }
+        
+        public System.Threading.Tasks.Task<Opc.Ua.ConfiguredEndpointCollection> GetEndpointsAsync() {
+            return base.Channel.GetEndpointsAsync();
+        }
+        
+        public void GetSession() {
+            base.Channel.GetSession();
+        }
+        
+        public System.Threading.Tasks.Task GetSessionAsync() {
+            return base.Channel.GetSessionAsync();
+        }
+        
+        public Opc.Ua.Client.Browser GetBrowser() {
+            return base.Channel.GetBrowser();
+        }
+        
+        public System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync() {
+            return base.Channel.GetBrowserAsync();
         }
     }
 }

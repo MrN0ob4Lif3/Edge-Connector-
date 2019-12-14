@@ -21,6 +21,7 @@ namespace MQTTClientForm
         brokerService.BrokerServiceClient client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
         ServiceController brokerWindows = new ServiceController("brokerWindows");
         private Session m_session;
+        private Browser m_browser;
         private bool m_connectedOnce;
         private ApplicationConfiguration m_configuration;
         private ApplicationConfiguration app_configuration;
@@ -53,31 +54,25 @@ namespace MQTTClientForm
         {
             connectionChoice.SelectedIndex = 1;
             connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            
-            ApplicationInstance application = new ApplicationInstance
-            {
-                ApplicationName = "MQTT-OPC Broker",
-                ApplicationType = ApplicationType.ClientAndServer,
-                ConfigSectionName = "Opc.Ua.SampleClient"
-            };
+
+
+            ApplicationInstance application = client.GetApplicationInstance();
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
-            application.CheckApplicationInstanceCertificate(false, 0).Wait();
+            application.CheckApplicationInstanceCertificate(false, 0).Wait();   
             m_configuration = app_configuration = application.ApplicationConfiguration;
-
+            // get list of cached endpoints.
+            m_endpoints = client.GetEndpoints();
+            // Initialize Form controls.
+            opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
-            // get list of cached endpoints.
-            m_endpoints = m_configuration.LoadCachedEndpoints(true);
-            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
-            opcEndpoints.Initialize(m_endpoints, m_configuration);
 
             if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
-            
         }
         #endregion
 
@@ -274,7 +269,80 @@ namespace MQTTClientForm
         {
             try
             {
-                Connect(e.Endpoint);
+                client.Connect(e.Endpoint);
+                m_browser = client.GetBrowser();
+                
+                
+                BrowseViewType viewType = BrowseViewType.Objects;
+                NodeId viewId = null;
+
+                NodeId rootId = Objects.RootFolder;
+                opcBrowse.ShowReferences = false;
+
+                switch (viewType)
+                {
+                    case BrowseViewType.All:
+                        {
+                            opcBrowse.ShowReferences = true;
+                            break;
+                        }
+
+                    case BrowseViewType.Objects:
+                        {
+                            rootId = Objects.ObjectsFolder;
+                            m_browser.ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences;
+                            break;
+                        }
+
+                    case BrowseViewType.Types:
+                        {
+                            rootId = Objects.TypesFolder;
+                            m_browser.ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences;
+                            break;
+                        }
+
+                    case BrowseViewType.ObjectTypes:
+                        {
+                            rootId = ObjectTypes.BaseObjectType;
+                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                            break;
+                        }
+
+                    case BrowseViewType.EventTypes:
+                        {
+                            rootId = ObjectTypes.BaseEventType;
+                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                            break;
+                        }
+
+                    case BrowseViewType.DataTypes:
+                        {
+                            rootId = DataTypeIds.BaseDataType;
+                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                            break;
+                        }
+
+                    case BrowseViewType.ReferenceTypes:
+                        {
+                            rootId = ReferenceTypeIds.References;
+                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                            break;
+                        }
+
+                    case BrowseViewType.ServerDefinedView:
+                        {
+                            rootId = viewId;
+                            m_browser.View = new ViewDescription();
+                            m_browser.View.ViewId = viewId;
+                            opcBrowse.ShowReferences = true;
+                            break;
+                        }
+                }
+
+                opcBrowse.SetRoot(m_browser, rootId);
+
+
+                //Connect(e.Endpoint);
             }
             catch (Exception exception)
             {

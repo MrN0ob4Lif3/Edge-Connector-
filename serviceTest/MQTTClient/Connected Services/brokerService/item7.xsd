@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://opcfoundation.org/UA/SDK/Installation.xsd" elementFormDefault="qualified" targetNamespace="http://opcfoundation.org/UA/SDK/Installation.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
+  <xs:complexType name="InstalledApplication">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" base="q1:SecuredApplication">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="UseDefaultCertificateStores" type="xs:boolean" />
+          <xs:element minOccurs="0" name="DeleteCertificatesOnUninstall" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ConfigureFirewall" type="xs:boolean" />
+          <xs:element minOccurs="0" name="SetConfigurationFilePermisions" type="xs:boolean" />
+          <xs:element minOccurs="0" name="SetExecutableFilePermissions" type="xs:boolean" />
+          <xs:element minOccurs="0" name="InstallAsService" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ServiceStartMode" type="tns:StartMode" />
+          <xs:element minOccurs="0" name="ServiceUserName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServicePassword" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LocallyRegisterOIDs" type="xs:boolean" />
+          <xs:element minOccurs="0" name="MinimumKeySize" type="xs:unsignedShort" />
+          <xs:element minOccurs="0" name="LifeTimeInMonths" type="xs:unsignedShort" />
+          <xs:element xmlns:q2="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="AccessRules" nillable="true" type="q2:ListOfApplicationAccessRule" />
+          <xs:element xmlns:q3="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="TraceConfiguration" nillable="true" type="q3:TraceConfiguration" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InstalledApplication" nillable="true" type="tns:InstalledApplication" />
+  <xs:simpleType name="StartMode">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="unsignedInt" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Boot" />
+      <xs:enumeration value="System" />
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="Manual" />
+      <xs:enumeration value="Disabled" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="StartMode" nillable="true" type="tns:StartMode" />
+</xs:schema>

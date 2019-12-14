@@ -7,6 +7,8 @@ using Opc.Ua.Client.Controls;
 using System.Diagnostics;
 using Opc.Ua.Configuration;
 using Opc.Ua.Sample.Controls;
+using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
 
 namespace brokerService
 {
@@ -22,9 +24,14 @@ namespace brokerService
 
         #region OPC Variables
         //OPC Client variables
+        private ApplicationInstance application;
         private ApplicationConfiguration m_configuration;
-        private ApplicationInstance application = new ApplicationInstance();
+        private ApplicationConfiguration app_configuration;
+        private ConfiguredEndpointCollection m_endpoints;
+        private ConfiguredEndpoint m_endpoint;
+        private ServiceMessageContext m_messageContext;
         private Session m_session;
+        private Browser m_browser;
         private int m_reconnectPeriod = 10;
         private int m_discoverTimeout = 5000;
         private SessionReconnectHandler m_reconnectHandler;
@@ -41,10 +48,11 @@ namespace brokerService
         BrokerService()
         {
             //MQTT Client creation & connection
-            this.managedMQTT = new MqttFactory().CreateManagedMqttClient();
+            managedMQTT = new MqttFactory().CreateManagedMqttClient();
             MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
 
             //OPC-UA Client creation & connection
+            application = new ApplicationInstance();
             application.ApplicationName = "MQTT-OPC Broker";
             application.ApplicationType = ApplicationType.ClientAndServer;
             application.ConfigSectionName = "Opc.Ua.SampleClient";
@@ -52,14 +60,15 @@ namespace brokerService
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
             application.CheckApplicationInstanceCertificate(false, 0).Wait();
-            m_configuration = application.ApplicationConfiguration;
+            m_configuration = app_configuration = application.ApplicationConfiguration;
 
-            if (m_configuration == null)
+            // get list of cached endpoints.
+            m_endpoints = m_configuration.LoadCachedEndpoints(true);
+            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
+            if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
             {
-                throw new ArgumentNullException("m_configuration");
+                app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
-
-            m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
         }
 
         #region MQTT Methods
@@ -348,12 +357,17 @@ namespace brokerService
         }
         #endregion
 
+        public void OPCConnectClient()
+        {
+
+        }
+
         //OPC client connection.
         public void OPCConnectClient(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse)
         {
             try
             {
-                Connect(endpoint, opcSession, opcBrowse);
+                //Connect(endpoint, opcSession, opcBrowse);
             }
             catch (Exception exception)
             {
@@ -377,33 +391,116 @@ namespace brokerService
         #endregion
 
         /// <summary>
-        /// Connects to a server.
+        /// Creates a session with the endpoint.
         /// </summary>
-        public async void Connect(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse)
+        public async void Connect(ConfiguredEndpoint endpoint)
         {
-            if (endpoint == null)
-            {
-                return;
-            }
+            if (endpoint == null) throw new ArgumentNullException("endpoint");
 
-            Session session = await opcSession.Connect(endpoint);
+            m_endpoint = endpoint;
 
-            if (session != null)
+            // copy the message context.
+            m_messageContext = m_configuration.CreateMessageContext();
+
+
+            X509Certificate2 clientCertificate = null;
+            X509Certificate2Collection clientCertificateChain = null;
+
+            if (endpoint.Description.SecurityPolicyUri != SecurityPolicies.None)
             {
-                // stop any reconnect operation.
-                if (m_reconnectHandler != null)
+                if (m_configuration.SecurityConfiguration.ApplicationCertificate == null)
                 {
-                    m_reconnectHandler.Dispose();
-                    m_reconnectHandler = null;
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate must be specified.");
                 }
 
+                clientCertificate = await m_configuration.SecurityConfiguration.ApplicationCertificate.Find(true);
+
+                if (clientCertificate == null)
+                {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate cannot be found.");
+                }
+
+                // load certificate chain
+                clientCertificateChain = new X509Certificate2Collection(clientCertificate);
+                List<CertificateIdentifier> issuers = new List<CertificateIdentifier>();
+                await m_configuration.CertificateValidator.GetIssuers(clientCertificate, issuers);
+                for (int i = 0; i < issuers.Count; i++)
+                {
+                    clientCertificateChain.Add(issuers[i].Certificate);
+                }
+            }
+
+            // create the channel.
+            ITransportChannel channel = SessionChannel.Create(
+                m_configuration,
+                endpoint.Description,
+                endpoint.Configuration,
+                clientCertificate,
+                m_configuration.SecurityConfiguration.SendCertificateChain ? clientCertificateChain : null,
+                m_messageContext);
+
+            // create the session.
+            if (channel == null) throw new ArgumentNullException("channel");
+            try
+            {
+                // create the session.
+                Session session = new Session(channel, m_configuration, endpoint, null);
+                session.ReturnDiagnostics = DiagnosticsMasks.All;
+
+                // session now owns the channel.
+                channel = null;
+
+                // delete the existing session.
+                // Close();
+
+                // add session to tree.
+                //AddNode(session);
+
+                // Saves session instance in service.
                 m_session = session;
-                // m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
-                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
-                //StandardClient_KeepAlive(m_session, null);
+
+                // Saves browser instance in service.
+                m_browser = new Browser(session)
+                {
+                    Session = session,
+                    BrowseDirection = BrowseDirection.Forward,
+                    ReferenceTypeId = null,
+                    IncludeSubtypes = true,
+                    NodeClassMask = 0,
+                    ContinueUntilDone = false
+                };
+
+            }
+            finally
+            {
+                // ensure the channel is closed on error.
+                if (channel != null)
+                {
+                    channel.Close();
+                }
             }
         }
 
+
+        public ApplicationInstance GetApplicationInstance()
+        {
+            return application;
+        }
+
+        public ConfiguredEndpointCollection GetEndpoints()
+        {
+            return m_endpoints;
+        }
+
+        public void GetSession()
+        {
+            //return m_session;
+        }
+
+        public Browser GetBrowser()
+        {
+            return m_browser;
+        }
 
         #region Session alive / re-connect
         /// <summary>
@@ -542,10 +639,6 @@ namespace brokerService
             }
         }
         #endregion
-
-
-
-
 
     }
 }
