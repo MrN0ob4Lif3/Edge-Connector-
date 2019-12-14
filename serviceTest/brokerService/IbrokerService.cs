@@ -53,7 +53,7 @@ namespace brokerService
         Browser GetBrowser();
     }
     
-    [DataContract(Name = "Session")]
+    [DataContract]
     public class SessionSurrogate
     {
         Session session;

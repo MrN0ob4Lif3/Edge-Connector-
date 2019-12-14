@@ -31,7 +31,7 @@ namespace MQTTClientForm.brokerService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfXmlElement", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="XmlElement")]
     [System.SerializableAttribute()]
-    public class ListOfXmlElement : System.Collections.Generic.List<System.Xml.Linq.XElement> {
+    public class ListOfXmlElement : System.Collections.Generic.List<System.Xml.XmlElement> {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -85,6 +85,43 @@ namespace MQTTClientForm.brokerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MemberInfo", Namespace="http://schemas.datacontract.org/2004/07/System.Reflection")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MQTTClientForm.brokerService.Type))]
+    public partial class MemberInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Type", Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [System.SerializableAttribute()]
+    public partial class Type : MQTTClientForm.brokerService.MemberInfo {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfCertificateIdentifier", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="CertificateIdentifier")]
     [System.SerializableAttribute()]
     public class ListOfCertificateIdentifier1 : System.Collections.Generic.List<Opc.Ua.Security.CertificateIdentifier> {
@@ -108,7 +145,7 @@ namespace MQTTClientForm.brokerService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfExtensions", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="Extension")]
     [System.SerializableAttribute()]
-    public class ListOfExtensions : System.Collections.Generic.List<System.Xml.Linq.XElement> {
+    public class ListOfExtensions : System.Collections.Generic.List<System.Xml.XmlElement> {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -273,8 +310,8 @@ namespace MQTTClientForm.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Browser))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ViewDescription))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BrowseDirection))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Type))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Reflection.MemberInfo))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.Type))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.MemberInfo))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BinaryEncodingSupport))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointComIdentity))]

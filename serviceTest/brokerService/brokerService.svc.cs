@@ -496,6 +496,9 @@ namespace brokerService
         {
             try
             {
+                //SessionSurrogate sessionSurrogate = new SessionSurrogate();
+                //sessionSurrogate.OPCSession = m_session;
+                //return sessionSurrogate;
                 return m_session;
             }
             catch (Exception e)
@@ -509,9 +512,7 @@ namespace brokerService
                 myLog.WriteEntry(e.Message);
                 return null;
             }
-            //SessionSurrogate sessionSurrogate = new SessionSurrogate();
-            //sessionSurrogate.OPCSession = m_session;
-            //return sessionSurrogate;
+
         }
 
         public Browser GetBrowser()

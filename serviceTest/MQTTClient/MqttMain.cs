@@ -272,6 +272,8 @@ namespace MQTTClientForm
                 client.Connect(e.Endpoint);
                 m_browser = client.GetBrowser();
                 m_session = client.GetSession();
+                //MQTTClientForm.brokerService.SessionSurrogate test = client.GetSession();
+                //m_session = test.OPCSession;
 
                 m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
                 opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
