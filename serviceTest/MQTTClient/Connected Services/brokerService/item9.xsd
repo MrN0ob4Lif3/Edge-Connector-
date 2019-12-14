@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd11" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="Session">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Opc.Ua" base="q1:SessionClient">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="ConfiguredEndpoint" nillable="true" type="q2:ConfiguredEndpoint" />
+          <xs:element xmlns:q3="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="DefaultSubscription" nillable="true" type="q3:Subscription" />
+          <xs:element minOccurs="0" name="DefunctRequestCount" type="xs:int" />
+          <xs:element minOccurs="0" name="Factory" nillable="true" type="q1:EncodeableFactory" />
+          <xs:element minOccurs="0" name="FilterContext" nillable="true" type="q1:FilterContext" />
+          <xs:element minOccurs="0" name="GoodPublishRequestCount" type="xs:int" />
+          <xs:element minOccurs="0" name="Handle" nillable="true" type="xs:anyType" />
+          <xs:element minOccurs="0" name="Identity" nillable="true" type="xs:anyType" />
+          <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="IdentityHistory" nillable="true" type="q4:ArrayOfanyType" />
+          <xs:element minOccurs="0" name="KeepAliveInterval" type="xs:int" />
+          <xs:element minOccurs="0" name="KeepAliveStopped" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LastKeepAliveTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="NamespaceUris" nillable="true" type="q1:NamespaceTable" />
+          <xs:element minOccurs="0" name="NodeCache" nillable="true" type="tns:NodeCache" />
+          <xs:element minOccurs="0" name="OutstandingRequestCount" type="xs:int" />
+          <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="PreferredLocales" nillable="true" type="q5:ListOfString" />
+          <xs:element minOccurs="0" name="ServerUris" nillable="true" type="q1:StringTable" />
+          <xs:element minOccurs="0" name="SessionName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SessionTimeout" type="xs:double" />
+          <xs:element minOccurs="0" name="SubscriptionCount" type="xs:int" />
+          <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="Subscriptions" nillable="true" type="q6:ArrayOfSubscription" />
+          <xs:element minOccurs="0" name="SystemContext" nillable="true" type="xs:anyType" />
+          <xs:element minOccurs="0" name="TypeTree" nillable="true" type="xs:anyType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Session" nillable="true" type="tns:Session" />
+  <xs:complexType name="NodeCache">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="NodeCache" nillable="true" type="tns:NodeCache" />
+</xs:schema>

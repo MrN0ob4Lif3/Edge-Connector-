@@ -118,6 +118,34 @@ namespace MQTTClientForm.brokerService {
     public class ListOfApplicationAccessRule : System.Collections.Generic.List<Opc.Ua.ApplicationAccessRule> {
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfSimpleAttributeOperand", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="SimpleAttributeOperand")]
+    [System.SerializableAttribute()]
+    public class ListOfSimpleAttributeOperand : System.Collections.Generic.List<Opc.Ua.SimpleAttributeOperand> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfQualifiedName", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="QualifiedName")]
+    [System.SerializableAttribute()]
+    public class ListOfQualifiedName : System.Collections.Generic.List<Opc.Ua.QualifiedName> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfContentFilterElement", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="ContentFilterElement")]
+    [System.SerializableAttribute()]
+    public class ListOfContentFilterElement : System.Collections.Generic.List<Opc.Ua.ContentFilterElement> {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfExtensionObject", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="ExtensionObject")]
+    [System.SerializableAttribute()]
+    public class ListOfExtensionObject : System.Collections.Generic.List<Opc.Ua.ExtensionObject> {
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="brokerService.IBrokerService")]
     public interface IBrokerService {
@@ -199,10 +227,109 @@ namespace MQTTClientForm.brokerService {
         System.Threading.Tasks.Task<Opc.Ua.ConfiguredEndpointCollection> GetEndpointsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
-        void GetSession();
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.IssuedIdentityToken))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointDescription))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationDescription))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.LocalizedText))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationType))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfString))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MessageSecurityMode))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfUserTokenPolicy))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserTokenPolicy))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserTokenType))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserIdentityToken))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Uuid))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfXmlElement))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfEndpointDescription))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfLocalizedText))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TimestampsToReturn))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeId))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeClass))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.QualifiedName))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MonitoringMode))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MonitoringFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeTrigger))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfSimpleAttributeOperand))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SimpleAttributeOperand))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterOperand))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfQualifiedName))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ContentFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfContentFilterElement))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ContentFilterElement))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterOperator))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfExtensionObject))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ExtensionObject))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Browser))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ViewDescription))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BrowseDirection))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Type))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Reflection.MemberInfo))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BinaryEncodingSupport))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointComIdentity))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ComSpecification))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SecurityConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateIdentifier))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateTrustList))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateStoreIdentifier))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfCertificateIdentifier))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfTransportConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TransportConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TransportQuotas))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerBaseConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfServerSecurityPolicy))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerSecurityPolicy))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfSamplingRateGroup))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SamplingRateGroup))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiscoveryServerConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfServerRegistration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerRegistration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TraceConfiguration))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfApplicationAccessRule))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationAccessRule))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AccessControlType))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationAccessRight))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpointCollection))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.InstalledApplication))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.StartMode))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.NodeCache))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SessionClient))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientBase))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterContext))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.ApplicationInstance))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.SecuredApplication))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.ApplicationType))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateIdentifier))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateStoreIdentifier))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateList))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfCertificateIdentifier1))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfBaseAddresses))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfSecurityProfiles))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.SecurityProfile))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MQTTClientForm.brokerService.ListOfExtensions))]
+        Opc.Ua.Client.Session GetSession();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
-        System.Threading.Tasks.Task GetSessionAsync();
+        System.Threading.Tasks.Task<Opc.Ua.Client.Session> GetSessionAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetBrowser", ReplyAction="http://tempuri.org/IBrokerService/GetBrowserResponse")]
         Opc.Ua.Client.Browser GetBrowser();
@@ -334,11 +461,11 @@ namespace MQTTClientForm.brokerService {
             return base.Channel.GetEndpointsAsync();
         }
         
-        public void GetSession() {
-            base.Channel.GetSession();
+        public Opc.Ua.Client.Session GetSession() {
+            return base.Channel.GetSession();
         }
         
-        public System.Threading.Tasks.Task GetSessionAsync() {
+        public System.Threading.Tasks.Task<Opc.Ua.Client.Session> GetSessionAsync() {
             return base.Channel.GetSessionAsync();
         }
         

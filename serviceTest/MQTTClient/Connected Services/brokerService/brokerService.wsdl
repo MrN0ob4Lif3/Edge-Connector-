@@ -40,6 +40,9 @@
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd7" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd11" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IBrokerService_MQTTCreateClientAsync_InputMessage">

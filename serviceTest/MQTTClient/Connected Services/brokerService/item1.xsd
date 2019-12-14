@@ -2,6 +2,7 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
   <xs:element name="MQTTCreateClientAsync">
     <xs:complexType>
@@ -152,7 +153,9 @@
   </xs:element>
   <xs:element name="GetSessionResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" minOccurs="0" name="GetSessionResult" nillable="true" type="q4:Session" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetBrowser">
@@ -163,7 +166,7 @@
   <xs:element name="GetBrowserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetBrowserResult" nillable="true" type="q4:Browser" />
+        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetBrowserResult" nillable="true" type="q5:Browser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

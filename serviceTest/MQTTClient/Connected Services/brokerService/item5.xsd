@@ -170,6 +170,282 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListOfLocalizedText" nillable="true" type="tns:ListOfLocalizedText" />
+  <xs:complexType name="Subscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PublishingInterval" type="xs:int" />
+      <xs:element minOccurs="0" name="KeepAliveCount" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="LifetimeCount" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="MaxNotificationsPerPublish" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="PublishingEnabled" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Priority" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="TimestampsToReturn" type="tns:TimestampsToReturn" />
+      <xs:element minOccurs="0" name="MaxMessageCount" type="xs:int" />
+      <xs:element minOccurs="0" name="DefaultItem" nillable="true" type="tns:MonitoredItem" />
+      <xs:element minOccurs="0" name="MinLifetimeInterval" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="MonitoredItems" nillable="true" type="tns:ArrayOfMonitoredItem" />
+      <xs:element minOccurs="0" name="DisableMonitoredItemCache" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Subscription" nillable="true" type="tns:Subscription" />
+  <xs:simpleType name="TimestampsToReturn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Source_0" />
+      <xs:enumeration value="Server_1" />
+      <xs:enumeration value="Both_2" />
+      <xs:enumeration value="Neither_3" />
+      <xs:enumeration value="Invalid_4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TimestampsToReturn" nillable="true" type="tns:TimestampsToReturn" />
+  <xs:complexType name="MonitoredItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartNodeId" nillable="true" type="tns:NodeId" />
+      <xs:element minOccurs="0" name="RelativePath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NodeClass" type="tns:NodeClass" />
+      <xs:element minOccurs="0" name="AttributeId" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="IndexRange" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Encoding" nillable="true" type="tns:QualifiedName" />
+      <xs:element minOccurs="0" name="MonitoringMode" type="tns:MonitoringMode" />
+      <xs:element minOccurs="0" name="SamplingInterval" type="xs:int" />
+      <xs:element minOccurs="0" name="Filter" nillable="true" type="tns:MonitoringFilter" />
+      <xs:element minOccurs="0" name="QueueSize" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="DiscardOldest" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MonitoredItem" nillable="true" type="tns:MonitoredItem" />
+  <xs:complexType name="NodeId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NodeId" nillable="true" type="tns:NodeId" />
+  <xs:simpleType name="NodeClass">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unspecified_0" />
+      <xs:enumeration value="Object_1" />
+      <xs:enumeration value="Variable_2" />
+      <xs:enumeration value="Method_4">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ObjectType_8">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VariableType_16">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ReferenceType_32">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">32</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DataType_64">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">64</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="View_128">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">128</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="NodeClass" nillable="true" type="tns:NodeClass" />
+  <xs:complexType name="QualifiedName">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="NamespaceIndex" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QualifiedName" nillable="true" type="tns:QualifiedName" />
+  <xs:simpleType name="MonitoringMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Disabled_0" />
+      <xs:enumeration value="Sampling_1" />
+      <xs:enumeration value="Reporting_2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MonitoringMode" nillable="true" type="tns:MonitoringMode" />
+  <xs:complexType name="MonitoringFilter">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="MonitoringFilter" nillable="true" type="tns:MonitoringFilter" />
+  <xs:complexType name="DataChangeFilter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:MonitoringFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Trigger" type="tns:DataChangeTrigger" />
+          <xs:element minOccurs="0" name="DeadbandType" type="xs:unsignedInt" />
+          <xs:element minOccurs="0" name="DeadbandValue" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataChangeFilter" nillable="true" type="tns:DataChangeFilter" />
+  <xs:simpleType name="DataChangeTrigger">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Status_0" />
+      <xs:enumeration value="StatusValue_1" />
+      <xs:enumeration value="StatusValueTimestamp_2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DataChangeTrigger" nillable="true" type="tns:DataChangeTrigger" />
+  <xs:complexType name="EventFilter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:MonitoringFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SelectClauses" nillable="true" type="tns:ListOfSimpleAttributeOperand" />
+          <xs:element minOccurs="0" name="WhereClause" nillable="true" type="tns:ContentFilter" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EventFilter" nillable="true" type="tns:EventFilter" />
+  <xs:complexType name="ListOfSimpleAttributeOperand">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SimpleAttributeOperand" nillable="true" type="tns:SimpleAttributeOperand" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfSimpleAttributeOperand" nillable="true" type="tns:ListOfSimpleAttributeOperand" />
+  <xs:complexType name="SimpleAttributeOperand">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:FilterOperand">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="TypeDefinitionId" nillable="true" type="tns:NodeId" />
+          <xs:element minOccurs="0" name="BrowsePath" nillable="true" type="tns:ListOfQualifiedName" />
+          <xs:element minOccurs="0" name="AttributeId" type="xs:unsignedInt" />
+          <xs:element minOccurs="0" name="IndexRange" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SimpleAttributeOperand" nillable="true" type="tns:SimpleAttributeOperand" />
+  <xs:complexType name="FilterOperand">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="FilterOperand" nillable="true" type="tns:FilterOperand" />
+  <xs:complexType name="ListOfQualifiedName">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="QualifiedName" nillable="true" type="tns:QualifiedName" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfQualifiedName" nillable="true" type="tns:ListOfQualifiedName" />
+  <xs:complexType name="ContentFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Elements" nillable="true" type="tns:ListOfContentFilterElement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContentFilter" nillable="true" type="tns:ContentFilter" />
+  <xs:complexType name="ListOfContentFilterElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ContentFilterElement" nillable="true" type="tns:ContentFilterElement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfContentFilterElement" nillable="true" type="tns:ListOfContentFilterElement" />
+  <xs:complexType name="ContentFilterElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FilterOperator" type="tns:FilterOperator" />
+      <xs:element minOccurs="0" name="FilterOperands" nillable="true" type="tns:ListOfExtensionObject" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContentFilterElement" nillable="true" type="tns:ContentFilterElement" />
+  <xs:simpleType name="FilterOperator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Equals_0" />
+      <xs:enumeration value="IsNull_1" />
+      <xs:enumeration value="GreaterThan_2" />
+      <xs:enumeration value="LessThan_3" />
+      <xs:enumeration value="GreaterThanOrEqual_4" />
+      <xs:enumeration value="LessThanOrEqual_5" />
+      <xs:enumeration value="Like_6" />
+      <xs:enumeration value="Not_7" />
+      <xs:enumeration value="Between_8" />
+      <xs:enumeration value="InList_9" />
+      <xs:enumeration value="And_10" />
+      <xs:enumeration value="Or_11" />
+      <xs:enumeration value="Cast_12" />
+      <xs:enumeration value="InView_13" />
+      <xs:enumeration value="OfType_14" />
+      <xs:enumeration value="RelatedTo_15" />
+      <xs:enumeration value="BitwiseAnd_16" />
+      <xs:enumeration value="BitwiseOr_17" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FilterOperator" nillable="true" type="tns:FilterOperator" />
+  <xs:complexType name="ListOfExtensionObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExtensionObject" nillable="true" type="tns:ExtensionObject" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfExtensionObject" nillable="true" type="tns:ListOfExtensionObject" />
+  <xs:complexType name="ExtensionObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TypeId" nillable="true" type="tns:NodeId" />
+      <xs:element minOccurs="0" name="Body" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" processContents="lax" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExtensionObject" nillable="true" type="tns:ExtensionObject" />
+  <xs:complexType name="AggregateFilter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:MonitoringFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="StartTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="AggregateType" nillable="true" type="tns:NodeId" />
+          <xs:element minOccurs="0" name="ProcessingInterval" type="xs:double" />
+          <xs:element minOccurs="0" name="AggregateConfiguration" nillable="true" type="tns:AggregateConfiguration" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AggregateFilter" nillable="true" type="tns:AggregateFilter" />
+  <xs:complexType name="AggregateConfiguration">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="UseServerCapabilitiesDefaults" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TreatUncertainAsBad" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PercentDataBad" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="PercentDataGood" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="UseSlopedExtrapolation" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AggregateConfiguration" nillable="true" type="tns:AggregateConfiguration" />
+  <xs:complexType name="ArrayOfMonitoredItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MonitoredItem" nillable="true" type="tns:MonitoredItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMonitoredItem" nillable="true" type="tns:ArrayOfMonitoredItem" />
+  <xs:complexType name="ArrayOfSubscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Subscription" nillable="true" type="tns:Subscription" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSubscription" nillable="true" type="tns:ArrayOfSubscription" />
   <xs:complexType name="Browser">
     <xs:sequence>
       <xs:element minOccurs="0" name="View" nillable="true" type="tns:ViewDescription" />
@@ -190,12 +466,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ViewDescription" nillable="true" type="tns:ViewDescription" />
-  <xs:complexType name="NodeId">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="NodeId" nillable="true" type="tns:NodeId" />
   <xs:simpleType name="BrowseDirection">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Forward_0" />

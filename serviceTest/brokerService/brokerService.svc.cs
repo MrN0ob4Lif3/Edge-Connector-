@@ -492,9 +492,26 @@ namespace brokerService
             return m_endpoints;
         }
 
-        public void GetSession()
+        public Session GetSession()
         {
-            //return m_session;
+            try
+            {
+                return m_session;
+            }
+            catch (Exception e)
+            {
+                // Create an EventLog instance and assign its source.
+                EventLog myLog = new EventLog
+                {
+                    Source = "brokerServiceSession"
+                };
+                // Write an informational entry to the event log.
+                myLog.WriteEntry(e.Message);
+                return null;
+            }
+            //SessionSurrogate sessionSurrogate = new SessionSurrogate();
+            //sessionSurrogate.OPCSession = m_session;
+            //return sessionSurrogate;
         }
 
         public Browser GetBrowser()

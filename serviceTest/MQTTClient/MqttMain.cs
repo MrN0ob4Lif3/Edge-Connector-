@@ -271,75 +271,11 @@ namespace MQTTClientForm
             {
                 client.Connect(e.Endpoint);
                 m_browser = client.GetBrowser();
-                
-                
-                BrowseViewType viewType = BrowseViewType.Objects;
-                NodeId viewId = null;
+                m_session = client.GetSession();
 
-                NodeId rootId = Objects.RootFolder;
-                opcBrowse.ShowReferences = false;
-
-                switch (viewType)
-                {
-                    case BrowseViewType.All:
-                        {
-                            opcBrowse.ShowReferences = true;
-                            break;
-                        }
-
-                    case BrowseViewType.Objects:
-                        {
-                            rootId = Objects.ObjectsFolder;
-                            m_browser.ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences;
-                            break;
-                        }
-
-                    case BrowseViewType.Types:
-                        {
-                            rootId = Objects.TypesFolder;
-                            m_browser.ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences;
-                            break;
-                        }
-
-                    case BrowseViewType.ObjectTypes:
-                        {
-                            rootId = ObjectTypes.BaseObjectType;
-                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
-                            break;
-                        }
-
-                    case BrowseViewType.EventTypes:
-                        {
-                            rootId = ObjectTypes.BaseEventType;
-                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
-                            break;
-                        }
-
-                    case BrowseViewType.DataTypes:
-                        {
-                            rootId = DataTypeIds.BaseDataType;
-                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
-                            break;
-                        }
-
-                    case BrowseViewType.ReferenceTypes:
-                        {
-                            rootId = ReferenceTypeIds.References;
-                            m_browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
-                            break;
-                        }
-
-                    case BrowseViewType.ServerDefinedView:
-                        {
-                            rootId = viewId;
-                            m_browser.View = new ViewDescription();
-                            m_browser.View.ViewId = viewId;
-                            opcBrowse.ShowReferences = true;
-                            break;
-                        }
-                }
-
-                opcBrowse.SetRoot(m_browser, rootId);
+                m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+                StandardClient_KeepAlive(m_session, null);
 
 
                 //Connect(e.Endpoint);

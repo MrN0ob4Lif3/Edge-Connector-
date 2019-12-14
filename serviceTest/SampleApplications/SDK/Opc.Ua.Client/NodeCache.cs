@@ -31,12 +31,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Opc.Ua.Client
 {
     /// <summary>
     /// A client side cache of the server's type model.
     /// </summary>
+    [DataContract]
     public class NodeCache : INodeTable, ITypeTable
     {
         #region Constructors

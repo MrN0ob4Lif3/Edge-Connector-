@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Opc.Ua
 {
@@ -114,10 +115,11 @@ namespace Opc.Ua
             uint attributeId,
             NumericRange indexRange);
     }
-        
+
     /// <summary>
     /// Provides context information to used when searching the address space.
     /// </summary>
+    [DataContract]
     public class FilterContext : IOperationContext
     {
         #region Contructors

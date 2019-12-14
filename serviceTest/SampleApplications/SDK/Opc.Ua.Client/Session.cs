@@ -46,7 +46,7 @@ namespace Opc.Ua.Client
     /// <summary>
     /// Manages a session with a server.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class Session : SessionClient, IDisposable
     {
         #region Constructors
@@ -494,6 +494,10 @@ namespace Opc.Ua.Client
             {
                 return m_endpoint;
             }
+            set
+            {
+                m_endpoint = value;
+            }
         }
 
         /// <summary>
@@ -506,6 +510,10 @@ namespace Opc.Ua.Client
             {
                 return m_sessionName;
             }
+            set
+            {
+                m_sessionName = value;
+            }
         }
 
         /// <summary>
@@ -517,6 +525,10 @@ namespace Opc.Ua.Client
             get
             {
                 return m_sessionTimeout;
+            }
+            set
+            {
+                m_sessionTimeout = value;
             }
         }
 
@@ -540,6 +552,10 @@ namespace Opc.Ua.Client
             {
                 return m_identity;
             }
+            set
+            {
+                m_identity = value;
+            }
         }
 
         /// <summary>
@@ -549,6 +565,7 @@ namespace Opc.Ua.Client
         public IEnumerable<IUserIdentity> IdentityHistory
         {
             get { return m_identityHistory; }
+            set { IdentityHistory = value;}
         }
 
         /// <summary>
@@ -558,6 +575,7 @@ namespace Opc.Ua.Client
         public NamespaceTable NamespaceUris
         {
             get { return m_namespaceUris; }
+            set { m_namespaceUris = value; }
         }
 
         /// <summary>
@@ -567,6 +585,7 @@ namespace Opc.Ua.Client
         public StringTable ServerUris
         {
             get { return m_serverUris; }
+            set { m_serverUris = value; }
         }
 
         /// <summary>
@@ -576,6 +595,7 @@ namespace Opc.Ua.Client
         public ISystemContext SystemContext
         {
             get { return m_systemContext; }
+            set { SystemContext = value; }
         }
 
         /// <summary>
@@ -585,6 +605,7 @@ namespace Opc.Ua.Client
         public EncodeableFactory Factory
         {
             get { return m_factory; }
+            set { m_factory = value; }
         }
 
         /// <summary>
@@ -594,6 +615,7 @@ namespace Opc.Ua.Client
         public ITypeTable TypeTree
         {
             get { return m_nodeCache.TypeTree; }
+            set { TypeTree = value; }
         }
 
         /// <summary>
@@ -603,6 +625,7 @@ namespace Opc.Ua.Client
         public NodeCache NodeCache
         {
             get { return m_nodeCache; }
+            set { m_nodeCache = value; }
         }
 
         /// <summary>
@@ -612,6 +635,7 @@ namespace Opc.Ua.Client
         public FilterContext FilterContext
         {
             get { return new FilterContext(m_namespaceUris, m_nodeCache.TypeTree, m_preferredLocales); }
+            set { FilterContext = value; }
         }
 
         /// <summary>
@@ -621,6 +645,7 @@ namespace Opc.Ua.Client
         public StringCollection PreferredLocales
         {
             get { return m_preferredLocales; }
+            set { m_preferredLocales = value; }
         }
 
         /// <summary>
@@ -634,6 +659,13 @@ namespace Opc.Ua.Client
                 lock (SyncRoot)
                 {
                     return new ReadOnlyList<Subscription>(m_subscriptions);
+                }
+            }
+            set
+            {
+                lock(SyncRoot)
+                {
+                    Subscriptions = value;
                 }
             }
         }
@@ -705,6 +737,10 @@ namespace Opc.Ua.Client
                     return (m_keepAliveInterval * 2) * TimeSpan.TicksPerMillisecond <= delta;
                 }
             }
+            set
+            {
+                KeepAliveStopped = value;
+            }
         }
 
         /// <summary>
@@ -714,6 +750,7 @@ namespace Opc.Ua.Client
         public DateTime LastKeepAliveTime
         {
             get { return m_lastKeepAliveTime; }
+            set { m_lastKeepAliveTime = value; }
         }
 
         /// <summary>
@@ -728,6 +765,10 @@ namespace Opc.Ua.Client
                 {
                     return m_outstandingRequests.Count;
                 }
+            }
+            set
+            {
+                OutstandingRequestCount = value;
             }
         }
 
@@ -754,6 +795,10 @@ namespace Opc.Ua.Client
                     return count;
                 }
             }
+            set
+            {
+                DefunctRequestCount = value;
+            }
         }
 
         /// <summary>
@@ -778,6 +823,10 @@ namespace Opc.Ua.Client
 
                     return count;
                 }
+            }
+            set
+            {
+                GoodPublishRequestCount = value;
             }
         }
         #endregion

@@ -47,15 +47,15 @@ namespace brokerService
         ConfiguredEndpointCollection GetEndpoints();
 
         [OperationContract]
-        void GetSession();
+        Session GetSession();
 
         [OperationContract]
         Browser GetBrowser();
     }
 
     [KnownType(typeof(Session))]
-    [DataContract]
-    public class SessionType
+    [DataContract(Name = "Session")]
+    public class SessionSurrogate
     {
         Session session;
 
