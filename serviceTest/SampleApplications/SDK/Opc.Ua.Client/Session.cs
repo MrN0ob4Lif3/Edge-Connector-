@@ -46,7 +46,7 @@ namespace Opc.Ua.Client
     /// <summary>
     /// Manages a session with a server.
     /// </summary>
-    [DataContract]
+    [DataContract(Namespace = Namespaces.OpcUaXsd)]
     public class Session : SessionClient, IDisposable
     {
         #region Constructors
@@ -545,7 +545,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the user identity currently used for the session.
         /// </summary>
-        [DataMember]
+        /// [DataMember]
         public IUserIdentity Identity
         {
             get
@@ -591,7 +591,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the system context for use with the session.
         /// </summary>
-        [DataMember]
+        /// [DataMember]
         public ISystemContext SystemContext
         {
             get { return m_systemContext; }
@@ -611,7 +611,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets the cache of the server's type tree.
         /// </summary>
-        [DataMember]
+        /// [DataMember]
         public ITypeTable TypeTree
         {
             get { return m_nodeCache.TypeTree; }
@@ -683,6 +683,7 @@ namespace Opc.Ua.Client
                     return m_subscriptions.Count;
                 }
             }
+            set { }
         }
 
         /// <summary>

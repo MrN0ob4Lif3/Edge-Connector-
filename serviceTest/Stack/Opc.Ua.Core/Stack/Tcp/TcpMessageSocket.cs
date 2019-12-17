@@ -15,13 +15,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Opc.Ua.Bindings
 {
     /// <summary>
     /// Creates a transport channel with UA-TCP transport, UA-SC security and UA Binary encoding
     /// </summary>
-
     public class TcpTransportChannel : UaSCUaBinaryTransportChannel
     {
         public TcpTransportChannel() :
@@ -33,6 +33,7 @@ namespace Opc.Ua.Bindings
     /// <summary>
     /// Creates a new TcpTransportChannel with ITransportChannel interface.
     /// </summary>
+    [DataContract]
     public class TcpTransportChannelFactory : ITransportChannelFactory
     {
         /// <summary>
@@ -48,6 +49,7 @@ namespace Opc.Ua.Bindings
     /// <summary>
     /// Handles async event callbacks from a socket
     /// </summary>
+    [DataContract]
     public class TcpMessageSocketAsyncEventArgs : IMessageSocketAsyncEventArgs
     {
         public TcpMessageSocketAsyncEventArgs()
@@ -124,6 +126,7 @@ namespace Opc.Ua.Bindings
     /// <summary>
     /// Handles async event callbacks only for the ConnectAsync method
     /// </summary>
+    [DataContract]
     public class TcpMessageSocketConnectAsyncEventArgs : IMessageSocketAsyncEventArgs
     {
         public TcpMessageSocketConnectAsyncEventArgs(SocketError error)
@@ -188,6 +191,7 @@ namespace Opc.Ua.Bindings
     /// <summary>
     /// Creates a new TcpMessageSocket with IMessageSocket interface.
     /// </summary>
+    [DataContract]
     public class TcpMessageSocketFactory : IMessageSocketFactory
     {
         /// <summary>
@@ -215,6 +219,7 @@ namespace Opc.Ua.Bindings
     /// <summary>
     /// Handles reading and writing of message chunks over a socket.
     /// </summary>
+    [DataContract]
     public class TcpMessageSocket : IMessageSocket
     {
         #region Constructors

@@ -11,6 +11,7 @@ using Opc.Ua.Client.Controls;
 using System.Reflection;
 using Opc.Ua.Sample.Controls;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace MQTTClientForm
 {
@@ -29,13 +30,15 @@ namespace MQTTClientForm
         private ConfiguredEndpointCollection m_endpoints;
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
+        private DateTime currentPublishTime = DateTime.UtcNow;
+        private DateTime previousPublishTime = DateTime.UtcNow;
         #endregion
 
         #region Startup Settings
         //Startup registry key and value
         private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
         private static readonly string StartupValue = "MQTTBroker";
-        
+
         //Sts WinFrom application to run at startup.
         private static void SetStartup()
         {
@@ -52,15 +55,17 @@ namespace MQTTClientForm
         //Initializes specific form elements.
         private void MqttMain_Load(object sender, EventArgs e)
         {
+            //Loading MQTT elements
             connectionChoice.SelectedIndex = 1;
-            connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+            //connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+            connectionStringMQTT.Text = "localhost:1883";
 
-
+            //Loading OPC elements
             ApplicationInstance application = client.GetApplicationInstance();
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
-            application.CheckApplicationInstanceCertificate(false, 0).Wait();   
+            application.CheckApplicationInstanceCertificate(false, 0).Wait();
             m_configuration = app_configuration = application.ApplicationConfiguration;
             // get list of cached endpoints.
             m_endpoints = client.GetEndpoints();
@@ -83,7 +88,7 @@ namespace MQTTClientForm
             if (connectionStringMQTT.Text != string.Empty)
             {
                 brokerIP = connectionStringMQTT.Text;
-                if(client.InnerChannel.State != CommunicationState.Faulted)
+                if (client.InnerChannel.State != CommunicationState.Faulted)
                 {
                     if (connectionChoice.SelectedIndex == 0)
                         try
@@ -115,25 +120,25 @@ namespace MQTTClientForm
         private void SubscribeButton_Click(object sender, EventArgs e)
         {
             try
-            { 
+            {
                 string topic = topicSubscribe.Text;
                 client.MQTTSubscribeTopicAsync(topic);
                 if (topicListPub.Items.Contains(topic))
                     return;
                 else
                     topicListPub.Items.Add(topic);
-                    topicListSub.Items.Add(topic);
+                topicListSub.Items.Add(topic);
             }
-            catch
+            catch (Exception)
             {
                 MessageBox.Show("Error subscribing.");
             }
-        }      
+        }
         //Unsubscribes from topic.
         private void UnsubscribeButton_Click(object sender, EventArgs e)
         {
             try
-            {       
+            {
                 client.MQTTUnsubscribeTopicAsync(topicSubscribe.Text);
                 ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(topicListSub);
                 selectedItems = topicListSub.SelectedItems;
@@ -149,7 +154,7 @@ namespace MQTTClientForm
                 else
                     MessageBox.Show("Select a topic to unsubscribe from.");
             }
-            catch
+            catch (Exception)
             {
                 MessageBox.Show("Error unsubscribing");
             }
@@ -171,7 +176,7 @@ namespace MQTTClientForm
                     topicListPub.Items.Add(topicChosen);
                 topicListSub.Items.Add(topicChosen);
             }
-            catch
+            catch (Exception)
             {
                 MessageBox.Show("Error publishing.");
             }
@@ -195,7 +200,7 @@ namespace MQTTClientForm
                 MessageBox.Show("Service already running.");
             }
 
-        }       
+        }
         //Stop MQTT service.
         private void MqttStop_Click(object sender, EventArgs e)
         {
@@ -234,14 +239,14 @@ namespace MQTTClientForm
 
         private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            
+
         }
         #endregion
 
         #region OPC Controls
         private void OpcStart_Click(object sender, EventArgs e)
         {
-            brokerIP = connectionStringMQTT.Text; 
+            brokerIP = connectionStringMQTT.Text;
             try
             {
                 client.OPCCreateClient(brokerIP, false);
@@ -256,7 +261,7 @@ namespace MQTTClientForm
         {
             try
             {
-                
+
             }
             catch (Exception)
             {
@@ -269,18 +274,18 @@ namespace MQTTClientForm
         {
             try
             {
-                client.Connect(e.Endpoint);
-                m_browser = client.GetBrowser();
-                m_session = client.GetSession();
+                //client.Connect(e.Endpoint);
+                //m_browser = client.GetBrowser();
+                //m_session = client.GetSession();
                 //MQTTClientForm.brokerService.SessionSurrogate test = client.GetSession();
                 //m_session = test.OPCSession;
 
-                m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
-                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
-                StandardClient_KeepAlive(m_session, null);
+                //m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                //opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+                //StandardClient_KeepAlive(m_session, null);
 
 
-                //Connect(e.Endpoint);
+                Connect(e.Endpoint);
             }
             catch (Exception exception)
             {
@@ -318,12 +323,47 @@ namespace MQTTClientForm
         }
         #endregion
 
-        #region OPC Client Alive / Reconnect
+        #region OPC Client Alive / Reconnect / Publish
         /// <summary>
         /// Updates the status control when a keep alive event occurs.
         /// </summary>
         void StandardClient_KeepAlive(Session sender, KeepAliveEventArgs e)
         {
+            //Checks if any subscriptions within session.
+            if (sender.SubscriptionCount > 0)
+            {
+                //Iterates through session subscriptions.
+                IEnumerable<Subscription> subscriptions = sender.Subscriptions;
+                foreach (Subscription subscription in subscriptions)
+                {
+                    if (subscription == null) { continue; }
+                    double subscriptionInterval = subscription.CurrentPublishingInterval;
+                    subscription.CurrentPublishedTime = DateTime.Now;
+                    TimeSpan intervalCheck = subscription.CurrentPublishedTime.Subtract(subscription.PreviousPublishedTime);
+                    //Checks if subscription has already been published to MQTT broker.
+                    double intervalDifference = ((double)intervalCheck.Seconds * 100);
+                    if (((Double)intervalCheck.Seconds * 100) < subscriptionInterval && subscription.SubscriptionPublished == false) { continue; }
+                    else
+                    {
+                        //Iterates through subscription items.               
+                        if (subscription.MonitoredItemCount > 0)
+                        {
+                            IEnumerable<MonitoredItem> monitoredItems = subscription.MonitoredItems;
+                            foreach (MonitoredItem monitoredItem in monitoredItems)
+                            {
+                                string monitoredDisplayName = monitoredItem.DisplayName;
+                                if (monitoredItem.LastValue != null)
+                                {
+                                    client.MQTTPublishTopicAsync(monitoredDisplayName, monitoredItem.LastValue.ToString());
+                                    subscription.PreviousPublishedTime = DateTime.UtcNow;
+                                    subscription.SubscriptionPublished = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             if (InvokeRequired)
             {
                 BeginInvoke(new KeepAliveEventHandler(StandardClient_KeepAlive), sender, e);

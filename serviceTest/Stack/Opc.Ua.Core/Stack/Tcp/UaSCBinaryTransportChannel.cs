@@ -11,6 +11,7 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Opc.Ua.Bindings
 {
@@ -19,6 +20,8 @@ namespace Opc.Ua.Bindings
     /// Implements the UA-SC security and UA Binary encoding.
     /// The socket layer requires a IMessageSocketFactory implementation.
     /// </summary>
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(UaSCUaBinaryTransportChannel))]
     public class UaSCUaBinaryTransportChannel : ITransportChannel, IMessageSocketChannel
     {
         #region Constructors

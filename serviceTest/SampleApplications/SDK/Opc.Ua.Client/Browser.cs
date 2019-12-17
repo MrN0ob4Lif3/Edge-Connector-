@@ -102,10 +102,11 @@ namespace Opc.Ua.Client
         /// <summary>
         /// The session that the browse is attached to.
         /// </summary>
+        [DataMember]
         public Session Session
         {
             get { return m_session; }
-            
+           
             set
             {
                 CheckBrowserState();

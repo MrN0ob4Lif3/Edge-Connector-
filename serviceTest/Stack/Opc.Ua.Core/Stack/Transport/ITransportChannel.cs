@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Opc.Ua
 {
-    /// <summary>
+    /// <summary>11
     /// This is an interface to a channel which supports a factory 
     /// </summary>
     public interface ITransportChannelFactory

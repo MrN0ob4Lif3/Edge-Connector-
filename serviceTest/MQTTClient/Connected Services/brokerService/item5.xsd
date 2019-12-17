@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://opcfoundation.org/UA/2008/02/Types.xsd" elementFormDefault="qualified" targetNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" />
   <xs:complexType name="EndpointDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="EndpointUrl" nillable="true" type="xs:string" />
@@ -170,6 +174,51 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListOfLocalizedText" nillable="true" type="tns:ListOfLocalizedText" />
+  <xs:complexType name="Session">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Opc.Ua" base="q1:SessionClient">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="ConfiguredEndpoint" nillable="true" type="q2:ConfiguredEndpoint" />
+          <xs:element minOccurs="0" name="DefaultSubscription" nillable="true" type="tns:Subscription" />
+          <xs:element minOccurs="0" name="DefunctRequestCount" type="xs:int" />
+          <xs:element minOccurs="0" name="Factory" nillable="true" type="tns:EncodeableFactory" />
+          <xs:element minOccurs="0" name="FilterContext" nillable="true" type="q1:FilterContext" />
+          <xs:element minOccurs="0" name="GoodPublishRequestCount" type="xs:int" />
+          <xs:element minOccurs="0" name="Handle" nillable="true" type="xs:anyType" />
+          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="IdentityHistory" nillable="true" type="q3:ArrayOfanyType" />
+          <xs:element minOccurs="0" name="KeepAliveInterval" type="xs:int" />
+          <xs:element minOccurs="0" name="KeepAliveStopped" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LastKeepAliveTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="NamespaceUris" nillable="true" type="tns:NamespaceTable" />
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" minOccurs="0" name="NodeCache" nillable="true" type="q4:NodeCache" />
+          <xs:element minOccurs="0" name="OutstandingRequestCount" type="xs:int" />
+          <xs:element minOccurs="0" name="PreferredLocales" nillable="true" type="tns:ListOfString" />
+          <xs:element minOccurs="0" name="ServerUris" nillable="true" type="tns:StringTable" />
+          <xs:element minOccurs="0" name="SessionName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SessionTimeout" type="xs:double" />
+          <xs:element minOccurs="0" name="SubscriptionCount" type="xs:int" />
+          <xs:element minOccurs="0" name="Subscriptions" nillable="true" type="tns:ArrayOfSubscription" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Session" nillable="true" type="tns:Session" />
+  <xs:complexType name="EncodeableFactory">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="EncodeableFactory" nillable="true" type="tns:EncodeableFactory" />
+  <xs:complexType name="NamespaceTable">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:StringTable">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NamespaceTable" nillable="true" type="tns:NamespaceTable" />
+  <xs:complexType name="StringTable">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="StringTable" nillable="true" type="tns:StringTable" />
   <xs:complexType name="NodeId">
     <xs:sequence>
       <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
@@ -191,6 +240,7 @@
       <xs:element minOccurs="0" name="MinLifetimeInterval" type="xs:unsignedInt" />
       <xs:element minOccurs="0" name="MonitoredItems" nillable="true" type="tns:ArrayOfMonitoredItem" />
       <xs:element minOccurs="0" name="DisableMonitoredItemCache" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SubscriptionPublished" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Subscription" nillable="true" type="tns:Subscription" />
@@ -448,6 +498,7 @@
   <xs:element name="ArrayOfSubscription" nillable="true" type="tns:ArrayOfSubscription" />
   <xs:complexType name="Browser">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Session" nillable="true" type="tns:Session" />
       <xs:element minOccurs="0" name="View" nillable="true" type="tns:ViewDescription" />
       <xs:element minOccurs="0" name="MaxReferencesReturned" type="xs:unsignedInt" />
       <xs:element minOccurs="0" name="BrowseDirection" type="tns:BrowseDirection" />

@@ -38,7 +38,8 @@ namespace Opc.Ua.Client
     /// <summary>
     /// A client side cache of the server's type model.
     /// </summary>
-    [DataContract]
+    [DataContract(IsReference=true)]
+    [KnownType(typeof(NodeCache))]
     public class NodeCache : INodeTable, ITypeTable
     {
         #region Constructors
@@ -57,7 +58,6 @@ namespace Opc.Ua.Client
 
         #region INodeTable Members
         /// <summary cref="INodeTable.NamespaceUris" />
-        [DataMember]
         public NamespaceTable NamespaceUris
         {
             get { return m_session.NamespaceUris; }
@@ -65,7 +65,6 @@ namespace Opc.Ua.Client
         }
 
         /// <summary cref="INodeTable.ServerUris" />
-        [DataMember]
         public StringTable ServerUris
         {
             get { return m_session.ServerUris; }
@@ -73,7 +72,6 @@ namespace Opc.Ua.Client
         }
 
         /// <summary cref="INodeTable.TypeTree" />
-        [DataMember]
         public ITypeTable TypeTree 
         {
             get { return this; }

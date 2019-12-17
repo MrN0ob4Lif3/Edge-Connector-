@@ -23,6 +23,7 @@ namespace Opc.Ua
     /// <summary>
     /// A thread safe table of string constants.
     /// </summary>
+    [DataContract(Namespace = Namespaces.OpcUaXsd)]
     public class StringTable
     {
         #region Constructors
@@ -274,6 +275,7 @@ namespace Opc.Ua
     /// <summary>
     /// The table of namespace uris for a server.
     /// </summary>
+    [DataContract(Namespace = Namespaces.OpcUaXsd)]
     public class NamespaceTable : StringTable
     {
         #region Constructors

@@ -106,6 +106,9 @@ namespace Opc.Ua.Client
                 m_handle                     = template.m_handle;
                 m_maxMessageCount            = template.m_maxMessageCount;
                 m_disableMonitoredItemCache  = template.m_disableMonitoredItemCache;
+                m_published                  = template.m_published;
+                m_currentPublishedTime       = template.m_currentPublishedTime;
+                m_previousPublishedTime      = template.m_previousPublishedTime;
 
                 if (copyEventHandlers)
                 {
@@ -152,7 +155,10 @@ namespace Opc.Ua.Client
             m_outstandingMessageWorkers  = 0;
             m_messageCache               = new LinkedList<NotificationMessage>();
             m_monitoredItems             = new SortedDictionary<uint,MonitoredItem>();
-            m_deletedItems               = new List<MonitoredItem>(); 
+            m_deletedItems               = new List<MonitoredItem>();
+            m_published                  = false;
+            m_currentPublishedTime       = DateTime.Now;
+            m_previousPublishedTime      = DateTime.Now;
 
             m_defaultItem = new MonitoredItem();
 
@@ -364,6 +370,36 @@ namespace Opc.Ua.Client
         {
             get { return m_disableMonitoredItemCache; }
             set { m_disableMonitoredItemCache = value; }
+        }
+
+        /// <summary>
+        /// Checks if subscription monitored item has already been published at least once.
+        /// </summary>
+        [DataMember(Order = 13)]
+        public bool SubscriptionPublished
+        {
+            get { return m_published; }
+            set { m_published = value; }
+        }
+
+        /// <summary>
+        /// Current time of publication for subscription.
+        /// </summary>
+        [DataMember(Order = 13)]
+        public DateTime CurrentPublishedTime
+        {
+            get { return m_currentPublishedTime; }
+            set { m_currentPublishedTime = value; }
+        }
+
+        /// <summary>
+        /// Latest publication time for subscription.
+        /// </summary>
+        [DataMember(Order = 13)]
+        public DateTime PreviousPublishedTime
+        {
+            get { return m_previousPublishedTime; }
+            set { m_previousPublishedTime = value; }
         }
 
         /// <summary>
@@ -2007,6 +2043,9 @@ namespace Opc.Ua.Client
         private event SubscriptionStateChangedEventHandler m_StateChanged;
         private MonitoredItem m_defaultItem;
         private SubscriptionChangeMask m_changeMask;
+        private bool m_published;
+        private DateTime m_currentPublishedTime;
+        private DateTime m_previousPublishedTime;
         
         private Session m_session;
         private object m_handle;

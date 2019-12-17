@@ -75,7 +75,7 @@ namespace ServiceLogic
                 // Subscribe to a topic
                 await managedMqttClient.SubscribeAsync(new TopicFilter { Topic = mqttTopic, QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce });
             });
-
+            /*
             managedMqttClient.UseApplicationMessageReceivedHandler(e =>
             {
                 Console.WriteLine("### RECEIVED APPLICATION MESSAGE ###");
@@ -87,6 +87,7 @@ namespace ServiceLogic
 
                 Task.Run(() => managedMqttClient.PublishAsync(mqttTopic));
             });
+            */
         }
 
         //MQTTClient topic cancelling subscription

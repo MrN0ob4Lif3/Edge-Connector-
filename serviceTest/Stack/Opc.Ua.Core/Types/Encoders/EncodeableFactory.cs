@@ -21,9 +21,9 @@ using System.Threading;
 namespace Opc.Ua
 {
 
-	/// <summary>
-	/// Creates encodeable objects based on the type id.
-	/// </summary>
+    /// <summary>
+    /// Creates encodeable objects based on the type id.
+    /// </summary>
     /// <remarks>
     /// <para>
     /// This factory is used to store and retrieve underlying OPC UA system types.
@@ -33,7 +33,8 @@ namespace Opc.Ua
     /// Once the types exist within the factory, these types can be then easily queried.
     /// <br/></para>
     /// </remarks>
-	public class EncodeableFactory
+    [DataContract(Namespace = Namespaces.OpcUaXsd)]
+    public class EncodeableFactory
 	{	
 		#region Constructors
 		/// <summary>

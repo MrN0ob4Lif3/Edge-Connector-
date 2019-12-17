@@ -171,10 +171,12 @@ namespace Opc.Ua.Sample.Controls
         /// </summary>
         public async Task<Session> Connect(ConfiguredEndpoint endpoint)
         {
+            
             if (endpoint == null) throw new ArgumentNullException("endpoint");
 
             EndpointDescriptionCollection availableEndpoints = null;
 
+            
             // check if the endpoint needs to be updated.
             if (endpoint.UpdateBeforeConnect)
             {
@@ -187,7 +189,7 @@ namespace Opc.Ua.Sample.Controls
                 }
                 availableEndpoints = configurationDialog.AvailableEnpoints;
             }
-
+            
             m_endpoint = endpoint;
 
             // copy the message context.
@@ -196,7 +198,7 @@ namespace Opc.Ua.Sample.Controls
 
             X509Certificate2 clientCertificate = null;
             X509Certificate2Collection clientCertificateChain = null;
-
+            
             if (endpoint.Description.SecurityPolicyUri != SecurityPolicies.None)
             {
                 if (m_configuration.SecurityConfiguration.ApplicationCertificate == null)
@@ -220,7 +222,7 @@ namespace Opc.Ua.Sample.Controls
                     clientCertificateChain.Add(issuers[i].Certificate);
                 }
             }
-
+            
             // create the channel.
             ITransportChannel channel = SessionChannel.Create(
                 m_configuration,
