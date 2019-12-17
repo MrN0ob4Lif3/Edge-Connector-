@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Opc.Ua.SampleClient.exe.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\brokerService\brokerService.csproj">
@@ -88,6 +89,10 @@
     <PackageReference Include="MQTTnet.Extensions.ManagedClient">
       <Version>3.0.8</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Opc.Ua.SampleClient.Config.xml" />
+    <Content Include="Opc.Ua.SampleClient.Endpoints.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

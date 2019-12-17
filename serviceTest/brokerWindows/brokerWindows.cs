@@ -56,8 +56,8 @@ namespace brokerWindows
                     debug.IncludeExceptionDetailInFaults = true;
                 }
             }
-            
             host.Open();
+           
             //MQTTCreateClientAsync("localhost", 0);
         }
 

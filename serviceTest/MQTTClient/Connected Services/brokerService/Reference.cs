@@ -187,12 +187,6 @@ namespace MQTTClientForm.brokerService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="brokerService.IBrokerService")]
     public interface IBrokerService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTCreateClientAsyncResponse")]
-        void MQTTCreateClientAsync(string mqttIP, int option);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTCreateClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTCreateClientAsyncResponse")]
-        System.Threading.Tasks.Task MQTTCreateClientAsyncAsync(string mqttIP, int option);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync", ReplyAction="http://tempuri.org/IBrokerService/MQTTConnectClientAsyncResponse")]
         void MQTTConnectClientAsync(string mqttIP, int option);
         
@@ -502,14 +496,6 @@ namespace MQTTClientForm.brokerService {
         
         public BrokerServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
-        }
-        
-        public void MQTTCreateClientAsync(string mqttIP, int option) {
-            base.Channel.MQTTCreateClientAsync(mqttIP, option);
-        }
-        
-        public System.Threading.Tasks.Task MQTTCreateClientAsyncAsync(string mqttIP, int option) {
-            return base.Channel.MQTTCreateClientAsyncAsync(mqttIP, option);
         }
         
         public void MQTTConnectClientAsync(string mqttIP, int option) {

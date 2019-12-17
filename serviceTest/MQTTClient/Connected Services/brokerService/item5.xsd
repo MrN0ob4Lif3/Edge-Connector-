@@ -240,6 +240,8 @@
       <xs:element minOccurs="0" name="MinLifetimeInterval" type="xs:unsignedInt" />
       <xs:element minOccurs="0" name="MonitoredItems" nillable="true" type="tns:ArrayOfMonitoredItem" />
       <xs:element minOccurs="0" name="DisableMonitoredItemCache" type="xs:boolean" />
+      <xs:element minOccurs="0" name="CurrentPublishedTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="PreviousPublishedTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="SubscriptionPublished" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>

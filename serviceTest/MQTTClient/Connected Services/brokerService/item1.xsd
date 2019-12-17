@@ -3,19 +3,6 @@
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
-  <xs:element name="MQTTCreateClientAsync">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="mqttIP" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="option" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="MQTTCreateClientAsyncResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
   <xs:element name="MQTTConnectClientAsync">
     <xs:complexType>
       <xs:sequence>

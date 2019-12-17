@@ -19,8 +19,8 @@ namespace MQTTClientForm
     {
         #region Form Variables
         public string brokerIP;
-        brokerService.BrokerServiceClient client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
-        ServiceController brokerWindows = new ServiceController("brokerWindows");
+        brokerService.BrokerServiceClient client;
+        ServiceController brokerWindows;
         private Session m_session;
         private Browser m_browser;
         private bool m_connectedOnce;
@@ -30,8 +30,6 @@ namespace MQTTClientForm
         private ConfiguredEndpointCollection m_endpoints;
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
-        private DateTime currentPublishTime = DateTime.UtcNow;
-        private DateTime previousPublishTime = DateTime.UtcNow;
         #endregion
 
         #region Startup Settings
@@ -47,21 +45,23 @@ namespace MQTTClientForm
             key.SetValue(StartupValue, Application.ExecutablePath.ToString());
         }
 
+        //Initializes specific elements for OPC and MQTT interfaces to work.
         public MqttMain()
         {
-            InitializeComponent();
-        }
-
-        //Initializes specific form elements.
-        private void MqttMain_Load(object sender, EventArgs e)
-        {
-            //Loading MQTT elements
-            connectionChoice.SelectedIndex = 1;
-            //connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            connectionStringMQTT.Text = "localhost:1883";
+            //Loading controller for WCF service.
+            client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
+            brokerWindows = new ServiceController("brokerWindows");
 
             //Loading OPC elements
             ApplicationInstance application = client.GetApplicationInstance();
+            /*  
+            ApplicationInstance application = new ApplicationInstance
+            {
+                ApplicationName = "MQTT-OPC Broker",
+                ApplicationType = ApplicationType.ClientAndServer,
+                ConfigSectionName = "Opc.Ua.SampleClient"
+            };
+            */
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
@@ -69,6 +69,16 @@ namespace MQTTClientForm
             m_configuration = app_configuration = application.ApplicationConfiguration;
             // get list of cached endpoints.
             m_endpoints = client.GetEndpoints();
+
+            InitializeComponent();
+        }
+
+        private void MqttMain_Load(object sender, EventArgs e)
+        {
+            //Loading MQTT elements
+            connectionChoice.SelectedIndex = 1;
+            //connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+            connectionStringMQTT.Text = "localhost:1883";
             // Initialize Form controls.
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
@@ -95,9 +105,9 @@ namespace MQTTClientForm
                         {
                             client.MQTTConnectClientAsync(connectionStringMQTT.Text, 0);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            MessageBox.Show(ex.Message);
+                            MessageBox.Show("Error connecting.");
                         }
                     else if (connectionChoice.SelectedIndex == 1)
                         try
@@ -325,7 +335,7 @@ namespace MQTTClientForm
 
         #region OPC Client Alive / Reconnect / Publish
         /// <summary>
-        /// Updates the status control when a keep alive event occurs.
+        /// Updates the status control and publishes OPC subscriptions to MQTT broker when a keep alive event occurs 
         /// </summary>
         void StandardClient_KeepAlive(Session sender, KeepAliveEventArgs e)
         {

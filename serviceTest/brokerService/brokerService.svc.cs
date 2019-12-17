@@ -48,17 +48,19 @@ namespace brokerService
         BrokerService()
         {
             //MQTT Client creation & connection
-            managedMQTT = new MqttFactory().CreateManagedMqttClient();
+            managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
             //MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
             MQTTConnectClientAsync("localhost", 0);
             MQTTSubscribeTopic("TestTopic");
             MQTTPublishTopicAsync("TestTopic", "TestMessage");
 
             //OPC-UA Client creation & connection
-            application = new ApplicationInstance();
-            application.ApplicationName = "MQTT-OPC Broker";
-            application.ApplicationType = ApplicationType.ClientAndServer;
-            application.ConfigSectionName = "Opc.Ua.SampleClient";
+            application = new ApplicationInstance
+            {
+                ApplicationName = "MQTT-OPC Broker",
+                ApplicationType = ApplicationType.ClientAndServer,
+                ConfigSectionName = "Opc.Ua.SampleClient"
+            };
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
@@ -75,68 +77,6 @@ namespace brokerService
         }
 
         #region MQTT Methods
-        //MQTT client creation function. Requires IP address of MQTT server and connection option type
-        public async void MQTTCreateClientAsync(String mqttIP, int option)
-        {
-            if (option == 0)
-            {
-                try
-                {
-                    // Use TCP connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
-
-                    // Message options
-                    string mqttTopic = "TCPTopic";
-                    string mqttMessage = "TCPMessage";
-
-                    //Subscription
-                    ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
-
-                    // Publishing
-                    await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTTCP"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-            else if (option == 1)
-            {
-                try
-                {
-                    // Use WebSocket connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
-
-                    // Message options
-                    string mqttTopic = "WebSocketTopic";
-                    string mqttMessage = "WebSocketMessage";
-
-                    //Subscription
-                    ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, mqttTopic);
-
-                    // Publishing
-                    await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, mqttTopic, mqttMessage);
-                }
-
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTWebSocket"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-
-        }
         //MQTT client connection function. Requires IP address of MQTT server and connection option type
         public async void MQTTConnectClientAsync(String mqttIP, int option)
         {
@@ -145,6 +85,7 @@ namespace brokerService
                 try
                 {
                     // Use TCP connection.
+                    managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
                     await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
                 }
                 catch (Exception e)
@@ -163,6 +104,7 @@ namespace brokerService
                 try
                 {
                     // Use WebSocket connection.
+                    managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
                     await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
                 }
 

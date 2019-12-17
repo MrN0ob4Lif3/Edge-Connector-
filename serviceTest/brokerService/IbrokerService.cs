@@ -11,9 +11,6 @@ namespace brokerService
     public interface IBrokerService
     {
         [OperationContract]
-        void MQTTCreateClientAsync(String mqttIP, int option);
-
-        [OperationContract]
         void MQTTConnectClientAsync(String mqttIP, int option);
 
         [OperationContract]
