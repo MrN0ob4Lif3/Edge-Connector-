@@ -33,15 +33,15 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd7" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" />
     </xsd:schema>
   </wsdl:types>
@@ -68,6 +68,12 @@
   </wsdl:message>
   <wsdl:message name="IBrokerService_MQTTPublishTopicAsync_OutputMessage">
     <wsdl:part name="parameters" element="tns:MQTTPublishTopicAsyncResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_MQTTSubscribedTopics_InputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTSubscribedTopics" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_MQTTSubscribedTopics_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MQTTSubscribedTopicsResponse" />
   </wsdl:message>
   <wsdl:message name="IBrokerService_OPCCreateClient_InputMessage">
     <wsdl:part name="parameters" element="tns:OPCCreateClient" />
@@ -140,6 +146,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" message="tns:IBrokerService_MQTTPublishTopicAsync_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTPublishTopicAsyncResponse" message="tns:IBrokerService_MQTTPublishTopicAsync_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="MQTTSubscribedTopics">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribedTopics" message="tns:IBrokerService_MQTTSubscribedTopics_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/MQTTSubscribedTopicsResponse" message="tns:IBrokerService_MQTTSubscribedTopics_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="OPCCreateClient">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCCreateClient" message="tns:IBrokerService_OPCCreateClient_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCCreateClientResponse" message="tns:IBrokerService_OPCCreateClient_OutputMessage" />
@@ -208,6 +218,15 @@
     </wsdl:operation>
     <wsdl:operation name="MQTTPublishTopicAsync">
       <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MQTTSubscribedTopics">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribedTopics" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -329,6 +348,15 @@
     </wsdl:operation>
     <wsdl:operation name="MQTTPublishTopicAsync">
       <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTPublishTopicAsync" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MQTTSubscribedTopics">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/MQTTSubscribedTopics" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

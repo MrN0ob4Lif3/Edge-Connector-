@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/System" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
-  <xs:complexType name="Type">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/System.Reflection" base="q1:MemberInfo">
-        <xs:sequence />
-      </xs:extension>
-    </xs:complexContent>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
+  <xs:complexType name="ApplicationInstance">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="ApplicationConfiguration" nillable="true" type="q1:ApplicationConfiguration" />
+      <xs:element minOccurs="0" name="ApplicationName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="ApplicationType" type="q2:ApplicationType" />
+      <xs:element minOccurs="0" name="ConfigSectionName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="ConfigurationType" nillable="true" type="q3:Type" />
+      <xs:element xmlns:q4="http://opcfoundation.org/UA/SDK/Installation.xsd" minOccurs="0" name="InstallConfig" nillable="true" type="q4:InstalledApplication" />
+      <xs:element minOccurs="0" name="NoGdsAgentAdmin" type="xs:boolean" />
+    </xs:sequence>
   </xs:complexType>
-  <xs:element name="Type" nillable="true" type="tns:Type" />
+  <xs:element name="ApplicationInstance" nillable="true" type="tns:ApplicationInstance" />
 </xs:schema>

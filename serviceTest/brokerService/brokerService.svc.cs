@@ -1,5 +1,4 @@
 ﻿using System;
-using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
 using Opc.Ua;
 using Opc.Ua.Client;
@@ -16,10 +15,10 @@ namespace brokerService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class BrokerService : IBrokerService
     {
-
         #region MQTT Variables
         //Create a new ManagedMQTT Client.
         public IManagedMqttClient managedMQTT;
+        public List<String> m_topicList;
         #endregion
 
         #region OPC Variables
@@ -61,12 +60,11 @@ namespace brokerService
                 ApplicationType = ApplicationType.ClientAndServer,
                 ConfigSectionName = "Opc.Ua.SampleClient"
             };
-            // load the application configuration.
+            //load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
             application.CheckApplicationInstanceCertificate(false, 0).Wait();
             m_configuration = app_configuration = application.ApplicationConfiguration;
-
             // get list of cached endpoints.
             m_endpoints = m_configuration.LoadCachedEndpoints(true);
             m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
@@ -76,7 +74,7 @@ namespace brokerService
             }
         }
 
-        #region MQTT Methods
+        #region MQTT Methods / Properties
         //MQTT client connection function. Requires IP address of MQTT server and connection option type
         public async void MQTTConnectClientAsync(String mqttIP, int option)
         {
@@ -126,6 +124,7 @@ namespace brokerService
             try
             {
                 ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, topic);
+                m_topicList.Add(topic);
             }
             catch (Exception e)
             {
@@ -144,6 +143,7 @@ namespace brokerService
             try
             {
                 ServiceLogic.ManagedClient.ManagedMqttUnsubscribe(managedMQTT, topic);
+                m_topicList.Remove(topic);
             }
             catch (Exception e)
             {
@@ -174,7 +174,11 @@ namespace brokerService
                 myLog.WriteEntry(e.Message);
             }
         }
-        //OPC client creation function.
+        //Returns list of subscribed topics for MQTT client.
+        public List<String> MQTTSubscribedTopics()
+        {
+            return m_topicList;
+        }
         #endregion
 
         #region OPC Methods
@@ -314,7 +318,7 @@ namespace brokerService
             {
                 //Connect(endpoint, opcSession, opcBrowse);
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
 
             }
@@ -508,7 +512,7 @@ namespace brokerService
                 ClientUtils.HandleException("reconnect", exception);
             }
         }
-        
+
         /// <summary>
         /// Updates the status control when a keep alive event occurs.
         /// </summary> 

@@ -22,6 +22,8 @@ namespace Opc.Ua.Bindings
     /// <summary>
     /// Creates a transport channel with UA-TCP transport, UA-SC security and UA Binary encoding
     /// </summary>
+    [DataContract]
+    //[KnownType(typeof(TcpMessageSocketFactory))]
     public class TcpTransportChannel : UaSCUaBinaryTransportChannel
     {
         public TcpTransportChannel() :
@@ -34,6 +36,7 @@ namespace Opc.Ua.Bindings
     /// Creates a new TcpTransportChannel with ITransportChannel interface.
     /// </summary>
     [DataContract]
+    //[KnownType(typeof(TcpTransportChannel))]
     public class TcpTransportChannelFactory : ITransportChannelFactory
     {
         /// <summary>

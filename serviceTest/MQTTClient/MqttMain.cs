@@ -30,6 +30,7 @@ namespace MQTTClientForm
         private ConfiguredEndpointCollection m_endpoints;
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
+        public String[] m_topicList;
         #endregion
 
         #region Startup Settings
@@ -69,6 +70,11 @@ namespace MQTTClientForm
             m_configuration = app_configuration = application.ApplicationConfiguration;
             // get list of cached endpoints.
             m_endpoints = client.GetEndpoints();
+            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
+            if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+            {
+                app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+            }
 
             InitializeComponent();
         }
@@ -78,8 +84,18 @@ namespace MQTTClientForm
             //Loading MQTT elements
             connectionChoice.SelectedIndex = 1;
             //connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            connectionStringMQTT.Text = "localhost:1883";
+            connectionStringMQTT.Text = "localhost";
+            m_topicList = client.MQTTSubscribedTopics();
             // Initialize Form controls.
+            if(m_topicList != null)
+            {
+                foreach (String topic in m_topicList)
+                {
+                    topicListPub.Items.Add(topic);
+                    topicListSub.Items.Add(topic);
+                }
+            }
+
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
@@ -247,9 +263,17 @@ namespace MQTTClientForm
             mqttNotify.Visible = false;
         }
 
-        private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
-        {
 
+
+        private void MqttMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //if the form is closed  
+            //hide it from the task bar  
+            //and show the system tray icon (represented by the NotifyIcon control)  
+            e.Cancel = true;
+            this.Hide();
+            this.ShowInTaskbar = true;
+            mqttNotify.Visible = true;
         }
         #endregion
 
@@ -284,18 +308,18 @@ namespace MQTTClientForm
         {
             try
             {
-                //client.Connect(e.Endpoint);
+                client.Connect(e.Endpoint);
                 //m_browser = client.GetBrowser();
-                //m_session = client.GetSession();
+                m_session = client.GetSession();
                 //MQTTClientForm.brokerService.SessionSurrogate test = client.GetSession();
                 //m_session = test.OPCSession;
-
+                //
                 //m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
                 //opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
                 //StandardClient_KeepAlive(m_session, null);
 
 
-                Connect(e.Endpoint);
+                //Connect(e.Endpoint);
             }
             catch (Exception exception)
             {
@@ -364,7 +388,7 @@ namespace MQTTClientForm
                                 string monitoredDisplayName = monitoredItem.DisplayName;
                                 if (monitoredItem.LastValue != null)
                                 {
-                                    client.MQTTPublishTopicAsync(monitoredDisplayName, monitoredItem.LastValue.ToString());
+                                    client.MQTTPublishTopicAsync(subscription.DisplayName, monitoredItem.LastValue.ToString());
                                     subscription.PreviousPublishedTime = DateTime.UtcNow;
                                     subscription.SubscriptionPublished = true;
                                 }

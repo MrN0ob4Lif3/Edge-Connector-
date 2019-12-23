@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using Opc.Ua;
@@ -10,6 +11,7 @@ namespace brokerService
     [ServiceContract]
     public interface IBrokerService
     {
+        #region MQTT Operations
         [OperationContract]
         void MQTTConnectClientAsync(String mqttIP, int option);
 
@@ -21,7 +23,12 @@ namespace brokerService
 
         [OperationContract]
         void MQTTPublishTopicAsync(String topic, String message);
-        
+
+        [OperationContract]
+        List<String> MQTTSubscribedTopics();
+        #endregion
+
+        #region OPC Operations
         [OperationContract]
         void OPCCreateClient(String opcIP, bool securityCheck);
 
@@ -48,8 +55,9 @@ namespace brokerService
 
         [OperationContract]
         Browser GetBrowser();
+        #endregion
     }
-    
+
     [DataContract]
     public class SessionSurrogate
     {

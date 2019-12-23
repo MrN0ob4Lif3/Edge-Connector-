@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.ServiceModel;
 using System.Threading;
-using ServiceLogic;
 using System.ServiceModel.Description;
 
 namespace brokerWindows
@@ -57,7 +56,6 @@ namespace brokerWindows
                 }
             }
             host.Open();
-           
             //MQTTCreateClientAsync("localhost", 0);
         }
 

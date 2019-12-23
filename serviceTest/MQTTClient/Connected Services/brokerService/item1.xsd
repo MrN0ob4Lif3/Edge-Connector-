@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
   <xs:element name="MQTTConnectClientAsync">
     <xs:complexType>
       <xs:sequence>
@@ -53,6 +54,18 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="MQTTSubscribedTopics">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MQTTSubscribedTopicsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="MQTTSubscribedTopicsResult" nillable="true" type="q1:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="OPCCreateClient">
     <xs:complexType>
       <xs:sequence>
@@ -99,7 +112,7 @@
   <xs:element name="Connect">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="endpoint" nillable="true" type="q1:ConfiguredEndpoint" />
+        <xs:element xmlns:q2="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="endpoint" nillable="true" type="q2:ConfiguredEndpoint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -116,7 +129,7 @@
   <xs:element name="GetApplicationInstanceResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" minOccurs="0" name="GetApplicationInstanceResult" nillable="true" type="q2:ApplicationInstance" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" minOccurs="0" name="GetApplicationInstanceResult" nillable="true" type="q3:ApplicationInstance" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -128,7 +141,7 @@
   <xs:element name="GetEndpointsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="GetEndpointsResult" nillable="true" type="q3:ConfiguredEndpointCollection" />
+        <xs:element xmlns:q4="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="GetEndpointsResult" nillable="true" type="q4:ConfiguredEndpointCollection" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -140,7 +153,7 @@
   <xs:element name="GetSessionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetSessionResult" nillable="true" type="q4:Session" />
+        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetSessionResult" nillable="true" type="q5:Session" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -152,7 +165,7 @@
   <xs:element name="GetBrowserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetBrowserResult" nillable="true" type="q5:Browser" />
+        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetBrowserResult" nillable="true" type="q6:Browser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

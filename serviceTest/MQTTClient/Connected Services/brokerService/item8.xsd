@@ -1,243 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" elementFormDefault="qualified" targetNamespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="SecuredApplication">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="ApplicationName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ApplicationUri" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ApplicationType" type="tns:ApplicationType" />
-      <xs:element minOccurs="0" name="ProductName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ConfigurationMode" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="LastExportTime" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="ConfigurationFile" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ExecutableFile" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ApplicationCertificate" nillable="true" type="tns:CertificateIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TrustedCertificateStore" nillable="true" type="tns:CertificateStoreIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TrustedCertificates" nillable="true" type="tns:CertificateList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="IssuerCertificateStore" nillable="true" type="tns:CertificateStoreIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="IssuerCertificates" nillable="true" type="tns:CertificateList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="RejectedCertificatesStore" nillable="true" type="tns:CertificateStoreIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="BaseAddresses" nillable="true" type="tns:ListOfBaseAddresses">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="SecurityProfiles" nillable="true" type="tns:ListOfSecurityProfiles">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="Extensions" nillable="true" type="tns:ListOfExtensions">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
+<xs:schema xmlns:tns="http://opcfoundation.org/UA/SDK/Installation.xsd" elementFormDefault="qualified" targetNamespace="http://opcfoundation.org/UA/SDK/Installation.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
+  <xs:complexType name="InstalledApplication">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" base="q1:SecuredApplication">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="UseDefaultCertificateStores" type="xs:boolean" />
+          <xs:element minOccurs="0" name="DeleteCertificatesOnUninstall" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ConfigureFirewall" type="xs:boolean" />
+          <xs:element minOccurs="0" name="SetConfigurationFilePermisions" type="xs:boolean" />
+          <xs:element minOccurs="0" name="SetExecutableFilePermissions" type="xs:boolean" />
+          <xs:element minOccurs="0" name="InstallAsService" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ServiceStartMode" type="tns:StartMode" />
+          <xs:element minOccurs="0" name="ServiceUserName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServicePassword" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LocallyRegisterOIDs" type="xs:boolean" />
+          <xs:element minOccurs="0" name="MinimumKeySize" type="xs:unsignedShort" />
+          <xs:element minOccurs="0" name="LifeTimeInMonths" type="xs:unsignedShort" />
+          <xs:element xmlns:q2="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="AccessRules" nillable="true" type="q2:ListOfApplicationAccessRule" />
+          <xs:element xmlns:q3="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="TraceConfiguration" nillable="true" type="q3:TraceConfiguration" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
-  <xs:element name="SecuredApplication" nillable="true" type="tns:SecuredApplication" />
-  <xs:simpleType name="ApplicationType">
+  <xs:element name="InstalledApplication" nillable="true" type="tns:InstalledApplication" />
+  <xs:simpleType name="StartMode">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="unsignedInt" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Server_0" />
-      <xs:enumeration value="Client_1" />
-      <xs:enumeration value="ClientAndServer_2" />
-      <xs:enumeration value="DiscoveryServer_3" />
+      <xs:enumeration value="Boot" />
+      <xs:enumeration value="System" />
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="Manual" />
+      <xs:enumeration value="Disabled" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="ApplicationType" nillable="true" type="tns:ApplicationType" />
-  <xs:complexType name="CertificateIdentifier">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="StoreType" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StorePath" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="SubjectName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="Thumbprint" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="RawData" nillable="true" type="xs:base64Binary">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ValidationOptions" type="xs:int" />
-      <xs:element minOccurs="0" name="OfflineRevocationList" nillable="true" type="xs:base64Binary">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="OnlineRevocationList" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="CertificateIdentifier" nillable="true" type="tns:CertificateIdentifier" />
-  <xs:complexType name="CertificateStoreIdentifier">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="StoreType" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StorePath" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ValidationOptions" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="CertificateStoreIdentifier" nillable="true" type="tns:CertificateStoreIdentifier" />
-  <xs:complexType name="CertificateList">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Certificates" nillable="true" type="tns:ListOfCertificateIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ValidationOptions" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="CertificateList" nillable="true" type="tns:CertificateList" />
-  <xs:complexType name="ListOfCertificateIdentifier">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CertificateIdentifier" nillable="true" type="tns:CertificateIdentifier" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfCertificateIdentifier" nillable="true" type="tns:ListOfCertificateIdentifier" />
-  <xs:complexType name="ListOfBaseAddresses">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseAddress" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfBaseAddresses" nillable="true" type="tns:ListOfBaseAddresses" />
-  <xs:complexType name="ListOfSecurityProfiles">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="SecurityProfile" nillable="true" type="tns:SecurityProfile" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfSecurityProfiles" nillable="true" type="tns:ListOfSecurityProfiles" />
-  <xs:complexType name="SecurityProfile">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="ProfileUri" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="Enabled" type="xs:boolean" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="SecurityProfile" nillable="true" type="tns:SecurityProfile" />
-  <xs:complexType name="ListOfExtensions">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Extension" nillable="true">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:any minOccurs="0" processContents="lax" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfExtensions" nillable="true" type="tns:ListOfExtensions" />
+  <xs:element name="StartMode" nillable="true" type="tns:StartMode" />
 </xs:schema>
