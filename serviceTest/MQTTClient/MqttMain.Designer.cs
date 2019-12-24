@@ -45,9 +45,8 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.topicListPub = new System.Windows.Forms.ListBox();
             this.pubTopic = new System.Windows.Forms.TextBox();
-            this.publishText = new System.Windows.Forms.TextBox();
+            this.publishKey1 = new System.Windows.Forms.TextBox();
             this.PublishButton = new System.Windows.Forms.Button();
-            this.publishTopic = new System.Windows.Forms.TextBox();
             this.mqttNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.opcEndpoints = new Opc.Ua.Client.Controls.EndpointSelectorCtrl();
             this.opcSession = new Opc.Ua.Sample.Controls.SessionTreeCtrl();
@@ -55,6 +54,12 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ServerUrlLB = new System.Windows.Forms.ToolStripStatusLabel();
             this.ServerStatusLB = new System.Windows.Forms.ToolStripStatusLabel();
+            this.publishValue1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.publishKey2 = new System.Windows.Forms.TextBox();
+            this.publishValue2 = new System.Windows.Forms.TextBox();
             this.MqttTabs.SuspendLayout();
             this.subscribeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -208,10 +213,14 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.publishValue2);
+            this.splitContainer2.Panel2.Controls.Add(this.publishKey2);
+            this.splitContainer2.Panel2.Controls.Add(this.label2);
+            this.splitContainer2.Panel2.Controls.Add(this.label1);
+            this.splitContainer2.Panel2.Controls.Add(this.publishValue1);
             this.splitContainer2.Panel2.Controls.Add(this.pubTopic);
-            this.splitContainer2.Panel2.Controls.Add(this.publishText);
+            this.splitContainer2.Panel2.Controls.Add(this.publishKey1);
             this.splitContainer2.Panel2.Controls.Add(this.PublishButton);
-            this.splitContainer2.Panel2.Controls.Add(this.publishTopic);
             this.splitContainer2.Size = new System.Drawing.Size(762, 312);
             this.splitContainer2.SplitterDistance = 254;
             this.splitContainer2.TabIndex = 0;
@@ -221,7 +230,7 @@
             this.topicListPub.FormattingEnabled = true;
             this.topicListPub.Location = new System.Drawing.Point(4, 4);
             this.topicListPub.Name = "topicListPub";
-            this.topicListPub.Size = new System.Drawing.Size(247, 290);
+            this.topicListPub.Size = new System.Drawing.Size(247, 303);
             this.topicListPub.TabIndex = 0;
             // 
             // pubTopic
@@ -230,15 +239,16 @@
             this.pubTopic.Name = "pubTopic";
             this.pubTopic.Size = new System.Drawing.Size(497, 20);
             this.pubTopic.TabIndex = 3;
-            this.pubTopic.Text = "If you want to publish new topic, enter topic name here.";
+            this.pubTopic.Text = "Artc/Harmony/Connector/EdgeToCloud";
             // 
-            // publishText
+            // publishKey1
             // 
-            this.publishText.Location = new System.Drawing.Point(4, 33);
-            this.publishText.Multiline = true;
-            this.publishText.Name = "publishText";
-            this.publishText.Size = new System.Drawing.Size(497, 232);
-            this.publishText.TabIndex = 2;
+            this.publishKey1.Location = new System.Drawing.Point(7, 60);
+            this.publishKey1.Multiline = true;
+            this.publishKey1.Name = "publishKey1";
+            this.publishKey1.Size = new System.Drawing.Size(92, 22);
+            this.publishKey1.TabIndex = 2;
+            this.publishKey1.Text = "Id";
             // 
             // PublishButton
             // 
@@ -249,14 +259,6 @@
             this.PublishButton.Text = "Publish";
             this.PublishButton.UseVisualStyleBackColor = true;
             this.PublishButton.Click += new System.EventHandler(this.PublishButton_Click);
-            // 
-            // publishTopic
-            // 
-            this.publishTopic.Location = new System.Drawing.Point(3, 3);
-            this.publishTopic.Multiline = true;
-            this.publishTopic.Name = "publishTopic";
-            this.publishTopic.Size = new System.Drawing.Size(498, 262);
-            this.publishTopic.TabIndex = 1;
             // 
             // mqttNotify
             // 
@@ -323,6 +325,54 @@
             this.ServerStatusLB.Size = new System.Drawing.Size(49, 17);
             this.ServerStatusLB.Text = "00:00:00";
             // 
+            // publishValue1
+            // 
+            this.publishValue1.Location = new System.Drawing.Point(105, 60);
+            this.publishValue1.Multiline = true;
+            this.publishValue1.Name = "publishValue1";
+            this.publishValue1.Size = new System.Drawing.Size(92, 22);
+            this.publishValue1.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(37, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(25, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Key";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(130, 41);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(34, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Value";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // publishKey2
+            // 
+            this.publishKey2.Location = new System.Drawing.Point(7, 88);
+            this.publishKey2.Multiline = true;
+            this.publishKey2.Name = "publishKey2";
+            this.publishKey2.Size = new System.Drawing.Size(92, 22);
+            this.publishKey2.TabIndex = 15;
+            this.publishKey2.Text = "Value";
+            // 
+            // publishValue2
+            // 
+            this.publishValue2.Location = new System.Drawing.Point(105, 88);
+            this.publishValue2.Multiline = true;
+            this.publishValue2.Name = "publishValue2";
+            this.publishValue2.Size = new System.Drawing.Size(92, 22);
+            this.publishValue2.TabIndex = 16;
+            // 
             // MqttMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -375,10 +425,9 @@
         private System.Windows.Forms.TabPage publishTab;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button PublishButton;
-        private System.Windows.Forms.TextBox publishTopic;
         private System.Windows.Forms.ListBox topicListSub;
         private System.Windows.Forms.ListBox topicListPub;
-        private System.Windows.Forms.TextBox publishText;
+        private System.Windows.Forms.TextBox publishKey1;
         private System.Windows.Forms.TextBox topicSubscribe;
         private System.Windows.Forms.Button UnsubscribeButton;
         private System.Windows.Forms.TextBox pubTopic;
@@ -389,6 +438,12 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel ServerUrlLB;
         private System.Windows.Forms.ToolStripStatusLabel ServerStatusLB;
+        private System.Windows.Forms.TextBox publishValue1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.TextBox publishValue2;
+        private System.Windows.Forms.TextBox publishKey2;
     }
 }
 

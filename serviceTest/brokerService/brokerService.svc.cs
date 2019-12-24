@@ -48,10 +48,10 @@ namespace brokerService
         {
             //MQTT Client creation & connection
             managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
-            //MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
-            MQTTConnectClientAsync("localhost", 0);
-            MQTTSubscribeTopic("TestTopic");
-            MQTTPublishTopicAsync("TestTopic", "TestMessage");
+            MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
+            //MQTTConnectClientAsync("localhost", 0);
+            //MQTTSubscribeTopic("TestTopic");
+            //MQTTPublishTopicAsync("TestTopic", "TestMessage");
 
             //OPC-UA Client creation & connection
             application = new ApplicationInstance

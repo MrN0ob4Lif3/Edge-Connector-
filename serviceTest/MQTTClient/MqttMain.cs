@@ -2,16 +2,16 @@
 using System.Windows.Forms;
 using System.ServiceModel;
 using System.ServiceProcess;
+using System.Reflection;
+using System.Drawing;
+using System.Collections.Generic;
 using Microsoft.Win32;
-using MQTTnet.Extensions.ManagedClient;
 using Opc.Ua;
 using Opc.Ua.Configuration;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
-using System.Reflection;
 using Opc.Ua.Sample.Controls;
-using System.Drawing;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace MQTTClientForm
 {
@@ -83,8 +83,8 @@ namespace MQTTClientForm
         {
             //Loading MQTT elements
             connectionChoice.SelectedIndex = 1;
-            //connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            connectionStringMQTT.Text = "localhost";
+            connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+            //connectionStringMQTT.Text = "localhost";
             m_topicList = client.MQTTSubscribedTopics();
             // Initialize Form controls.
             if(m_topicList != null)
@@ -148,7 +148,7 @@ namespace MQTTClientForm
             try
             {
                 string topic = topicSubscribe.Text;
-                client.MQTTSubscribeTopicAsync(topic);
+                client.MQTTSubscribeTopic(topic);
                 if (topicListPub.Items.Contains(topic))
                     return;
                 else
@@ -165,7 +165,7 @@ namespace MQTTClientForm
         {
             try
             {
-                client.MQTTUnsubscribeTopicAsync(topicSubscribe.Text);
+                client.MQTTUnsubscribeTopic(topicSubscribe.Text);
                 ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(topicListSub);
                 selectedItems = topicListSub.SelectedItems;
 
@@ -190,17 +190,45 @@ namespace MQTTClientForm
         {
             try
             {
-                string topicChosen;
+                IDictionary<String, String> publishPayload = new Dictionary<String, String>();
+                string topicChosen = null;
+
+                //Checks if topic selected or entered.
                 if (topicListPub.SelectedItem != null && pubTopic.Text != null)
                     topicChosen = topicListPub.SelectedItem.ToString();
-                else
+                else if(pubTopic.Text != null)
                     topicChosen = pubTopic.Text;
-                client.MQTTPublishTopicAsync(topicChosen, publishText.Text);
-                if (topicListSub.Items.Contains(topicChosen))
-                    return;
                 else
+                    MessageBox.Show("Please select a topic or input a new topic to publish to.");
+
+                //Checks if key / value has been filled.
+                if(publishKey1.Text != null && publishValue1.Text != null)
+                {
+                    publishPayload.Add(publishKey1.Text, publishValue1.Text);
+                    client.MQTTPublishTopicAsync(topicChosen, publishKey1.Text);
+                }
+                if (publishKey2.Text != null && publishValue2.Text != null)
+                {
+                    publishPayload.Add(publishKey2.Text, publishValue2.Text);
+                    client.MQTTPublishTopicAsync(topicChosen, publishKey2.Text);
+                }
+                if(publishPayload != null)
+                {
+                    string message = JsonConvert.SerializeObject(publishPayload);
+                    client.MQTTPublishTopicAsync(topicChosen, message);
+                }
+
+                //Checks if topicChosen is a new input topic. If so, add to topic list.
+                if (topicChosen != null && topicListSub.Items.Contains(topicChosen))
+                    return;
+                else if (topicChosen != null)
+                {
                     topicListPub.Items.Add(topicChosen);
-                topicListSub.Items.Add(topicChosen);
+                    topicListSub.Items.Add(topicChosen);
+                    client.MQTTSubscribeTopic(topicChosen);
+                }
+                else
+                    MessageBox.Show("Please select a topic or input a new topic to publish to.");
             }
             catch (Exception)
             {
@@ -308,9 +336,9 @@ namespace MQTTClientForm
         {
             try
             {
-                client.Connect(e.Endpoint);
+                //client.Connect(e.Endpoint);
                 //m_browser = client.GetBrowser();
-                m_session = client.GetSession();
+                //m_session = client.GetSession();
                 //MQTTClientForm.brokerService.SessionSurrogate test = client.GetSession();
                 //m_session = test.OPCSession;
                 //
@@ -319,7 +347,7 @@ namespace MQTTClientForm
                 //StandardClient_KeepAlive(m_session, null);
 
 
-                //Connect(e.Endpoint);
+                Connect(e.Endpoint);
             }
             catch (Exception exception)
             {
@@ -370,6 +398,7 @@ namespace MQTTClientForm
                 IEnumerable<Subscription> subscriptions = sender.Subscriptions;
                 foreach (Subscription subscription in subscriptions)
                 {
+                    IDictionary<String,String> subscriptionPayload = new Dictionary<String, String>();
                     if (subscription == null) { continue; }
                     double subscriptionInterval = subscription.CurrentPublishingInterval;
                     subscription.CurrentPublishedTime = DateTime.Now;
@@ -383,12 +412,16 @@ namespace MQTTClientForm
                         if (subscription.MonitoredItemCount > 0)
                         {
                             IEnumerable<MonitoredItem> monitoredItems = subscription.MonitoredItems;
+                            //Adds monitored items to a 'payload' dictionary to be seralized as a JSON string.
                             foreach (MonitoredItem monitoredItem in monitoredItems)
                             {
-                                string monitoredDisplayName = monitoredItem.DisplayName;
                                 if (monitoredItem.LastValue != null)
                                 {
-                                    client.MQTTPublishTopicAsync(subscription.DisplayName, monitoredItem.LastValue.ToString());
+                                    string monitoredDisplayName = monitoredItem.DisplayName;
+                                    string monitoredValue = monitoredItem.LastValue.ToString();
+                                    subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
+                                    string message = JsonConvert.SerializeObject(subscriptionPayload);
+                                    client.MQTTPublishTopicAsync(subscription.DisplayName, message);
                                     subscription.PreviousPublishedTime = DateTime.UtcNow;
                                     subscription.SubscriptionPublished = true;
                                 }
