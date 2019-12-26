@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MQTTClientForm
+namespace BrokerClient
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace MQTTClientForm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MqttMain());
+            Application.Run(new BrokerMain());
         }
     }
 }

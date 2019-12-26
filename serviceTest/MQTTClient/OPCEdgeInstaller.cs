@@ -1,15 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
-namespace MQTTClientForm
+namespace BrokerClient
 {
     [RunInstaller(true)]
-    public partial class MQTTClientInstaller : System.Configuration.Install.Installer
+    public partial class OPCEdgeInstaller : System.Configuration.Install.Installer
     {
-        public MQTTClientInstaller()
+        public OPCEdgeInstaller()
         {
             InitializeComponent();
         }
@@ -19,7 +24,7 @@ namespace MQTTClientForm
             base.Commit(savedState);
 
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\MQTTClientForm.exe");
+            Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\BrokerClient.exe");
         }
     }
 }

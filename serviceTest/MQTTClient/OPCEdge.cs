@@ -13,9 +13,9 @@ using Opc.Ua.Client.Controls;
 using Opc.Ua.Sample.Controls;
 using Newtonsoft.Json;
 
-namespace MQTTClientForm
+namespace BrokerClient
 {
-    public partial class MqttMain : Form
+    public partial class BrokerMain : Form
     {
         #region Form Variables
         public string brokerIP;
@@ -31,14 +31,15 @@ namespace MQTTClientForm
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
+        IDictionary<String, String> publishPayload = new Dictionary<String, String>();
         #endregion
 
         #region Startup Settings
         //Startup registry key and value
         private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-        private static readonly string StartupValue = "MQTTBroker";
+        private static readonly string StartupValue = "OPCEdge";
 
-        //Sts WinFrom application to run at startup.
+        //Sets WinFrom application to run at startup.
         private static void SetStartup()
         {
             //Set the application to run at startup
@@ -47,8 +48,9 @@ namespace MQTTClientForm
         }
 
         //Initializes specific elements for OPC and MQTT interfaces to work.
-        public MqttMain()
+        public BrokerMain()
         {
+            SetStartup();
             //Loading controller for WCF service.
             client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
             brokerWindows = new ServiceController("brokerWindows");
@@ -82,6 +84,7 @@ namespace MQTTClientForm
         private void MqttMain_Load(object sender, EventArgs e)
         {
             //Loading MQTT elements
+            publishPayload = new Dictionary<String, String>();
             connectionChoice.SelectedIndex = 1;
             connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
             //connectionStringMQTT.Text = "localhost";
@@ -96,6 +99,16 @@ namespace MQTTClientForm
                 }
             }
 
+            if (publishKey1.Text != null && publishValue1.Text != null)
+            {
+                publishPayload.Add(publishKey1.Text, publishValue1.Text);
+            }
+            if (publishKey2.Text != null && publishValue2.Text != null)
+            {
+                publishPayload.Add(publishKey2.Text, publishValue2.Text);
+            }
+            string message = JsonConvert.SerializeObject(publishPayload);
+            client.MQTTPublishTopicAsync("Artc/Harmony/Connector/EdgeToCloud", message);
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
@@ -190,7 +203,7 @@ namespace MQTTClientForm
         {
             try
             {
-                IDictionary<String, String> publishPayload = new Dictionary<String, String>();
+                publishPayload = new Dictionary<String, String>();
                 string topicChosen = null;
 
                 //Checks if topic selected or entered.
@@ -205,12 +218,10 @@ namespace MQTTClientForm
                 if(publishKey1.Text != null && publishValue1.Text != null)
                 {
                     publishPayload.Add(publishKey1.Text, publishValue1.Text);
-                    client.MQTTPublishTopicAsync(topicChosen, publishKey1.Text);
                 }
                 if (publishKey2.Text != null && publishValue2.Text != null)
                 {
                     publishPayload.Add(publishKey2.Text, publishValue2.Text);
-                    client.MQTTPublishTopicAsync(topicChosen, publishKey2.Text);
                 }
                 if(publishPayload != null)
                 {
@@ -240,7 +251,6 @@ namespace MQTTClientForm
         {
             topicListSub.SelectedItem = null;
             topicListPub.SelectedItem = null;
-            pubTopic.Text = "If you want to publish new topic, enter topic name here.";
         }
         //Starts MQTT service.
         private void MqttStart_Click(object sender, EventArgs e)
@@ -280,7 +290,7 @@ namespace MQTTClientForm
             {
                 this.Hide();
                 this.ShowInTaskbar = true;
-                mqttNotify.Visible = true;
+                brokerNotify.Visible = true;
             }
         }
 
@@ -288,7 +298,7 @@ namespace MQTTClientForm
         {
             Show();
             this.WindowState = FormWindowState.Normal;
-            mqttNotify.Visible = false;
+            brokerNotify.Visible = false;
         }
 
 
@@ -301,7 +311,7 @@ namespace MQTTClientForm
             e.Cancel = true;
             this.Hide();
             this.ShowInTaskbar = true;
-            mqttNotify.Visible = true;
+            brokerNotify.Visible = true;
         }
         #endregion
 

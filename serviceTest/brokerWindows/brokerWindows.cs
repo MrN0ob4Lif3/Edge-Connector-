@@ -4,14 +4,17 @@ using System.ServiceProcess;
 using System.ServiceModel;
 using System.Threading;
 using System.ServiceModel.Description;
+using MQTTnet.Extensions.ManagedClient;
+using ServiceLogic;
 
 namespace brokerWindows
 {
-    public partial class brokerWindows : ServiceBase
+    public partial class brokerWindows : ServiceBase, IServiceCallback
     {
         ServiceHost host;
         brokerService.BrokerService instance;
-        
+        public IManagedMqttClient managedMQTT;
+
         public brokerWindows()
         {
             InitializeComponent();
@@ -21,14 +24,21 @@ namespace brokerWindows
         {   
             try
             {
+                //Set the static callback reference.
+                Host.Current = this;
+                StartBroker();
+                /*
                 // Create the thread object that will do the service's work.
                 Thread brokerThread = new Thread(StartBroker);
 
                 // Start the thread.
                 brokerThread.Start();
-
+                */
                 // Log an event to indicate successful start.
                 EventLog.WriteEntry("Successful start.", EventLogEntryType.Information);
+
+                // initialize and work with myObject
+                managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
             }
             catch (Exception ex)
             {
@@ -57,6 +67,19 @@ namespace brokerWindows
             }
             host.Open();
             //MQTTCreateClientAsync("localhost", 0);
+        }
+
+        //Here you have data from WCF and myObject available.
+        void IServiceCallback.MQTTConnect(string brokerIP)
+        {
+            //Be careful here. 
+            //Depending on your WCF service and WCF clients this might 
+            //get called simultaneously from different threads.
+            lock (managedMQTT)
+            {
+                // ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT,brokerIP);
+                //myObject.DoSomething(iSomeDataFromWCFToHost);
+            }
         }
 
         #region MQTT Methods

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{34FC924D-9ACA-4E64-A409-2CE4150FAD31}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MQTTClientForm</RootNamespace>
-    <AssemblyName>MQTTClientForm</AssemblyName>
+    <RootNamespace>BrokerClient</RootNamespace>
+    <AssemblyName>BrokerClient</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -66,27 +66,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OPCEdgeInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OPCEdgeInstaller.Designer.cs">
+      <DependentUpon>OPCEdgeInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\brokerService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="MQTTClientInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="MQTTClientInstaller.Designer.cs">
-      <DependentUpon>MQTTClientInstaller.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MqttMain.cs">
+    <Compile Include="OPCEdge.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MqttMain.Designer.cs">
-      <DependentUpon>MqttMain.cs</DependentUpon>
+    <Compile Include="OPCEdge.Designer.cs">
+      <DependentUpon>OPCEdge.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MqttMain.resx">
-      <DependentUpon>MqttMain.cs</DependentUpon>
+    <EmbeddedResource Include="OPCEdge.resx">
+      <DependentUpon>OPCEdge.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

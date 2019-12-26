@@ -1,6 +1,6 @@
-﻿namespace MQTTClientForm
+﻿namespace BrokerClient
 {
-    partial class MQTTClientInstaller
+    partial class OPCEdgeInstaller
     {
         /// <summary>
         /// Required designer variable.

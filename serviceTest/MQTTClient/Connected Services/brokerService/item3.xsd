@@ -3,7 +3,6 @@
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" />
   <xs:complexType name="EndpointDescription">
     <xs:sequence>
@@ -185,12 +184,11 @@
           <xs:element minOccurs="0" name="FilterContext" nillable="true" type="q1:FilterContext" />
           <xs:element minOccurs="0" name="GoodPublishRequestCount" type="xs:int" />
           <xs:element minOccurs="0" name="Handle" nillable="true" type="xs:anyType" />
-          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="IdentityHistory" nillable="true" type="q3:ArrayOfanyType" />
           <xs:element minOccurs="0" name="KeepAliveInterval" type="xs:int" />
           <xs:element minOccurs="0" name="KeepAliveStopped" type="xs:boolean" />
           <xs:element minOccurs="0" name="LastKeepAliveTime" type="xs:dateTime" />
           <xs:element minOccurs="0" name="NamespaceUris" nillable="true" type="tns:NamespaceTable" />
-          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" minOccurs="0" name="NodeCache" nillable="true" type="q4:NodeCache" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" minOccurs="0" name="NodeCache" nillable="true" type="q3:NodeCache" />
           <xs:element minOccurs="0" name="OutstandingRequestCount" type="xs:int" />
           <xs:element minOccurs="0" name="PreferredLocales" nillable="true" type="tns:ListOfString" />
           <xs:element minOccurs="0" name="ServerUris" nillable="true" type="tns:StringTable" />

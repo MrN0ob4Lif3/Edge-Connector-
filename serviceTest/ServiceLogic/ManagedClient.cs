@@ -13,6 +13,19 @@ using MQTTnet.Protocol;
 
 namespace ServiceLogic
 {
+    //Interface to allow data to be passed between Windows Service and hosted WCF Service instance.
+    public interface IServiceCallback
+    {
+        void MQTTConnect(string brokerIP);
+    }
+
+    //Static Property to allow for use of the interface above.
+    public static class Host
+    {
+        public static IServiceCallback Current;
+    }
+
+    //MQTT functions
     public class ManagedClient 
     {
 

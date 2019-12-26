@@ -561,7 +561,7 @@ namespace Opc.Ua.Client
         /// <summary>
         /// Gets a list of user identities that can be used to connect to the server.
         /// </summary>
-        [DataMember]
+        /// [DataMember]
         public IEnumerable<IUserIdentity> IdentityHistory
         {
             get { return m_identityHistory; }

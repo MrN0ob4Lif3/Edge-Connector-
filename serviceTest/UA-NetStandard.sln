@@ -40,17 +40,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Client", "SampleAppl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "SampleApplications\SDK\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{A39614CA-8EBE-4408-A9D2-38C7E5AE2A1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQTTClient", "MQTTClient\MQTTClient.csproj", "{34FC924D-9ACA-4E64-A409-2CE4150FAD31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokerClient", "MQTTClient\BrokerClient.csproj", "{34FC924D-9ACA-4E64-A409-2CE4150FAD31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brokerService", "brokerService\brokerService.csproj", "{443289BA-C188-41F3-A552-A9A7715BAA49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brokerWindows", "brokerWindows\brokerWindows.csproj", "{1C21376B-D7AE-4F19-9210-F87296C23FBE}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MQTTBroker", "MQTTBroker\MQTTBroker.vdproj", "{D3DFD72D-90F1-4183-80C0-C91AE3C04624}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLogic", "ServiceLogic\ServiceLogic.csproj", "{804A4D28-85E5-447E-98F4-C0BCE79BE509}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFTest", "WCFTest\WCFTest.csproj", "{499F70C3-D845-44C4-A259-AB86222BDDA4}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OPCEdge", "OPCEdge\OPCEdge.vdproj", "{E842CF52-1565-482D-8264-86ED754C669E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,12 +195,6 @@ Global
 		{1C21376B-D7AE-4F19-9210-F87296C23FBE}.Release|x64.Build.0 = Release|Any CPU
 		{1C21376B-D7AE-4F19-9210-F87296C23FBE}.Release|x86.ActiveCfg = Release|Any CPU
 		{1C21376B-D7AE-4F19-9210-F87296C23FBE}.Release|x86.Build.0 = Release|Any CPU
-		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Debug|Any CPU.ActiveCfg = Debug
-		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Debug|x64.ActiveCfg = Debug
-		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Debug|x86.ActiveCfg = Debug
-		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Release|Any CPU.ActiveCfg = Release
-		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Release|x64.ActiveCfg = Release
-		{D3DFD72D-90F1-4183-80C0-C91AE3C04624}.Release|x86.ActiveCfg = Release
 		{804A4D28-85E5-447E-98F4-C0BCE79BE509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{804A4D28-85E5-447E-98F4-C0BCE79BE509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{804A4D28-85E5-447E-98F4-C0BCE79BE509}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -225,6 +219,12 @@ Global
 		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x64.Build.0 = Release|Any CPU
 		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x86.ActiveCfg = Release|Any CPU
 		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x86.Build.0 = Release|Any CPU
+		{E842CF52-1565-482D-8264-86ED754C669E}.Debug|Any CPU.ActiveCfg = Debug
+		{E842CF52-1565-482D-8264-86ED754C669E}.Debug|x64.ActiveCfg = Debug
+		{E842CF52-1565-482D-8264-86ED754C669E}.Debug|x86.ActiveCfg = Debug
+		{E842CF52-1565-482D-8264-86ED754C669E}.Release|Any CPU.ActiveCfg = Release
+		{E842CF52-1565-482D-8264-86ED754C669E}.Release|x64.ActiveCfg = Release
+		{E842CF52-1565-482D-8264-86ED754C669E}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
