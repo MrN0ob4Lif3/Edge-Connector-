@@ -17,11 +17,6 @@ namespace brokerService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class BrokerService : IBrokerService
     {
-        #region MQTT Variables
-        //Create a new ManagedMQTT Client.
-        public IManagedMqttClient managedMQTT;
-        #endregion
-
         #region OPC Variables
         //OPC Client variables
         private ApplicationInstance application;
@@ -45,35 +40,7 @@ namespace brokerService
         private bool m_connectedOnce;
         #endregion
 
-        BrokerService()
-        {
-            //MQTT Client creation & connection
-            //managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
-            //MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
-            //MQTTConnectClientAsync("localhost", 0);
-            //MQTTSubscribeTopic("TestTopic");
-            //MQTTPublishTopicAsync("TestTopic", "TestMessage");
-
-            //OPC-UA Client creation & connection
-            application = new ApplicationInstance
-            {
-                ApplicationName = "MQTT-OPC Broker",
-                ApplicationType = ApplicationType.ClientAndServer,
-                ConfigSectionName = "Opc.Ua.SampleClient"
-            };
-            //load the application configuration.
-            application.LoadApplicationConfiguration(false).Wait();
-            // check the application certificate.
-            application.CheckApplicationInstanceCertificate(false, 0).Wait();
-            m_configuration = app_configuration = application.ApplicationConfiguration;
-            // get list of cached endpoints.
-            m_endpoints = m_configuration.LoadCachedEndpoints(true);
-            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
-            if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
-            {
-                app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
-            }
-        }
+        BrokerService() { }
 
         #region MQTT Methods / Properties
         //MQTT client connection function. Requires IP address of MQTT server and connection option type
@@ -280,10 +247,7 @@ namespace brokerService
         }
         #endregion
 
-        public void OPCConnectClient()
-        {
-
-        }
+        public void OPCConnectClient() { }
 
         //OPC client connection.
         public void OPCConnectClient(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse)
@@ -407,12 +371,12 @@ namespace brokerService
 
         public ApplicationInstance GetApplicationInstance()
         {
-            return application;
+            return Host.Current.OPCApplicationInstance();
         }
 
         public ConfiguredEndpointCollection GetEndpoints()
         {
-            return m_endpoints;
+            return Host.Current.OPCEndpoints();
         }
 
         public Session GetSession()

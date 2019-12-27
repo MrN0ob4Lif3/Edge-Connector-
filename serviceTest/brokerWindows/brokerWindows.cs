@@ -8,16 +8,28 @@ using MQTTnet.Extensions.ManagedClient;
 using ServiceLogic;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Opc.Ua.Configuration;
+using Opc.Ua;
+using Opc.Ua.Client.Controls;
 
 namespace brokerWindows
 {
     public partial class brokerWindows : ServiceBase, IServiceCallback
     {
         ServiceHost host;
-        brokerService.BrokerService instance;
+
+        #region MQTT Properties
         public IManagedMqttClient managedMqtt;
         public List<String> m_topicList = new List<string>();
         static SemaphoreSlim mqttClientSemaphore = new SemaphoreSlim(1, 1);
+        #endregion
+
+        #region OPC Properties
+        public ApplicationInstance application;
+        public ApplicationConfiguration m_configuration;
+        public ApplicationConfiguration app_configuration;
+        public ConfiguredEndpointCollection m_endpoints;
+        #endregion
 
         public brokerWindows()
         {
@@ -28,29 +40,48 @@ namespace brokerWindows
         {   
             try
             {
-                //Set the static callback reference.
+                //Set the static callback reference and creates interface for WinForms by hosting a WCF Service.
                 Host.Current = this;
                 StartBroker();
-                /*
-                // Create the thread object that will do the service's work.
-                Thread brokerThread = new Thread(StartBroker);
 
-                // Start the thread.
-                brokerThread.Start();
-                */
                 // Log an event to indicate successful start.
                 EventLog.WriteEntry("Successful start.", EventLogEntryType.Information);
 
-                // initialize and work with myObject
+                //Initialize MQTT Client.
                 managedMqtt= ManagedClient.CreateManagedClient();
                 string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
                 MQTTConnectClient(managedMqtt,brokerIP);
+
+                //Initialize OPC Application Instance
+                application = new ApplicationInstance
+                {
+                    ApplicationName = "MQTT-OPC Broker",
+                    ApplicationType = ApplicationType.ClientAndServer,
+                    ConfigSectionName = "Opc.Ua.SampleClient"
+                };
+                //load the application configuration.
+                application.LoadApplicationConfiguration(false).Wait();
+                // check the application certificate.
+                application.CheckApplicationInstanceCertificate(false, 0).Wait();
+                m_configuration = app_configuration = application.ApplicationConfiguration;
+                // get list of cached endpoints.
+                m_endpoints = m_configuration.LoadCachedEndpoints(true);
+                m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
+                if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+                {
+                    app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+                }
             }
             catch (Exception ex)
             {
                 // Log the exception.
                 EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
             }                 
+        }
+
+        protected override void OnStop()
+        {
+            host.Close();
         }
 
         private void StartBroker()
@@ -72,10 +103,7 @@ namespace brokerWindows
                 }
             }
             host.Open();
-            //MQTTCreateClientAsync("localhost", 0);
         }
-
-
 
         #region MQTT Methods
         public async void MQTTConnectClient(IManagedMqttClient managedMqtt,string brokerIP)
@@ -154,54 +182,46 @@ namespace brokerWindows
         {
             return m_topicList;
         }
-
-        //MQTT client creation function. Requires IP address of MQTT server and connection option type
-        public async void MQTTCreateClientAsync(String mqttIP, int option)
-        {
-            if (option == 0)
-            {
-                try
-                {
-                    // Use TCP connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(instance.managedMQTT, mqttIP);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTTCP"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-            else if (option == 1)
-            {
-                try
-                {
-                    // Use WebSocket connection.
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(instance.managedMQTT, mqttIP);
-                }
-
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTWebSocket"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-            }
-
-        }
         #endregion
 
-        protected override void OnStop()
+        #region OPC Methods
+        /// <summary>
+        /// Handles a certificate validation error.
+        /// </summary>
+        private void CertificateValidator_CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
         {
-            host.Close();
+            try
+            {
+                e.Accept = m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates;
+                /*
+                if (!m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+                {
+                    DialogResult result = MessageBox.Show(
+                        e.Certificate.Subject,
+                        "Untrusted Certificate",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    e.Accept = (result == DialogResult.Yes);
+                }*/
+            }
+            catch (Exception exception)
+            {
+                ClientUtils.HandleException("Certificate Validation", exception);
+            }
         }
+        
+        //Callback to return OPC Application Instance
+        ApplicationInstance IServiceCallback.OPCApplicationInstance()
+        {
+            return application;
+        }
+
+        //Callback to return OPC Endpoints
+        ConfiguredEndpointCollection IServiceCallback.OPCEndpoints()
+        {
+            return m_endpoints;
+        }
+        #endregion
     }
 }

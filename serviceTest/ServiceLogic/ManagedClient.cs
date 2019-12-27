@@ -10,6 +10,8 @@ using MQTTnet.Client.Options;
 using MQTTnet.Server;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Protocol;
+using Opc.Ua.Configuration;
+using Opc.Ua;
 
 namespace ServiceLogic
 {
@@ -21,6 +23,9 @@ namespace ServiceLogic
         void MQTTUnsubscribe(String topic);
         void MQTTPublish(String topic, String message);
         List<String> MQTTSubscribedTopics();
+        ApplicationInstance OPCApplicationInstance();
+        ConfiguredEndpointCollection OPCEndpoints();
+
     }
 
     //Static Property to allow for use of the interface above.

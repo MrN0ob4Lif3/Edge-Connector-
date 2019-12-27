@@ -86,7 +86,6 @@ namespace BrokerClient
             //Loading MQTT elements
             publishPayload = new Dictionary<String, String>();
             connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            //connectionStringMQTT.Text = "localhost";
             m_topicList = client.MQTTSubscribedTopics();
             // Initialize Form controls.
             if (m_topicList != null)
@@ -241,31 +240,6 @@ namespace BrokerClient
             topicListSub.SelectedItem = null;
             topicListPub.SelectedItem = null;
         }
-        //Starts MQTT service.
-        private void MqttStart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                brokerWindows.Start();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Service already running.");
-            }
-
-        }
-        //Stop MQTT service.
-        private void MqttStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                brokerWindows.Stop();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Service already stopped.");
-            }
-        }
         #endregion
 
         #region Form Controls (Close, Resize, etc.)
@@ -305,30 +279,6 @@ namespace BrokerClient
         #endregion
 
         #region OPC Controls
-        private void OpcStart_Click(object sender, EventArgs e)
-        {
-            brokerIP = connectionStringMQTT.Text;
-            try
-            {
-                client.OPCCreateClient(brokerIP, false);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void OpcStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Service already running.");
-            }
-        }
 
         #region OPC Connect
         void OpcEndpoints_ConnectEndpoint(object sender, ConnectEndpointEventArgs e)
