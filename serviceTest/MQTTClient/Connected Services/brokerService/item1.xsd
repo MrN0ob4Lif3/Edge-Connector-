@@ -8,7 +8,6 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="mqttIP" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="option" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

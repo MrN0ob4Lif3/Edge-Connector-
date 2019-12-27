@@ -32,8 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrokerMain));
             this.connectButtonMQTT = new System.Windows.Forms.Button();
             this.connectionStringMQTT = new System.Windows.Forms.TextBox();
-            this.connectionType = new System.Windows.Forms.Label();
-            this.connectionChoice = new System.Windows.Forms.ComboBox();
             this.MqttTabs = new System.Windows.Forms.TabControl();
             this.subscribeTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -91,27 +89,6 @@
             this.connectionStringMQTT.Size = new System.Drawing.Size(638, 20);
             this.connectionStringMQTT.TabIndex = 1;
             this.connectionStringMQTT.Text = "Enter MQTT Broker IP here";
-            // 
-            // connectionType
-            // 
-            this.connectionType.AutoSize = true;
-            this.connectionType.Location = new System.Drawing.Point(520, 57);
-            this.connectionType.Name = "connectionType";
-            this.connectionType.Size = new System.Drawing.Size(88, 13);
-            this.connectionType.TabIndex = 2;
-            this.connectionType.Text = "Connection Type";
-            // 
-            // connectionChoice
-            // 
-            this.connectionChoice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.connectionChoice.FormattingEnabled = true;
-            this.connectionChoice.Items.AddRange(new object[] {
-            "TCP",
-            "WebSocket"});
-            this.connectionChoice.Location = new System.Drawing.Point(614, 54);
-            this.connectionChoice.Name = "connectionChoice";
-            this.connectionChoice.Size = new System.Drawing.Size(121, 21);
-            this.connectionChoice.TabIndex = 3;
             // 
             // MqttTabs
             // 
@@ -385,8 +362,6 @@
             this.Controls.Add(this.opcSession);
             this.Controls.Add(this.opcEndpoints);
             this.Controls.Add(this.MqttTabs);
-            this.Controls.Add(this.connectionChoice);
-            this.Controls.Add(this.connectionType);
             this.Controls.Add(this.connectionStringMQTT);
             this.Controls.Add(this.connectButtonMQTT);
             this.Name = "BrokerMain";
@@ -418,8 +393,6 @@
 
         private System.Windows.Forms.Button connectButtonMQTT;
         private System.Windows.Forms.TextBox connectionStringMQTT;
-        private System.Windows.Forms.Label connectionType;
-        private System.Windows.Forms.ComboBox connectionChoice;
         private System.Windows.Forms.TabControl MqttTabs;
         private System.Windows.Forms.TabPage subscribeTab;
         private System.Windows.Forms.SplitContainer splitContainer1;

@@ -20,7 +20,6 @@ namespace brokerService
         #region MQTT Variables
         //Create a new ManagedMQTT Client.
         public IManagedMqttClient managedMQTT;
-        public List<String> m_topicList;
         #endregion
 
         #region OPC Variables
@@ -49,8 +48,8 @@ namespace brokerService
         BrokerService()
         {
             //MQTT Client creation & connection
-            managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
-            MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
+            //managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
+            //MQTTConnectClientAsync("dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt", 1);
             //MQTTConnectClientAsync("localhost", 0);
             //MQTTSubscribeTopic("TestTopic");
             //MQTTPublishTopicAsync("TestTopic", "TestMessage");
@@ -78,46 +77,21 @@ namespace brokerService
 
         #region MQTT Methods / Properties
         //MQTT client connection function. Requires IP address of MQTT server and connection option type
-        public async void MQTTConnectClientAsync(String mqttIP, int option)
+        public void MQTTConnectClientAsync(String mqttIP)
         {
-            if (option == 0)
+            try
             {
-                try
-                {
-                    // Use TCP connection.
-                    managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectTCPAsync(managedMQTT, mqttIP);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTTCP"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
+                Host.Current.MQTTConnect(mqttIP);
             }
-            else if (option == 1)
+            catch (Exception e)
             {
-                try
+                // Create an EventLog instance and assign its source.
+                EventLog myLog = new EventLog
                 {
-                    // Use WebSocket connection.
-                    managedMQTT = ServiceLogic.ManagedClient.CreateManagedClient();
-                    await ServiceLogic.ManagedClient.ManagedMqttConnectWebSocket(managedMQTT, mqttIP);
-                }
-
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceMQTTWebSocket"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
+                    Source = "brokerServiceMQTTTCP"
+                };
+                // Write an informational entry to the event log.
+                myLog.WriteEntry(e.Message);
             }
         }
         //MQTT topic subscription function. Requires topic to subscribe to.
@@ -125,8 +99,7 @@ namespace brokerService
         {
             try
             {
-                ServiceLogic.ManagedClient.ManagedMqttSubscribe(managedMQTT, topic);
-                m_topicList.Add(topic);
+                Host.Current.MQTTSubscribe(topic);
             }
             catch (Exception e)
             {
@@ -144,8 +117,7 @@ namespace brokerService
         {
             try
             {
-                ServiceLogic.ManagedClient.ManagedMqttUnsubscribe(managedMQTT, topic);
-                m_topicList.Remove(topic);
+                Host.Current.MQTTUnsubscribe(topic);
             }
             catch (Exception e)
             {
@@ -159,11 +131,11 @@ namespace brokerService
             }
         }
         //MQTT message publishing function. Requires topic to publish message to.
-        public async void MQTTPublishTopicAsync(String topic, String message)
+        public void MQTTPublishTopicAsync(String topic, String message)
         {
             try
             {
-                await ServiceLogic.ManagedClient.ManagedMqttPublish(managedMQTT, topic, message);
+                Host.Current.MQTTPublish(topic, message);
             }
             catch (Exception e)
             {
@@ -179,7 +151,7 @@ namespace brokerService
         //Returns list of subscribed topics for MQTT client.
         public List<String> MQTTSubscribedTopics()
         {
-            return m_topicList;
+            return Host.Current.MQTTSubscribedTopics();
         }
         #endregion
 
@@ -347,7 +319,7 @@ namespace brokerService
         public async void Connect(ConfiguredEndpoint endpoint)
         {
             if (endpoint == null) throw new ArgumentNullException("endpoint");
-            
+
             m_endpoint = endpoint;
 
             // copy the message context.

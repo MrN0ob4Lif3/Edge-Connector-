@@ -13,7 +13,7 @@ namespace brokerService
     {
         #region MQTT Operations
         [OperationContract]
-        void MQTTConnectClientAsync(String mqttIP, int option);
+        void MQTTConnectClientAsync(String mqttIP);
 
         [OperationContract]
         void MQTTSubscribeTopic(String topic);

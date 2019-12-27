@@ -16,13 +16,18 @@ namespace ServiceLogic
     //Interface to allow data to be passed between Windows Service and hosted WCF Service instance.
     public interface IServiceCallback
     {
-        void MQTTConnect(string brokerIP);
+        void MQTTConnect(String brokerIP);
+        void MQTTSubscribe(String topic);
+        void MQTTUnsubscribe(String topic);
+        void MQTTPublish(String topic, String message);
+        List<String> MQTTSubscribedTopics();
     }
 
     //Static Property to allow for use of the interface above.
     public static class Host
     {
         public static IServiceCallback Current;
+        public static String MQTTBrokerIP;
     }
 
     //MQTT functions

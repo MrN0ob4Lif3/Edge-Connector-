@@ -85,12 +85,11 @@ namespace BrokerClient
         {
             //Loading MQTT elements
             publishPayload = new Dictionary<String, String>();
-            connectionChoice.SelectedIndex = 1;
             connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
             //connectionStringMQTT.Text = "localhost";
             m_topicList = client.MQTTSubscribedTopics();
             // Initialize Form controls.
-            if(m_topicList != null)
+            if (m_topicList != null)
             {
                 foreach (String topic in m_topicList)
                 {
@@ -129,24 +128,14 @@ namespace BrokerClient
                 brokerIP = connectionStringMQTT.Text;
                 if (client.InnerChannel.State != CommunicationState.Faulted)
                 {
-                    if (connectionChoice.SelectedIndex == 0)
-                        try
-                        {
-                            client.MQTTConnectClientAsync(connectionStringMQTT.Text, 0);
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("Error connecting.");
-                        }
-                    else if (connectionChoice.SelectedIndex == 1)
-                        try
-                        {
-                            client.MQTTConnectClientAsync(connectionStringMQTT.Text, 1);
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("Error connecting.");
-                        }
+                    try
+                    {
+                        client.MQTTConnectClientAsync(connectionStringMQTT.Text);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Error connecting.");
+                    }
                 }
                 else
                 {
@@ -209,13 +198,13 @@ namespace BrokerClient
                 //Checks if topic selected or entered.
                 if (topicListPub.SelectedItem != null && pubTopic.Text != null)
                     topicChosen = topicListPub.SelectedItem.ToString();
-                else if(pubTopic.Text != null)
+                else if (pubTopic.Text != null)
                     topicChosen = pubTopic.Text;
                 else
                     MessageBox.Show("Please select a topic or input a new topic to publish to.");
 
                 //Checks if key / value has been filled.
-                if(publishKey1.Text != null && publishValue1.Text != null)
+                if (publishKey1.Text != null && publishValue1.Text != null)
                 {
                     publishPayload.Add(publishKey1.Text, publishValue1.Text);
                 }
@@ -223,7 +212,7 @@ namespace BrokerClient
                 {
                     publishPayload.Add(publishKey2.Text, publishValue2.Text);
                 }
-                if(publishPayload != null)
+                if (publishPayload != null)
                 {
                     string message = JsonConvert.SerializeObject(publishPayload);
                     client.MQTTPublishTopicAsync(topicChosen, message);
@@ -408,7 +397,7 @@ namespace BrokerClient
                 IEnumerable<Subscription> subscriptions = sender.Subscriptions;
                 foreach (Subscription subscription in subscriptions)
                 {
-                    IDictionary<String,String> subscriptionPayload = new Dictionary<String, String>();
+                    IDictionary<String, String> subscriptionPayload = new Dictionary<String, String>();
                     if (subscription == null) { continue; }
                     double subscriptionInterval = subscription.CurrentPublishingInterval;
                     subscription.CurrentPublishedTime = DateTime.Now;
