@@ -116,7 +116,7 @@ namespace brokerService
             }
         }
         //Returns list of subscribed topics for MQTT client.
-        public List<String> MQTTSubscribedTopics()
+        public HashSet<String> MQTTSubscribedTopics()
         {
             return Host.Current.MQTTSubscribedTopics();
         }

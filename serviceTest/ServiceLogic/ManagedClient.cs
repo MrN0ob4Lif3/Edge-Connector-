@@ -22,7 +22,7 @@ namespace ServiceLogic
         void MQTTSubscribe(String topic);
         void MQTTUnsubscribe(String topic);
         void MQTTPublish(String topic, String message);
-        List<String> MQTTSubscribedTopics();
+        HashSet<String> MQTTSubscribedTopics();
         ApplicationInstance OPCApplicationInstance();
         ConfiguredEndpointCollection OPCEndpoints();
 

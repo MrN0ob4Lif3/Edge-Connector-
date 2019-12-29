@@ -12,6 +12,7 @@ using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 using Opc.Ua.Sample.Controls;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace BrokerClient
 {
@@ -47,24 +48,26 @@ namespace BrokerClient
             key.SetValue(StartupValue, Application.ExecutablePath.ToString());
         }
 
-        //Initializes specific elements for OPC and MQTT interfaces to work.
-        public BrokerMain()
+        //Continuously checks if service is running, if not, restart application instance to refresh connection to restarted service.
+        public void CheckService()
         {
-            SetStartup();
-            //Loading controller for WCF service.
-            client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
-            brokerWindows = new ServiceController("brokerWindows");
+            while(true)
+            {
+                try
+                {
+                    client.Open();
+                }
+                catch
+                {
+                    Application.Restart();
+                }
+            }
+        }
 
+        public void InitializeClients()
+        {
             //Loading OPC elements
             ApplicationInstance application = client.GetApplicationInstance();
-            /*  
-            ApplicationInstance application = new ApplicationInstance
-            {
-                ApplicationName = "MQTT-OPC Broker",
-                ApplicationType = ApplicationType.ClientAndServer,
-                ConfigSectionName = "Opc.Ua.SampleClient"
-            };
-            */
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
@@ -77,8 +80,22 @@ namespace BrokerClient
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
+        }
 
+        //Initializes specific elements for OPC and MQTT interfaces to work.
+        public BrokerMain()
+        {
             InitializeComponent();
+            SetStartup();
+            //Loading controller for WCF service.
+            client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
+            brokerWindows = new ServiceController("brokerWindows");
+            //New thread to monitor for service disruption.
+            Thread checkService = new Thread(CheckService);
+            //CheckService();
+            //Loading OPC Application Instance.
+            InitializeClients();
+
         }
 
         private void MqttMain_Load(object sender, EventArgs e)
@@ -371,6 +388,7 @@ namespace BrokerClient
                                     subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
                                     string message = JsonConvert.SerializeObject(subscriptionPayload);
                                     client.MQTTPublishTopicAsync(subscription.DisplayName, message);
+                                    client.MQTTSubscribeTopic(subscription.DisplayName);
                                     subscription.PreviousPublishedTime = DateTime.UtcNow;
                                     subscription.SubscriptionPublished = true;
                                 }

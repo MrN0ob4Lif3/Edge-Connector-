@@ -20,6 +20,7 @@ namespace brokerWindows
 
         #region MQTT Properties
         public IManagedMqttClient managedMqtt;
+        public HashSet<String> m_topicSet = new HashSet<string>();
         public List<String> m_topicList = new List<string>();
         static SemaphoreSlim mqttClientSemaphore = new SemaphoreSlim(1, 1);
         #endregion
@@ -116,12 +117,11 @@ namespace brokerWindows
         {
             try
             {
+                managedMqtt = ManagedClient.CreateManagedClient();
                 await ManagedClient.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
             }
             finally
             {
-                //When the task is ready, release the semaphore. It is vital to ALWAYS release the semaphore when we are ready, or else we will end up with a Semaphore that is forever locked.
-                //This is why it is important to do the Release within a try...finally clause; program execution may crash or take a different path, this way you are guaranteed execution
                 mqttClientSemaphore.Release();
             }
         }
@@ -133,12 +133,10 @@ namespace brokerWindows
             try
             {
                 ManagedClient.ManagedMqttSubscribe(managedMqtt, topic);
-                m_topicList.Add(topic);
+                m_topicSet.Add(topic);
             }
             finally
             {
-                //When the task is ready, release the semaphore. It is vital to ALWAYS release the semaphore when we are ready, or else we will end up with a Semaphore that is forever locked.
-                //This is why it is important to do the Release within a try...finally clause; program execution may crash or take a different path, this way you are guaranteed execution
                 mqttClientSemaphore.Release();
             }
         }
@@ -150,12 +148,10 @@ namespace brokerWindows
             try
             {
                 ManagedClient.ManagedMqttUnsubscribe(managedMqtt, topic);
-                m_topicList.Remove(topic);
+                m_topicSet.Remove(topic);
             }
             finally
             {
-                //When the task is ready, release the semaphore. It is vital to ALWAYS release the semaphore when we are ready, or else we will end up with a Semaphore that is forever locked.
-                //This is why it is important to do the Release within a try...finally clause; program execution may crash or take a different path, this way you are guaranteed execution
                 mqttClientSemaphore.Release();
             }
         }
@@ -171,16 +167,14 @@ namespace brokerWindows
             }
             finally
             {
-                //When the task is ready, release the semaphore. It is vital to ALWAYS release the semaphore when we are ready, or else we will end up with a Semaphore that is forever locked.
-                //This is why it is important to do the Release within a try...finally clause; program execution may crash or take a different path, this way you are guaranteed execution
                 mqttClientSemaphore.Release();
             }
         }
 
         //Callback to return MQTT subscribed topics.
-        List<String> IServiceCallback.MQTTSubscribedTopics()
+        HashSet<String> IServiceCallback.MQTTSubscribedTopics()
         {
-            return m_topicList;
+            return m_topicSet;
         }
         #endregion
 

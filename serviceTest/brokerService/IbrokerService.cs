@@ -25,7 +25,7 @@ namespace brokerService
         void MQTTPublishTopicAsync(String topic, String message);
 
         [OperationContract]
-        List<String> MQTTSubscribedTopics();
+        HashSet<String> MQTTSubscribedTopics();
         #endregion
 
         #region OPC Operations
