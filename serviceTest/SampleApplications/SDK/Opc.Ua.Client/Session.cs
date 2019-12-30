@@ -40,6 +40,7 @@ using System.IO;
 using System.Xml;
 using System.Threading.Tasks;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Opc.Ua.Client
 {
@@ -78,6 +79,7 @@ namespace Opc.Ua.Client
         /// be loaded from a certicate store. Converting a DER encoded blob to a X509Certificate2
         /// will not include a private key.
         /// </remarks>
+        [JsonConstructor]
         public Session(
             ITransportChannel channel,
             ApplicationConfiguration configuration,

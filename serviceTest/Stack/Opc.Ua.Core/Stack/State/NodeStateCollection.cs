@@ -455,6 +455,7 @@ namespace Opc.Ua
     /// <summary>
     /// A class that creates instances of nodes based on the paramters provided.
     /// </summary>
+    [DataContract]
     public class NodeStateFactory
     {
         /// <summary>

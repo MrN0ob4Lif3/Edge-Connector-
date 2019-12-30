@@ -35,9 +35,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
+using System.IO;
 
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
+using Newtonsoft.Json;
 
 namespace Opc.Ua.Sample.Controls
 {
@@ -1118,6 +1120,7 @@ namespace Opc.Ua.Sample.Controls
                     if (subscription != null)
                     {
                         Subscribe(subscription, reference);
+                        File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
                     }
                 }
             }

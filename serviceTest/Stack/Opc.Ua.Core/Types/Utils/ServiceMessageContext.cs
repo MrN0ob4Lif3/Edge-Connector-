@@ -23,6 +23,7 @@ namespace Opc.Ua
     /// <summary>
 	/// Stores context information associated with a UA server that is used during message processing.
 	/// </summary>
+    [DataContract]
 	public class ServiceMessageContext
 	{
         #region Constructors

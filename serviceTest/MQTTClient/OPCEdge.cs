@@ -13,6 +13,9 @@ using Opc.Ua.Client.Controls;
 using Opc.Ua.Sample.Controls;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Threading.Tasks;
+using System.IO;
+
 
 namespace BrokerClient
 {
@@ -33,6 +36,7 @@ namespace BrokerClient
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
         IDictionary<String, String> publishPayload = new Dictionary<String, String>();
+        private const string Filename = "RetainedSession.json";
         #endregion
 
         #region Startup Settings
@@ -51,7 +55,7 @@ namespace BrokerClient
         //Continuously checks if service is running, if not, restart application instance to refresh connection to restarted service.
         public void CheckService()
         {
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -312,8 +316,9 @@ namespace BrokerClient
                 //opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
                 //StandardClient_KeepAlive(m_session, null);
 
-
                 Connect(e.Endpoint);
+                //TestConnect(m_session, e.Endpoint);
+
             }
             catch (Exception exception)
             {
@@ -321,6 +326,27 @@ namespace BrokerClient
                 e.UpdateControl = false;
             }
         }
+        public async void TestConnect(Session session, ConfiguredEndpoint endpoint)
+        {
+            String sessionURL;
+            if (endpoint == null)
+            {
+                return;
+            }
+            if (LoadSessionAsync() != null)
+            {
+                sessionURL = await LoadSessionAsync();
+            }
+            else
+            {
+                sessionURL = "";
+            }
+            if(session.Endpoint.EndpointUrl == sessionURL)
+            {
+                //session.AddSubscription(LoadSubscription());
+            }
+        }
+
 
         /// <summary>
         /// Connects to a server.
@@ -331,7 +357,6 @@ namespace BrokerClient
             {
                 return;
             }
-
             Session session = await opcSession.Connect(endpoint);
 
             if (session != null)
@@ -360,6 +385,7 @@ namespace BrokerClient
             //Checks if any subscriptions within session.
             if (sender.SubscriptionCount > 0)
             {
+                SaveSessionAsync(sender);
                 //Iterates through session subscriptions.
                 IEnumerable<Subscription> subscriptions = sender.Subscriptions;
                 foreach (Subscription subscription in subscriptions)
@@ -512,5 +538,30 @@ namespace BrokerClient
             }
         }
         #endregion
+
+        #region Session State
+        public Task SaveSessionAsync(Session session)
+        {
+            session.Save("Test.json");
+            File.WriteAllText(Filename, JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
+            return Task.FromResult(0);
+        }
+
+        public Task<String> LoadSessionAsync()
+        {
+            String retainedSession;
+            if (File.Exists(Filename))
+            {
+                var json = File.ReadAllText(Filename);
+                retainedSession = JsonConvert.DeserializeObject<String>(json);
+            }
+            else
+            {
+                return null;
+            }
+            return Task.FromResult(retainedSession);
+        }
+        #endregion
+
     }
 }

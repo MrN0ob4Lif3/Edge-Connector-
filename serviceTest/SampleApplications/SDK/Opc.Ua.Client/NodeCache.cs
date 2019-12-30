@@ -38,9 +38,9 @@ namespace Opc.Ua.Client
     /// <summary>
     /// A client side cache of the server's type model.
     /// </summary>
-    //[DataContract]
-    [DataContract(IsReference=true)]
-    [KnownType(typeof(NodeCache))]
+    [DataContract]
+    //[DataContract(IsReference=true)]
+    //[KnownType(typeof(NodeCache))]
     public class NodeCache : INodeTable, ITypeTable
     {
         #region Constructors
