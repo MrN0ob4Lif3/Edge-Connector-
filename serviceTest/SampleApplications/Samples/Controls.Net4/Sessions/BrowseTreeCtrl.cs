@@ -79,6 +79,12 @@ namespace Opc.Ua.Sample.Controls
             set { m_SessionTreeCtrl = value; }
         }
 
+        public Browser Browser
+        {
+            get { return m_browser; }
+            set { m_browser = value; }
+        }
+
         /// <summary>
         /// Whether items can be picked in the control.
         /// </summary>
@@ -589,7 +595,7 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Adds a item to a subscription.
         /// </summary>
-        private void Subscribe(Subscription subscription, ReferenceDescription reference)
+        public void Subscribe(Subscription subscription, ReferenceDescription reference)
         {    
             MonitoredItem monitoredItem = new MonitoredItem(subscription.DefaultItem);
 
@@ -1121,6 +1127,7 @@ namespace Opc.Ua.Sample.Controls
                     {
                         Subscribe(subscription, reference);
                         File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
+                        File.WriteAllText("RetainedReference.json", JsonConvert.SerializeObject(reference));
                     }
                 }
             }
@@ -1151,7 +1158,9 @@ namespace Opc.Ua.Sample.Controls
                 if (subscription != null)
                 {
                     Subscribe(subscription, reference);
-                }               
+                    File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
+                    File.WriteAllText("RetainedReference.json", JsonConvert.SerializeObject(reference));
+                }
             }
             catch (Exception exception)
             {

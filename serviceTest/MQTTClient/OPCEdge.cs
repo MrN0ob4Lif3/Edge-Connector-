@@ -343,7 +343,15 @@ namespace BrokerClient
             }
             if(session.Endpoint.EndpointUrl == sessionURL)
             {
-                //session.AddSubscription(LoadSubscription());
+                session.Load("Test.json");
+                /*
+                Subscription retainedSubscription = await LoadSubscriptionAsync();
+                if(retainedSubscription != null)
+                {
+                    session.AddSubscription(retainedSubscription);
+                    //retainedSubscription.ConditionRefresh();
+                }
+                */
             }
         }
 
@@ -372,6 +380,35 @@ namespace BrokerClient
                 m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
                 opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
                 StandardClient_KeepAlive(m_session, null);
+
+
+                //Checks if endpoint URL selected is same as retained endpoint URL
+                String sessionURL = "";
+                if (LoadSessionAsync() != null)
+                {
+                    sessionURL = await LoadSessionAsync();
+                }
+                if (m_session.Endpoint.EndpointUrl == sessionURL)
+                {
+                    //Testing subscription retention
+                    //Subscription subscription = opcSession.CreateSubscription(m_session);
+                    Subscription subscription = new Subscription(m_session.DefaultSubscription);
+                    m_session.AddSubscription(subscription);
+                    subscription.Create();
+
+                    ReferenceDescription retainedReference;
+                    if (subscription != null)
+                    {
+                        if (File.Exists("RetainedReference.json"))
+                        {
+                            var json = File.ReadAllText("RetainedReference.json");
+                            retainedReference = JsonConvert.DeserializeObject<ReferenceDescription>(json);
+                            opcBrowse.Subscribe(subscription, retainedReference);
+                        }
+                        //Subscribe(subscription, reference);
+                        File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
+                    }
+                }
             }
         }
         #endregion
@@ -560,6 +597,21 @@ namespace BrokerClient
                 return null;
             }
             return Task.FromResult(retainedSession);
+        }
+
+        public Task<Subscription> LoadSubscriptionAsync()
+        {
+            Subscription retainedSubscription;
+            if (File.Exists("RetainedSubscription.json"))
+            {
+                var json = File.ReadAllText("RetainedSubscription.json");
+                retainedSubscription = JsonConvert.DeserializeObject<Subscription>(json);
+            }
+            else
+            {
+                return null;
+            }
+            return Task.FromResult(retainedSubscription);
         }
         #endregion
 
