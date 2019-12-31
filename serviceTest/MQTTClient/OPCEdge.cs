@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.Serialization;
 
 
 namespace BrokerClient
@@ -36,7 +37,6 @@ namespace BrokerClient
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
         IDictionary<String, String> publishPayload = new Dictionary<String, String>();
-        private const string Filename = "RetainedSession.json";
         #endregion
 
         #region Startup Settings
@@ -341,9 +341,8 @@ namespace BrokerClient
             {
                 sessionURL = "";
             }
-            if(session.Endpoint.EndpointUrl == sessionURL)
+            if (session.Endpoint.EndpointUrl == sessionURL)
             {
-                session.Load("Test.json");
                 /*
                 Subscription retainedSubscription = await LoadSubscriptionAsync();
                 if(retainedSubscription != null)
@@ -390,26 +389,46 @@ namespace BrokerClient
                 }
                 if (m_session.Endpoint.EndpointUrl == sessionURL)
                 {
-                    //Testing subscription retention
-                    //Subscription subscription = opcSession.CreateSubscription(m_session);
-                    Subscription subscription = new Subscription(m_session.DefaultSubscription);
-                    m_session.AddSubscription(subscription);
-                    subscription.Create();
-
-                    ReferenceDescription retainedReference;
-                    if (subscription != null)
+                    //Recreating retained subscriptions.
+                    if (File.Exists("RetainedReference.json"))
                     {
-                        if (File.Exists("RetainedReference.json"))
+                        Subscription retainedSubscription;
+                        //Checking and recreating subscriptions from previous session.
+                        String[] retainedSubscriptions = File.ReadAllLines("RetainedSubscriptionCount.json");
+                        foreach (string subscription in retainedSubscriptions)
                         {
-                            var json = File.ReadAllText("RetainedReference.json");
-                            retainedReference = JsonConvert.DeserializeObject<ReferenceDescription>(json);
-                            opcBrowse.Subscribe(subscription, retainedReference);
+                            if(subscription != "")
+                            {
+                                try
+                                {
+                                    retainedSubscription = JsonConvert.DeserializeObject<Subscription>(subscription);
+                                    Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
+                                    m_session.AddSubscription(tempSubscription);
+                                    tempSubscription.DisplayName = retainedSubscription.DisplayName;
+                                    tempSubscription.Create();
+                                    //Checking and recreating monitored items for each subscription.
+                                    ReferenceDescription retainedReference;
+                                    String[] retainedReferences = File.ReadAllLines("RetainedReference.json");
+                                    //To recreate multiple monitored items in subscription.
+                                    foreach (string reference in retainedReferences)
+                                    {
+                                        try
+                                        {
+                                            retainedReference = JsonConvert.DeserializeObject<ReferenceDescription>(reference);
+                                            opcBrowse.Subscribe(tempSubscription, retainedReference);
+                                        }
+                                        catch { }
+                                    }
+                                }
+                                catch { }
+                            }
                         }
-                        //Subscribe(subscription, reference);
-                        File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
                     }
+                    //File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
                 }
             }
+            //Saves session endpoint URL.
+            await SaveSessionAsync(m_session);
         }
         #endregion
 
@@ -422,7 +441,6 @@ namespace BrokerClient
             //Checks if any subscriptions within session.
             if (sender.SubscriptionCount > 0)
             {
-                SaveSessionAsync(sender);
                 //Iterates through session subscriptions.
                 IEnumerable<Subscription> subscriptions = sender.Subscriptions;
                 foreach (Subscription subscription in subscriptions)
@@ -579,18 +597,27 @@ namespace BrokerClient
         #region Session State
         public Task SaveSessionAsync(Session session)
         {
-            session.Save("Test.json");
-            File.WriteAllText(Filename, JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
+            File.AppendAllText("RetainedSession.json", "\n" + JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
             return Task.FromResult(0);
         }
 
         public Task<String> LoadSessionAsync()
         {
-            String retainedSession;
-            if (File.Exists(Filename))
+            String retainedSession = null;
+            if (File.Exists("RetainedSession.json"))
             {
-                var json = File.ReadAllText(Filename);
-                retainedSession = JsonConvert.DeserializeObject<String>(json);
+                String[] json = File.ReadAllLines("RetainedSession.json");
+                foreach (string line in json)
+                {
+                    try
+                    {
+                        retainedSession = JsonConvert.DeserializeObject<String>(line);
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
             else
             {
@@ -601,11 +628,21 @@ namespace BrokerClient
 
         public Task<Subscription> LoadSubscriptionAsync()
         {
-            Subscription retainedSubscription;
+            Subscription retainedSubscription = null;
             if (File.Exists("RetainedSubscription.json"))
             {
-                var json = File.ReadAllText("RetainedSubscription.json");
-                retainedSubscription = JsonConvert.DeserializeObject<Subscription>(json);
+                String[] json = File.ReadAllLines("RetainedSubscription.json");
+                foreach (string line in json)
+                {
+                    try
+                    {
+                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(line);
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
             else
             {
