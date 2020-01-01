@@ -1126,8 +1126,10 @@ namespace Opc.Ua.Sample.Controls
                     if (subscription != null)
                     {
                         Subscribe(subscription, reference);
-                        File.AppendAllText("RetainedReference.json", "\n" + JsonConvert.SerializeObject(reference));
-                        File.AppendAllText("RetainedSubscriptionCount.json", "\n" + JsonConvert.SerializeObject(subscription));
+                        string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
+                        string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\RetainedSubscriptions.json");
+                        File.AppendAllText(Items, "\n" + JsonConvert.SerializeObject(reference));
+                        File.AppendAllText(Subscriptions, "\n" + JsonConvert.SerializeObject(subscription));
                     }
                 }
             }
@@ -1158,7 +1160,8 @@ namespace Opc.Ua.Sample.Controls
                 if (subscription != null)
                 {
                     Subscribe(subscription, reference);
-                    File.AppendAllText("RetainedReference.json", "\n" + JsonConvert.SerializeObject(reference));
+                    string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
+                    File.AppendAllText(Items, "\n" + JsonConvert.SerializeObject(reference));
                 }
             }
             catch (Exception exception)
