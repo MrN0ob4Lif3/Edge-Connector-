@@ -110,7 +110,8 @@ namespace brokerWindows
         #region MQTT Methods
         public async void MQTTConnectClient(IManagedMqttClient managedMqtt,string brokerIP)
         {
-            await ManagedClient.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
+            await ManagedClient.ManagedMqttConnectTCPAsync(managedMqtt, brokerIP);
+            //await ManagedClient.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
         }
 
         //Callback for MQTT connection.
