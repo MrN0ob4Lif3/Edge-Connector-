@@ -50,7 +50,8 @@ namespace brokerWindows
 
                 //Initialize MQTT Client.
                 managedMqtt= ManagedClient.CreateManagedClient();
-                string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+                //string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+                string brokerIP = "localhost";
                 MQTTConnectClient(managedMqtt,brokerIP);
 
                 //Initialize OPC Application Instance

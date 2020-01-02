@@ -37,7 +37,9 @@ namespace BrokerClient
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
         IDictionary<String, String> publishPayload = new Dictionary<String, String>();
-        private uint retainedCounter = 0;
+        string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
+        string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
+        string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
         #endregion
 
         #region Startup Settings
@@ -71,10 +73,9 @@ namespace BrokerClient
 
         public void InitializeClients()
         {
-            string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\");
-            string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\");
-            Directory.CreateDirectory(Items);
-            Directory.CreateDirectory(Subscriptions);
+            Directory.CreateDirectory(itemsFolder);
+            Directory.CreateDirectory(subscriptionsFolder);
+            Directory.CreateDirectory(sessionFolder);
             //Loading OPC elements
             ApplicationInstance application = client.GetApplicationInstance();
             // load the application configuration.
@@ -311,19 +312,7 @@ namespace BrokerClient
         {
             try
             {
-                //client.Connect(e.Endpoint);
-                //m_browser = client.GetBrowser();
-                //m_session = client.GetSession();
-                //MQTTClientForm.brokerService.SessionSurrogate test = client.GetSession();
-                //m_session = test.OPCSession;
-                //
-                //m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
-                //opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
-                //StandardClient_KeepAlive(m_session, null);
-
                 Connect(e.Endpoint);
-                //TestConnect(m_session, e.Endpoint);
-
             }
             catch (Exception exception)
             {
@@ -331,34 +320,6 @@ namespace BrokerClient
                 e.UpdateControl = false;
             }
         }
-        public async void TestConnect(Session session, ConfiguredEndpoint endpoint)
-        {
-            String sessionURL;
-            if (endpoint == null)
-            {
-                return;
-            }
-            if (LoadSessionAsync() != null)
-            {
-                sessionURL = await LoadSessionAsync();
-            }
-            else
-            {
-                sessionURL = "";
-            }
-            if (session.Endpoint.EndpointUrl == sessionURL)
-            {
-                /*
-                Subscription retainedSubscription = await LoadSubscriptionAsync();
-                if(retainedSubscription != null)
-                {
-                    session.AddSubscription(retainedSubscription);
-                    //retainedSubscription.ConditionRefresh();
-                }
-                */
-            }
-        }
-
 
         /// <summary>
         /// Connects to a server.
@@ -387,17 +348,18 @@ namespace BrokerClient
 
 
                 //Checks if endpoint URL selected is same as retained endpoint URL
-                String sessionURL = "";
-                if (LoadSessionAsync() != null)
+                String retainedEndpoint = null;
+                String sessionEndpoint = m_session.Endpoint.EndpointUrl;
+                retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
+                if (retainedEndpoint == null)
                 {
-                    sessionURL = await LoadSessionAsync();
+                    //Saves session endpoint URL.
+                    await SaveSessionAsync(m_session);
+                    return;
                 }
-                if (m_session.Endpoint.EndpointUrl == sessionURL)
+                //Recreates prior session's subscriptions and monitored items.
+                if (sessionEndpoint == retainedEndpoint)
                 {
-                    string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
-                    string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
-                    string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
-                    string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\RetainedSubscriptions.json");
                     //Recreating retained subscriptions.
                     foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
                     {
@@ -420,6 +382,7 @@ namespace BrokerClient
                                 tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
                                 tempSubscription.Create();
 
+                                //Checks for monitored items belonging to subscripton and recreates them.
                                 foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
                                 {
                                     if (item != "")
@@ -429,7 +392,7 @@ namespace BrokerClient
                                             try
                                             {
                                                 String[] testItems = File.ReadAllLines(item);
-                                                foreach(string testItem in testItems)
+                                                foreach (string testItem in testItems)
                                                 {
                                                     //Checking and recreating monitored items for each subscription.
                                                     ReferenceDescription retainedItem;
@@ -448,8 +411,6 @@ namespace BrokerClient
                     }
                 }
             }
-            //Saves session endpoint URL.
-            await SaveSessionAsync(m_session);
         }
         #endregion
 
@@ -559,6 +520,7 @@ namespace BrokerClient
                     }
                 }
             }
+
         }
         private void StandardClient_Server_ReconnectComplete(object sender, EventArgs e)
         {
@@ -618,21 +580,37 @@ namespace BrokerClient
         #region Session State
         public Task SaveSessionAsync(Session session)
         {
-            File.AppendAllText("RetainedSession.json", "\n" + JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
-            return Task.FromResult(0);
+            string sessionFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+            if (File.Exists(sessionFile))
+            {
+                return Task.FromResult(0);
+            }
+            else
+            {
+                File.AppendAllText(sessionFile, JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
+                return Task.FromResult(0);
+            }
         }
 
-        public Task<String> LoadSessionAsync()
+        public Task<String> LoadSessionAsync(String sessionEndpoint)
         {
             String retainedSession = null;
-            if (File.Exists("RetainedSession.json"))
+            String[] sessionFiles = Directory.GetFiles(sessionFolder, "*.json");
+            if (sessionFiles != null)
             {
-                String[] json = File.ReadAllLines("RetainedSession.json");
-                foreach (string line in json)
+                foreach (string session in sessionFiles)
                 {
                     try
                     {
-                        retainedSession = JsonConvert.DeserializeObject<String>(line);
+                        String[] sessionFile = File.ReadAllLines(session);
+                        foreach (string retainedEndpoint in sessionFile)
+                        {
+                            retainedSession = JsonConvert.DeserializeObject<String>(retainedEndpoint);
+                            if (retainedSession.Contains(sessionEndpoint))
+                            {
+                                return Task.FromResult(retainedSession);
+                            }
+                        }
                     }
                     catch
                     {
@@ -645,31 +623,6 @@ namespace BrokerClient
                 return null;
             }
             return Task.FromResult(retainedSession);
-        }
-
-        public Task<Subscription> LoadSubscriptionAsync()
-        {
-            Subscription retainedSubscription = null;
-            if (File.Exists("RetainedSubscription.json"))
-            {
-                String[] json = File.ReadAllLines("RetainedSubscription.json");
-                foreach (string line in json)
-                {
-                    try
-                    {
-                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(line);
-                    }
-                    catch
-                    {
-
-                    }
-                }
-            }
-            else
-            {
-                return null;
-            }
-            return Task.FromResult(retainedSubscription);
         }
         #endregion
 
