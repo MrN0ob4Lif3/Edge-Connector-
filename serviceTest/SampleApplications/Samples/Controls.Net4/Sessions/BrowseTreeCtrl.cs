@@ -40,6 +40,7 @@ using System.IO;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Opc.Ua.Sample.Controls
 {
@@ -67,6 +68,8 @@ namespace Opc.Ua.Sample.Controls
         private event MethodCalledEventHandler m_MethodCalled;
         private BrowserEventHandler m_BrowserMoreReferences;
         private SessionTreeCtrl m_SessionTreeCtrl;
+        string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
+        string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\RetainedSubscriptions.json");
         #endregion
 
         #region Public Interface
@@ -1125,11 +1128,12 @@ namespace Opc.Ua.Sample.Controls
 
                     if (subscription != null)
                     {
+                        string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
+                        string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
                         Subscribe(subscription, reference);
-                        string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
-                        string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\RetainedSubscriptions.json");
-                        File.AppendAllText(Items, "\n" + JsonConvert.SerializeObject(reference));
-                        File.AppendAllText(Subscriptions, "\n" + JsonConvert.SerializeObject(subscription));
+                        //Saves subscription and monitored item details in file for recreation.
+                        File.AppendAllText(Subscriptions, JsonConvert.SerializeObject(subscription) + "\n");
+                        File.AppendAllText(Items, JsonConvert.SerializeObject(reference) + "\n");
                     }
                 }
             }
@@ -1159,9 +1163,10 @@ namespace Opc.Ua.Sample.Controls
 
                 if (subscription != null)
                 {
+                    string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
+                    string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
                     Subscribe(subscription, reference);
-                    string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
-                    File.AppendAllText(Items, "\n" + JsonConvert.SerializeObject(reference));
+                    File.AppendAllText(Items, JsonConvert.SerializeObject(reference) + "\n");
                 }
             }
             catch (Exception exception)

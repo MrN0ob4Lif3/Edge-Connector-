@@ -37,7 +37,7 @@ namespace BrokerClient
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
         IDictionary<String, String> publishPayload = new Dictionary<String, String>();
-        private static uint retainedCounter = 1;
+        private uint retainedCounter = 0;
         #endregion
 
         #region Startup Settings
@@ -394,65 +394,58 @@ namespace BrokerClient
                 }
                 if (m_session.Endpoint.EndpointUrl == sessionURL)
                 {
+                    string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
+                    string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
                     string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
                     string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\RetainedSubscriptions.json");
                     //Recreating retained subscriptions.
-                    if (File.Exists(Items))
+                    foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
                     {
-                        Subscription retainedSubscription;
-                        //Checking and recreating subscriptions from previous session.
-                        String[] retainedSubscriptions = File.ReadAllLines(Subscriptions);
-
-                        foreach (string subscription in retainedSubscriptions)
+                        String testSubscriptions = File.ReadAllText(sub);
+                        if (testSubscriptions != "")
                         {
-                            if(subscription != "")
+                            try
                             {
-                                try
+                                //Recreates subscription based on retained subscription details.
+                                Subscription retainedSubscription;
+                                Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
+                                retainedSubscription = JsonConvert.DeserializeObject<Subscription>(testSubscriptions);
+                                m_session.AddSubscription(tempSubscription);
+                                tempSubscription.DisplayName = retainedSubscription.DisplayName;
+                                tempSubscription.PublishingInterval = retainedSubscription.PublishingInterval;
+                                tempSubscription.KeepAliveCount = retainedSubscription.KeepAliveCount;
+                                tempSubscription.LifetimeCount = retainedSubscription.LifetimeCount;
+                                tempSubscription.MaxNotificationsPerPublish = retainedSubscription.MaxNotificationsPerPublish;
+                                tempSubscription.Priority = retainedSubscription.Priority;
+                                tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
+                                tempSubscription.Create();
+
+                                foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
                                 {
-                                    //Recreates subscription based on retained subscription details.
-                                    Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
-                                    retainedSubscription = JsonConvert.DeserializeObject<Subscription>(subscription);
-                                    m_session.AddSubscription(tempSubscription);
-                                    tempSubscription.DisplayName = retainedSubscription.DisplayName;
-                                    tempSubscription.PublishingInterval = retainedSubscription.PublishingInterval;
-                                    tempSubscription.KeepAliveCount = retainedSubscription.KeepAliveCount;
-                                    tempSubscription.LifetimeCount = retainedSubscription.LifetimeCount;
-                                    tempSubscription.MaxNotificationsPerPublish = retainedSubscription.MaxNotificationsPerPublish;
-                                    tempSubscription.Priority = retainedSubscription.Priority;
-                                    tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
-                                    tempSubscription.Create();
-                                    //Checking and recreating monitored items for each subscription.
-                                    ReferenceDescription retainedItem;
-                                    String[] retainedItems = File.ReadAllLines(Items);
-                                    IEnumerable<String> testItems = File.ReadLines(Items);
-                                    //To recreate multiple monitored items in subscription.
-                                    for(uint i = retainedCounter; i < (retainedCounter+retainedSubscription.MonitoredItemCount+1); i++)
+                                    if (item != "")
                                     {
-                                        try
+                                        if (item.Contains(string.Format("{0}.json", tempSubscription.DisplayName)))
                                         {
-                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(retainedItems[i]);
-                                            opcBrowse.Subscribe(tempSubscription, retainedItem);
-                                            retainedCounter++;
+                                            try
+                                            {
+                                                String[] testItems = File.ReadAllLines(item);
+                                                foreach(string testItem in testItems)
+                                                {
+                                                    //Checking and recreating monitored items for each subscription.
+                                                    ReferenceDescription retainedItem;
+                                                    retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
+                                                    opcBrowse.Subscribe(tempSubscription, retainedItem);
+                                                }
+                                                break;
+                                            }
+                                            catch { }
                                         }
-                                        catch { }
                                     }
-                                    /*
-                                    foreach (string reference in retainedItems)
-                                    {
-                                        try
-                                        {
-                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(reference);
-                                            opcBrowse.Subscribe(tempSubscription, retainedItem);
-                                        }
-                                        catch { }
-                                    }
-                                    */
                                 }
-                                catch { }
                             }
+                            catch { }
                         }
                     }
-                    //File.WriteAllText("RetainedSubscription.json", JsonConvert.SerializeObject(subscription));
                 }
             }
             //Saves session endpoint URL.
