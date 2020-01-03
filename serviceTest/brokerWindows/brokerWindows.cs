@@ -134,8 +134,15 @@ namespace brokerWindows
             await mqttClientSemaphore.WaitAsync();
             try
             {
-                ManagedClient.ManagedMqttSubscribe(managedMqtt, topic);
-                m_topicSet.Add(topic);
+                if(m_topicSet.Contains(topic))
+                {
+                    return;
+                }
+                else
+                {
+                    ManagedClient.ManagedMqttSubscribe(managedMqtt, topic);
+                    m_topicSet.Add(topic);
+                }
             }
             finally
             {

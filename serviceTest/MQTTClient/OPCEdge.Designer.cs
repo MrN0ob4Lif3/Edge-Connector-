@@ -367,6 +367,7 @@
             this.Name = "BrokerMain";
             this.Text = "OPC-UA - MQTT Edge Connector";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MqttMain_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MqttMain_FormClosed);
             this.Load += new System.EventHandler(this.MqttMain_Load);
             this.Resize += new System.EventHandler(this.MqttMain_Resize);
             this.MqttTabs.ResumeLayout(false);
