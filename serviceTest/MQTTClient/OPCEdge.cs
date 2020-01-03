@@ -15,8 +15,6 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
-using System.Runtime.Serialization;
-
 
 namespace BrokerClient
 {
@@ -358,6 +356,7 @@ namespace BrokerClient
                 String retainedEndpoint = null;
                 String sessionEndpoint = m_session.Endpoint.EndpointUrl;
                 retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
+                //If no retained endpoints, saves current endpoint.
                 if (retainedEndpoint == null)
                 {
                     //Saves session endpoint URL.
@@ -420,7 +419,6 @@ namespace BrokerClient
                 }
                 //Creates separate thread to monitor and publish subscriptions.
                 publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
-
                 //Thread publishThread = new Thread(() => OPCPublish(m_session));
                 //publishThread.Start();
 
@@ -434,48 +432,6 @@ namespace BrokerClient
         /// </summary>
         void StandardClient_KeepAlive(Session sender, KeepAliveEventArgs e)
         {
-            /*
-            //Checks if any subscriptions within session.
-            if (sender.SubscriptionCount > 0)
-            {
-                //Iterates through session subscriptions.
-                IEnumerable<Subscription> subscriptions = sender.Subscriptions;
-                foreach (Subscription subscription in subscriptions)
-                {
-                    IDictionary<String, String> subscriptionPayload = new Dictionary<String, String>();
-                    if (subscription == null) { continue; }
-                    double subscriptionInterval = subscription.CurrentPublishingInterval;
-                    subscription.CurrentPublishedTime = DateTime.Now;
-                    TimeSpan intervalCheck = subscription.CurrentPublishedTime.Subtract(subscription.PreviousPublishedTime);
-                    //Checks if subscription has already been published to MQTT broker.
-                    double intervalDifference = ((double)intervalCheck.Seconds * 100);
-                    if (((Double)intervalCheck.Seconds * 100) < subscriptionInterval && subscription.SubscriptionPublished == false) { continue; }
-                    else
-                    {
-                        //Iterates through subscription items.               
-                        if (subscription.MonitoredItemCount > 0)
-                        {
-                            IEnumerable<MonitoredItem> monitoredItems = subscription.MonitoredItems;
-                            //Adds monitored items to a 'payload' dictionary to be seralized as a JSON string.
-                            foreach (MonitoredItem monitoredItem in monitoredItems)
-                            {
-                                if (monitoredItem.LastValue != null)
-                                {
-                                    string monitoredDisplayName = monitoredItem.DisplayName;
-                                    string monitoredValue = monitoredItem.LastValue.ToString();
-                                    subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
-                                    string message = JsonConvert.SerializeObject(subscriptionPayload);
-                                    client.MQTTPublishTopicAsync(subscription.DisplayName, message);
-                                    client.MQTTSubscribeTopic(subscription.DisplayName);
-                                    subscription.PreviousPublishedTime = DateTime.UtcNow;
-                                    subscription.SubscriptionPublished = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            */
             if (InvokeRequired)
             {
                 BeginInvoke(new KeepAliveEventHandler(StandardClient_KeepAlive), sender, e);
@@ -595,54 +551,66 @@ namespace BrokerClient
         //MQTT publication of OPC subscriptions.
         public void OPCPublish(Session session)
         {
-            while(true)
+            while (true)
             {
-                //Checks if any subscriptions within session.
-                if (session.SubscriptionCount > 0)
+                try
                 {
-                    //Iterates through session subscriptions.
-                    foreach (Subscription subscription in session.Subscriptions)
+                    //Checks if any subscriptions within session.
+                    if (session.SubscriptionCount > 0)
                     {
-                        // If subscription is invalid somehow, move on to next.
-                        if (subscription == null)
+                        //Iterates through session subscriptions.
+                        IEnumerable<Subscription> subscriptions = session.Subscriptions;
+                        foreach (Subscription subscription in subscriptions)
                         {
-                            continue;
-                        }
-                        IDictionary<String, String> subscriptionPayload = new Dictionary<String, String>();
-                        double subscriptionInterval = subscription.CurrentPublishingInterval;
-                        subscription.CurrentPublishedTime = DateTime.Now;
-                        TimeSpan intervalCheck = subscription.CurrentPublishedTime.Subtract(subscription.PreviousPublishedTime);
-                        //Checks if subscription has already been published to MQTT broker.
-                        double intervalDifference = (double)intervalCheck.Milliseconds;
-                        if (((Double)intervalCheck.Milliseconds) < subscriptionInterval && subscription.SubscriptionPublished == false)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            //Iterates through subscription items.               
-                            if (subscription.MonitoredItemCount > 0)
+                            // If subscription is invalid somehow, move on to next.
+                            if (subscription == null)
                             {
-                                //Adds monitored items to a 'payload' dictionary to be seralized as a JSON string.
-                                foreach (MonitoredItem monitoredItem in subscription.MonitoredItems)
+                                continue;
+                            }
+                            IDictionary<String, String> subscriptionPayload = new Dictionary<String, String>();
+                            double subscriptionInterval = subscription.CurrentPublishingInterval;
+                            subscription.CurrentPublishedTime = DateTime.Now;
+                            TimeSpan intervalCheck = subscription.CurrentPublishedTime.Subtract(subscription.PreviousPublishedTime);
+                            //Checks if subscription has already been published to MQTT broker.
+                            double intervalDifference = (double)intervalCheck.TotalMilliseconds;
+                            //Checks if publishing interval has been reached and weather subscription has been published at least once.
+                            if (intervalDifference < subscriptionInterval && subscription.SubscriptionPublished == false)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                //Iterates through subscription items.               
+                                if (subscription.MonitoredItemCount > 0)
                                 {
-                                    if (monitoredItem.LastValue != null)
+                                    IEnumerable<MonitoredItem> monitoredItems = subscription.MonitoredItems;
+                                    //Adds monitored items to a 'payload' dictionary to be seralized as a JSON string.
+                                    foreach (MonitoredItem monitoredItem in monitoredItems)
                                     {
-                                        string monitoredDisplayName = monitoredItem.DisplayName;
-                                        string monitoredValue = monitoredItem.LastValue.ToString();
-                                        subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
+                                        if (monitoredItem.LastValue != null)
+                                        {
+                                            string monitoredDisplayName = monitoredItem.DisplayName;
+                                            string monitoredValue = monitoredItem.LastValue.ToString();
+                                            subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
+                                        }
+                                        string message = JsonConvert.SerializeObject(subscriptionPayload);
+                                        client.MQTTPublishTopicAsync(subscription.DisplayName, message);
+                                        client.MQTTSubscribeTopic(subscription.DisplayName);
+                                        subscription.PreviousPublishedTime = DateTime.UtcNow;
+                                        subscription.SubscriptionPublished = true;
                                     }
                                 }
-                                string message = JsonConvert.SerializeObject(subscriptionPayload);
-                                client.MQTTPublishTopicAsync(subscription.DisplayName, message);
-                                subscription.PreviousPublishedTime = DateTime.UtcNow;
-                                subscription.SubscriptionPublished = true;
                             }
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
             }
-  
+
         }
         #region Session State
         public Task SaveSessionAsync(Session session)

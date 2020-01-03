@@ -6,11 +6,11 @@ using System.Threading;
 using System.ServiceModel.Description;
 using MQTTnet.Extensions.ManagedClient;
 using ServiceLogic;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using Opc.Ua.Configuration;
 using Opc.Ua;
 using Opc.Ua.Client.Controls;
+using System.Threading.Tasks;
 
 namespace brokerWindows
 {
