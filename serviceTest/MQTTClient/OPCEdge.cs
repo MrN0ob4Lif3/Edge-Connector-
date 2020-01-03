@@ -346,7 +346,6 @@ namespace BrokerClient
                     m_reconnectHandler.Dispose();
                     m_reconnectHandler = null;
                 }
-
                 m_session = session;
                 m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
                 opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
@@ -405,6 +404,15 @@ namespace BrokerClient
                                                     ReferenceDescription retainedItem;
                                                     retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
                                                     opcBrowse.Subscribe(tempSubscription, retainedItem);
+                                                    if (topicListPub.Items.Contains(tempSubscription.DisplayName))
+                                                    {
+                                                        continue;
+                                                    }
+                                                    else
+                                                    {
+                                                        topicListPub.Items.Add((tempSubscription.DisplayName));
+                                                        topicListSub.Items.Add((tempSubscription.DisplayName));
+                                                    }
                                                 }
                                                 break;
                                             }
@@ -417,10 +425,10 @@ namespace BrokerClient
                         }
                     }
                 }
-                //Creates separate thread to monitor and publish subscriptions.
+
+                //Use timer callback to monitor and publish subscriptions.
                 publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
-                //Thread publishThread = new Thread(() => OPCPublish(m_session));
-                //publishThread.Start();
+
 
             }
         }
