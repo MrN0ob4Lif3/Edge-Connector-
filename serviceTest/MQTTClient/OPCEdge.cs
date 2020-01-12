@@ -559,7 +559,7 @@ namespace BrokerClient
         }
 
         //Session recreation method.
-        public async void RecreateSession(Session session)
+        public void RecreateSession(Session session)
         {
             //Recreating retained subscriptions.
             foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))

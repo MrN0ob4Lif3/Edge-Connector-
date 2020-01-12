@@ -1,0 +1,6 @@
+Opc.Ua.SampleClient.Config.xml needs to be in Debug and SysWOW64
+Opc.Ua.SampleClient.Endpoints.xml needs to be in Debug and SysWow64
+
+Retained Subscriptions - Contains JSON strings of subscription objects. (Known as 'Subscriptions' within code)
+Retained Session - Contains Endpoint URL previous session connected to. 
+Retained Monitored Items - Contains JSON strings of monitored item objects (Known as 'Reference' within code)
