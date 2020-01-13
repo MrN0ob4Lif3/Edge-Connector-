@@ -12,6 +12,7 @@ using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Protocol;
 using Opc.Ua.Configuration;
 using Opc.Ua;
+using Opc.Ua.Client;
 
 namespace ServiceLogic
 {
@@ -25,6 +26,7 @@ namespace ServiceLogic
         HashSet<String> MQTTSubscribedTopics();
         ApplicationInstance OPCApplicationInstance();
         ConfiguredEndpointCollection OPCEndpoints();
+        Session OPCSession();
 
     }
 

@@ -11,6 +11,8 @@ using Opc.Ua.Configuration;
 using Opc.Ua;
 using Opc.Ua.Client.Controls;
 using System.Threading.Tasks;
+using Opc.Ua.Client;
+using System.Security.Cryptography.X509Certificates;
 
 namespace brokerWindows
 {
@@ -29,7 +31,13 @@ namespace brokerWindows
         public ApplicationInstance application;
         public ApplicationConfiguration m_configuration;
         public ApplicationConfiguration app_configuration;
+        private ConfiguredEndpoint m_endpoint;
         public ConfiguredEndpointCollection m_endpoints;
+        private ServiceMessageContext m_messageContext;
+        public Session m_session;
+        public Browser m_browser;
+        private CertificateValidationEventHandler m_CertificateValidation;
+
         #endregion
 
         public brokerWindows()
@@ -73,6 +81,39 @@ namespace brokerWindows
                 {
                     app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
                 }
+                Connect(m_endpoint);
+                /*
+                try
+                {
+                    //Find best endpoint
+                    EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(brokerIP, false);
+                    EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
+                    ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
+                    //Create Session
+                    m_session = await Session.Create(
+                        m_configuration,
+                        endpoint,
+                        false,
+                        !DisableDomainCheck,
+                        (String.IsNullOrEmpty(SessionName)) ? m_configuration.ApplicationName : SessionName,
+                        60000,
+                        UserIdentity,
+                        PreferredLocales);
+                    //Keep session alive 
+                    m_session.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
+                }
+                catch (Exception e)
+                {
+                    // Create an EventLog instance and assign its source.
+                    EventLog myLog = new EventLog
+                    {
+                        Source = "brokerServiceOPCClient"
+                    };
+                    // Write an informational entry to the event log.
+                    myLog.WriteEntry(e.Message);
+                }
+                */
+
             }
             catch (Exception ex)
             {
@@ -189,6 +230,99 @@ namespace brokerWindows
 
         #region OPC Methods
         /// <summary>
+        /// Creates a session with the endpoint.
+        /// </summary>
+        public async void Connect(ConfiguredEndpoint endpoint)
+        {
+            if (endpoint == null) throw new ArgumentNullException("endpoint");
+
+            m_endpoint = endpoint;
+
+            // copy the message context.
+            m_messageContext = m_configuration.CreateMessageContext();
+
+
+            X509Certificate2 clientCertificate = null;
+            X509Certificate2Collection clientCertificateChain = null;
+
+            if (endpoint.Description.SecurityPolicyUri != SecurityPolicies.None)
+            {
+                if (m_configuration.SecurityConfiguration.ApplicationCertificate == null)
+                {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate must be specified.");
+                }
+
+                clientCertificate = await m_configuration.SecurityConfiguration.ApplicationCertificate.Find(true);
+
+                if (clientCertificate == null)
+                {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate cannot be found.");
+                }
+
+                // load certificate chain
+                clientCertificateChain = new X509Certificate2Collection(clientCertificate);
+                List<CertificateIdentifier> issuers = new List<CertificateIdentifier>();
+                await m_configuration.CertificateValidator.GetIssuers(clientCertificate, issuers);
+                for (int i = 0; i < issuers.Count; i++)
+                {
+                    clientCertificateChain.Add(issuers[i].Certificate);
+                }
+            }
+
+            // create the channel.
+            ITransportChannel channel = SessionChannel.Create(
+                m_configuration,
+                endpoint.Description,
+                endpoint.Configuration,
+                clientCertificate,
+                m_configuration.SecurityConfiguration.SendCertificateChain ? clientCertificateChain : null,
+                m_messageContext);
+
+            // create the session.
+            if (channel == null) throw new ArgumentNullException("channel");
+            try
+            {
+                // create the session.
+                Session session = new Session(channel, m_configuration, endpoint, null);
+                session.ReturnDiagnostics = DiagnosticsMasks.All;
+
+                // session now owns the channel.
+                channel = null;
+
+                // delete the existing session.
+                // Close();
+
+                // add session to tree.
+                //AddNode(session);
+
+                // Saves session instance in service.
+                m_session = session;
+
+                // Saves browser instance in service.
+                m_browser = new Browser(session)
+                {
+                    Session = session,
+                    BrowseDirection = BrowseDirection.Forward,
+                    ReferenceTypeId = null,
+                    IncludeSubtypes = true,
+                    NodeClassMask = 0,
+                    ContinueUntilDone = false
+                };
+
+            }
+            finally
+            {
+                // ensure the channel is closed on error.
+                if (channel != null)
+                {
+                    channel.Close();
+                }
+            }
+        }
+
+
+
+        /// <summary>
         /// Handles a certificate validation error.
         /// </summary>
         private void CertificateValidator_CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
@@ -225,6 +359,62 @@ namespace brokerWindows
         {
             return m_endpoints;
         }
+
+        //Callback to return OPC Session
+        Session IServiceCallback.OPCSession()
+        {
+            return m_session;
+        }
+        #endregion
+
+
+
+        #region OPC Session Creation Methods
+        /// <summary>
+        /// Gets or sets a flag indicating that the domain checks should be ignored when connecting.
+        /// </summary>
+        public bool DisableDomainCheck { get; set; }
+
+        /// <summary>
+        /// The name of the session to create.
+        /// </summary>
+        public string SessionName { get; set; }
+
+        /// <summary>
+        /// The user identity to use when creating the session.
+        /// </summary>
+        public IUserIdentity UserIdentity { get; set; }
+
+        /// <summary>
+        /// The client application configuration.
+        /// </summary>
+        public ApplicationConfiguration Configuration
+        {
+            get { return m_configuration; }
+
+            set
+            {
+                if (!Object.ReferenceEquals(m_configuration, value))
+                {
+                    if (m_configuration != null)
+                    {
+                        m_configuration.CertificateValidator.CertificateValidation -= m_CertificateValidation;
+                    }
+
+                    m_configuration = value;
+
+                    if (m_configuration != null)
+                    {
+                        m_configuration.CertificateValidator.CertificateValidation += m_CertificateValidation;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The locales to use when creating the session.
+        /// </summary>
+        public string[] PreferredLocales { get; set; }
         #endregion
     }
 }
