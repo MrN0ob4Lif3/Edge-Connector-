@@ -408,21 +408,33 @@ namespace Opc.Ua.Sample.Controls
                     return;
                 }
                 string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
+                string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
                 m_subscription.Modify();
                     
                 //Stores edited subscription values in 'Retained Subscriptions' folder.
-                //Recreating retained subscriptions.
                 foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
                 {
-                    String testSubscriptions = File.ReadAllText(sub);
-                    if (testSubscriptions.Contains(tempDisplayName))
+                    String subscriptionDetails = File.ReadAllText(sub);
+                    if (subscriptionDetails.Contains(tempDisplayName))
                     {
-                        string Subscription = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", m_subscription.DisplayName));
+                        string modifiedSubscription = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", m_subscription.DisplayName));
+                        File.AppendAllText(modifiedSubscription, JsonConvert.SerializeObject(m_subscription) + "\n");
                         File.Delete(sub);
-                        File.AppendAllText(Subscription, JsonConvert.SerializeObject(m_subscription) + "\n");
+                        break;
                     }
                 }
 
+                //Edits filename for monitored items in 'Retained Monitored Items' folder to allow for recreation.
+                foreach(string item in Directory.GetFiles(itemsFolder, "*.json"))
+                {
+                    if(item.Contains(tempDisplayName))
+                    {
+                        string modifiedItem = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Monitored Items\{0}.json", m_subscription.DisplayName));
+                        File.Move(item, modifiedItem);
+                        File.Delete(item);
+                        break;
+                    }
+                }
 
             }
             catch (Exception exception)
