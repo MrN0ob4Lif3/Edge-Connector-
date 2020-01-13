@@ -584,7 +584,7 @@ namespace BrokerClient
                         tempSubscription.Create();
                         client.MQTTSubscribeTopic(tempSubscription.DisplayName);
 
-                        //Checks for monitored items belonging to subscripton and recreates them.
+                        //Checks for monitored items belonging to subscription and recreates them.
                         foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
                         {
                             if (item != "")

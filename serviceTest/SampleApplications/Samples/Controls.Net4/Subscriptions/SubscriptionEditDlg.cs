@@ -53,7 +53,7 @@ namespace Opc.Ua.Sample.Controls
         public bool ShowDialog(Subscription subscription)
         {
             if (subscription == null) throw new ArgumentNullException("subscription");
-
+            //Temp string variable so can search for subscription during retention.
             DisplayNameTB.Text          = subscription.DisplayName;
             PublishingIntervalNC.Value  = subscription.Created ? (decimal)subscription.CurrentPublishingInterval : (decimal)subscription.PublishingInterval;
             KeepAliveCountNC.Value      = subscription.Created ? subscription.CurrentKeepAliveCount : subscription.KeepAliveCount;
@@ -67,12 +67,14 @@ namespace Opc.Ua.Sample.Controls
                 return false;
             }
 
+            //Edits subscription values
             subscription.DisplayName                = DisplayNameTB.Text;
             subscription.PublishingInterval         = (int)PublishingIntervalNC.Value;
             subscription.KeepAliveCount             = (uint)KeepAliveCountNC.Value;
             subscription.LifetimeCount              = (uint)LifetimeCountCTRL.Value;
             subscription.MaxNotificationsPerPublish = (uint)MaxNotificationsCTRL.Value;
             subscription.Priority                   = (byte)PriorityNC.Value;
+
             if (subscription.Created)
             {
                 subscription.SetPublishingMode(PublishingEnabledCK.Checked);            
@@ -81,6 +83,7 @@ namespace Opc.Ua.Sample.Controls
             {
                 subscription.PublishingEnabled = PublishingEnabledCK.Checked;
             }
+
             return true;
         }
     }

@@ -39,6 +39,8 @@ using System.Reflection;
 
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Opc.Ua.Sample.Controls
 {
@@ -400,12 +402,28 @@ namespace Opc.Ua.Sample.Controls
         {
             try
             {
+                string tempDisplayName = m_subscription.DisplayName;
                 if (!new SubscriptionEditDlg().ShowDialog(m_subscription))
                 {
                     return;
                 }
-                
+                string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
                 m_subscription.Modify();
+                    
+                //Stores edited subscription values in 'Retained Subscriptions' folder.
+                //Recreating retained subscriptions.
+                foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
+                {
+                    String testSubscriptions = File.ReadAllText(sub);
+                    if (testSubscriptions.Contains(tempDisplayName))
+                    {
+                        string Subscription = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", m_subscription.DisplayName));
+                        File.Delete(sub);
+                        File.AppendAllText(Subscription, JsonConvert.SerializeObject(m_subscription) + "\n");
+                    }
+                }
+
+
             }
             catch (Exception exception)
             {
