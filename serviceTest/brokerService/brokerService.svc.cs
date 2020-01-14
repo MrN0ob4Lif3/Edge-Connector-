@@ -368,7 +368,6 @@ namespace brokerService
             }
         }
 
-
         public ApplicationInstance GetApplicationInstance()
         {
             return Host.Current.OPCApplicationInstance();
@@ -381,25 +380,7 @@ namespace brokerService
 
         public Session GetSession()
         {
-            try
-            {
-                //SessionSurrogate sessionSurrogate = new SessionSurrogate();
-                //sessionSurrogate.OPCSession = m_session;
-                //return sessionSurrogate;
-                return m_session;
-            }
-            catch (Exception e)
-            {
-                // Create an EventLog instance and assign its source.
-                EventLog myLog = new EventLog
-                {
-                    Source = "brokerServiceSession"
-                };
-                // Write an informational entry to the event log.
-                myLog.WriteEntry(e.Message);
-                return null;
-            }
-
+            return Host.Current.OPCSession();
         }
 
         public Browser GetBrowser()

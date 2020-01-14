@@ -33,6 +33,9 @@ namespace brokerWindows
         public ApplicationConfiguration app_configuration;
         private ConfiguredEndpoint m_endpoint;
         public ConfiguredEndpointCollection m_endpoints;
+        public EndpointConfiguration m_endpoint_configuration;
+        public SessionReconnectHandler m_reconnectHandler;
+        public const int reconnectPeriod = 10;
         private ServiceMessageContext m_messageContext;
         public Session m_session;
         public Browser m_browser;
@@ -58,6 +61,7 @@ namespace brokerWindows
 
                 //Initialize MQTT Client.
                 managedMqtt= ManagedClient.CreateManagedClient();
+                //MQTT Broker connection
                 //string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
                 string brokerIP = "localhost";
                 MQTTConnectClient(managedMqtt,brokerIP);
@@ -81,39 +85,9 @@ namespace brokerWindows
                 {
                     app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
                 }
-                Connect(m_endpoint);
-                /*
-                try
-                {
-                    //Find best endpoint
-                    EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(brokerIP, false);
-                    EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
-                    ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
-                    //Create Session
-                    m_session = await Session.Create(
-                        m_configuration,
-                        endpoint,
-                        false,
-                        !DisableDomainCheck,
-                        (String.IsNullOrEmpty(SessionName)) ? m_configuration.ApplicationName : SessionName,
-                        60000,
-                        UserIdentity,
-                        PreferredLocales);
-                    //Keep session alive 
-                    m_session.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
-                }
-                catch (Exception e)
-                {
-                    // Create an EventLog instance and assign its source.
-                    EventLog myLog = new EventLog
-                    {
-                        Source = "brokerServiceOPCClient"
-                    };
-                    // Write an informational entry to the event log.
-                    myLog.WriteEntry(e.Message);
-                }
-                */
-
+                //OPC Server connection.
+                string endpointURL = "opc.tcp://opcua.rocks:4840";
+                OPCConnect(application, endpointURL);
             }
             catch (Exception ex)
             {
@@ -232,95 +206,42 @@ namespace brokerWindows
         /// <summary>
         /// Creates a session with the endpoint.
         /// </summary>
-        public async void Connect(ConfiguredEndpoint endpoint)
+        /// 
+        public async void OPCConnect(ApplicationInstance application, string endpointURL)
         {
-            if (endpoint == null) throw new ArgumentNullException("endpoint");
 
-            m_endpoint = endpoint;
-
-            // copy the message context.
-            m_messageContext = m_configuration.CreateMessageContext();
-
-
-            X509Certificate2 clientCertificate = null;
-            X509Certificate2Collection clientCertificateChain = null;
-
-            if (endpoint.Description.SecurityPolicyUri != SecurityPolicies.None)
+            // load the application configuration.
+            ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
+            // check the application certificate.
+            bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(false, 0);
+            if (!haveAppCertificate)
             {
-                if (m_configuration.SecurityConfiguration.ApplicationCertificate == null)
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate must be specified.");
-                }
-
-                clientCertificate = await m_configuration.SecurityConfiguration.ApplicationCertificate.Find(true);
-
-                if (clientCertificate == null)
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate cannot be found.");
-                }
-
-                // load certificate chain
-                clientCertificateChain = new X509Certificate2Collection(clientCertificate);
-                List<CertificateIdentifier> issuers = new List<CertificateIdentifier>();
-                await m_configuration.CertificateValidator.GetIssuers(clientCertificate, issuers);
-                for (int i = 0; i < issuers.Count; i++)
-                {
-                    clientCertificateChain.Add(issuers[i].Certificate);
-                }
+                throw new Exception("Application instance certificate invalid!");
             }
 
-            // create the channel.
-            ITransportChannel channel = SessionChannel.Create(
-                m_configuration,
-                endpoint.Description,
-                endpoint.Configuration,
-                clientCertificate,
-                m_configuration.SecurityConfiguration.SendCertificateChain ? clientCertificateChain : null,
-                m_messageContext);
-
-            // create the session.
-            if (channel == null) throw new ArgumentNullException("channel");
-            try
+            if (haveAppCertificate)
             {
-                // create the session.
-                Session session = new Session(channel, m_configuration, endpoint, null);
-                session.ReturnDiagnostics = DiagnosticsMasks.All;
-
-                // session now owns the channel.
-                channel = null;
-
-                // delete the existing session.
-                // Close();
-
-                // add session to tree.
-                //AddNode(session);
-
-                // Saves session instance in service.
-                m_session = session;
-
-                // Saves browser instance in service.
-                m_browser = new Browser(session)
+                config.ApplicationUri = Utils.GetApplicationUriFromCertificate(config.SecurityConfiguration.ApplicationCertificate.Certificate);
+                if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
                 {
-                    Session = session,
-                    BrowseDirection = BrowseDirection.Forward,
-                    ReferenceTypeId = null,
-                    IncludeSubtypes = true,
-                    NodeClassMask = 0,
-                    ContinueUntilDone = false
-                };
-
-            }
-            finally
-            {
-                // ensure the channel is closed on error.
-                if (channel != null)
-                {
-                    channel.Close();
+                    bool autoAccept = true;
                 }
+                config.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
+            else
+            {
+                Console.WriteLine("    WARN: missing application certificate, using unsecure connection.");
+            }
+
+            //Select endpoint after discovery.
+            var selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointURL, haveAppCertificate, 15000);
+            //Creates session with OPC Server
+            m_endpoint_configuration = EndpointConfiguration.Create(config);
+            m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
+            m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
+            // register keep alive handler
+            m_session.KeepAlive += Client_KeepAlive;
         }
-
-
 
         /// <summary>
         /// Handles a certificate validation error.
@@ -366,8 +287,6 @@ namespace brokerWindows
             return m_session;
         }
         #endregion
-
-
 
         #region OPC Session Creation Methods
         /// <summary>
@@ -416,5 +335,70 @@ namespace brokerWindows
         /// </summary>
         public string[] PreferredLocales { get; set; }
         #endregion
+
+        #region Client Keep Alive / Reconnect handlers
+        private void Client_KeepAlive(Session sender, KeepAliveEventArgs e)
+        {
+            if (e.Status != null && ServiceResult.IsNotGood(e.Status))
+            {
+                Console.WriteLine("{0} {1}/{2}", e.Status, sender.OutstandingRequestCount, sender.DefunctRequestCount);
+
+                if (m_reconnectHandler == null)
+                {
+                    Console.WriteLine("--- RECONNECTING ---");
+                    m_reconnectHandler = new SessionReconnectHandler();
+                    m_reconnectHandler.BeginReconnect(sender, reconnectPeriod * 1000, Client_ReconnectComplete);
+                }
+            }
+        }
+
+        private void Client_ReconnectComplete(object sender, EventArgs e)
+        {
+            // ignore callbacks from discarded objects.
+            if (!Object.ReferenceEquals(sender, m_reconnectHandler))
+            {
+                return;
+            }
+
+            m_session = m_reconnectHandler.Session;
+            m_reconnectHandler.Dispose();
+            m_reconnectHandler = null;
+
+            Console.WriteLine("--- RECONNECTED ---");
+        }
+        #endregion
     }
 }
+
+
+/*
+try
+{
+    //Find best endpoint
+    EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(brokerIP, false);
+    EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
+    ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
+    //Create Session
+    m_session = await Session.Create(
+        m_configuration,
+        endpoint,
+        false,
+        !DisableDomainCheck,
+        (String.IsNullOrEmpty(SessionName)) ? m_configuration.ApplicationName : SessionName,
+        60000,
+        UserIdentity,
+        PreferredLocales);
+    //Keep session alive 
+    m_session.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
+}
+catch (Exception e)
+{
+    // Create an EventLog instance and assign its source.
+    EventLog myLog = new EventLog
+    {
+        Source = "brokerServiceOPCClient"
+    };
+    // Write an informational entry to the event log.
+    myLog.WriteEntry(e.Message);
+}
+*/

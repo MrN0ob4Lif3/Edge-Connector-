@@ -138,11 +138,17 @@ namespace BrokerClient
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
-
             if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
+            m_session = client.GetSession();
+            if(m_session!=null)
+            {
+                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+            }
+
+
         }
         #endregion
 
