@@ -36,6 +36,7 @@ namespace Opc.Ua
     /// The client side interface for a UA server.
     /// </summary>
     /// <exclude />
+    [Serializable]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.CodeGenerator", "1.0.0.0")]
     public partial class SessionClient : ClientBase
     {
@@ -4499,6 +4500,7 @@ namespace Opc.Ua
     /// The client side interface for a UA server.
     /// </summary>
     /// <exclude />
+    [Serializable]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.CodeGenerator", "1.0.0.0")]
     public partial class DiscoveryClient : ClientBase
     {
@@ -4939,6 +4941,7 @@ namespace Opc.Ua
     /// The client side interface for a UA server.
     /// </summary>
     /// <exclude />
+    [Serializable]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.CodeGenerator", "1.0.0.0")]
     public partial class RegistrationClient : ClientBase
     {

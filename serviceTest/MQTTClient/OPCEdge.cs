@@ -143,7 +143,7 @@ namespace BrokerClient
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
             m_session = client.GetSession();
-            if(m_session!=null)
+            if (m_session != null)
             {
                 opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
             }

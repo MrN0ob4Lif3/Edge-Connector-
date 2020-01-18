@@ -40,6 +40,7 @@ namespace brokerWindows
         public Session m_session;
         public Browser m_browser;
         private CertificateValidationEventHandler m_CertificateValidation;
+        static bool autoAccept = true;
 
         #endregion
 
@@ -55,14 +56,11 @@ namespace brokerWindows
                 //Set the static callback reference and creates interface for WinForms by hosting a WCF Service.
                 Host.Current = this;
                 StartBroker();
-
                 // Log an event to indicate successful start.
                 EventLog.WriteEntry("Successful start.", EventLogEntryType.Information);
-
                 //Initialize MQTT Client.
                 managedMqtt= ManagedClient.CreateManagedClient();
                 //MQTT Broker connection
-                //string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
                 string brokerIP = "localhost";
                 MQTTConnectClient(managedMqtt,brokerIP);
 
@@ -73,18 +71,6 @@ namespace brokerWindows
                     ApplicationType = ApplicationType.ClientAndServer,
                     ConfigSectionName = "Opc.Ua.SampleClient"
                 };
-                //load the application configuration.
-                application.LoadApplicationConfiguration(false).Wait();
-                // check the application certificate.
-                application.CheckApplicationInstanceCertificate(false, 0).Wait();
-                m_configuration = app_configuration = application.ApplicationConfiguration;
-                // get list of cached endpoints.
-                m_endpoints = m_configuration.LoadCachedEndpoints(true);
-                m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
-                if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
-                {
-                    app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
-                }
                 //OPC Server connection.
                 string endpointURL = "opc.tcp://opcua.rocks:4840";
                 OPCConnect(application, endpointURL);
@@ -129,6 +115,7 @@ namespace brokerWindows
             //await ManagedClient.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
         }
 
+        #region Callback methods
         //Callback for MQTT connection.
         async void IServiceCallback.MQTTConnect(string brokerIP)
         {
@@ -194,12 +181,12 @@ namespace brokerWindows
                 mqttClientSemaphore.Release();
             }
         }
-
         //Callback to return MQTT subscribed topics.
         HashSet<String> IServiceCallback.MQTTSubscribedTopics()
         {
             return m_topicSet;
         }
+        #endregion
         #endregion
 
         #region OPC Methods
@@ -209,6 +196,15 @@ namespace brokerWindows
         /// 
         public async void OPCConnect(ApplicationInstance application, string endpointURL)
         {
+            //load the application configuration.
+            application.LoadApplicationConfiguration(false).Wait();
+            // check the application certificate.
+            application.CheckApplicationInstanceCertificate(false, 0).Wait();
+            m_configuration = app_configuration = application.ApplicationConfiguration;
+            // get list of cached endpoints.
+            m_endpoints = m_configuration.LoadCachedEndpoints(true);
+            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
+            m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
             // load the application configuration.
             ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
@@ -224,7 +220,7 @@ namespace brokerWindows
                 config.ApplicationUri = Utils.GetApplicationUriFromCertificate(config.SecurityConfiguration.ApplicationCertificate.Certificate);
                 if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
                 {
-                    bool autoAccept = true;
+                    autoAccept = true;
                 }
                 config.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
@@ -234,12 +230,12 @@ namespace brokerWindows
             }
 
             //Select endpoint after discovery.
-            var selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointURL, haveAppCertificate, 15000);
+            EndpointDescription selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointURL, haveAppCertificate, 15000);
             //Creates session with OPC Server
             m_endpoint_configuration = EndpointConfiguration.Create(config);
             m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
             m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
-            // register keep alive handler
+            //Register keep alive handler
             m_session.KeepAlive += Client_KeepAlive;
         }
 
@@ -250,25 +246,26 @@ namespace brokerWindows
         {
             try
             {
-                e.Accept = m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates;
-                /*
-                if (!m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+                if (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted)
                 {
-                    DialogResult result = MessageBox.Show(
-                        e.Certificate.Subject,
-                        "Untrusted Certificate",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning);
-
-                    e.Accept = (result == DialogResult.Yes);
-                }*/
+                    e.Accept = autoAccept;
+                    if (autoAccept)
+                    {
+                        Console.WriteLine("Accepted Certificate: {0}", e.Certificate.Subject);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Rejected Certificate: {0}", e.Certificate.Subject);
+                    }
+                }
             }
             catch (Exception exception)
             {
                 ClientUtils.HandleException("Certificate Validation", exception);
             }
         }
-        
+
+        #region Callback methods
         //Callback to return OPC Application Instance
         ApplicationInstance IServiceCallback.OPCApplicationInstance()
         {
@@ -367,6 +364,7 @@ namespace brokerWindows
             Console.WriteLine("--- RECONNECTED ---");
         }
         #endregion
+        #endregion
     }
 }
 
@@ -400,5 +398,33 @@ catch (Exception e)
     };
     // Write an informational entry to the event log.
     myLog.WriteEntry(e.Message);
+}
+*/
+
+/*
+/// <summary>
+/// Handles a certificate validation error.
+/// </summary>
+private void CertificateValidator_CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
+{
+    try
+    {
+        e.Accept = m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates;
+        /*
+        if (!m_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+        {
+            DialogResult result = MessageBox.Show(
+                e.Certificate.Subject,
+                "Untrusted Certificate",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            e.Accept = (result == DialogResult.Yes);
+        }
+    }
+    catch (Exception exception)
+    {
+        ClientUtils.HandleException("Certificate Validation", exception);
+    }
 }
 */

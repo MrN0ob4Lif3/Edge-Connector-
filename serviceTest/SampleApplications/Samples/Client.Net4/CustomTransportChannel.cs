@@ -10,11 +10,14 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
+using System;
+
 namespace Opc.Ua.Bindings.Custom
 {
     /// <summary>
     /// Creates a new CustomTransportChannel with ITransportChannel interface.
     /// </summary>
+    [Serializable]
     public class CustomTransportChannelFactory : ITransportChannelFactory
     {
         /// <summary>

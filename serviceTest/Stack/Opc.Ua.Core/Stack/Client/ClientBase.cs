@@ -21,7 +21,7 @@ namespace Opc.Ua
     /// <summary>
 	/// The client side interface with a UA server.
 	/// </summary>
-    [DataContract]
+    [Serializable]
     public partial class ClientBase : IDisposable
     {
         #region Constructors
