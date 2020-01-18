@@ -316,7 +316,6 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(string[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SessionClient))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientBase))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServiceMessageContext))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiagnosticsMasks))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.NodeCache))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointDescription))]
@@ -334,9 +333,6 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfXmlElement))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfEndpointDescription))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfLocalizedText))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeId))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TimestampsToReturn))]
@@ -358,6 +354,9 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ExtensionObject))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateConfiguration))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Browser))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ViewDescription))]
@@ -423,7 +422,6 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(string[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SessionClient))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientBase))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServiceMessageContext))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiagnosticsMasks))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.NodeCache))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointDescription))]
@@ -441,9 +439,6 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfXmlElement))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfEndpointDescription))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfLocalizedText))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeId))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TimestampsToReturn))]
@@ -465,6 +460,9 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ExtensionObject))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateConfiguration))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ViewDescription))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BrowseDirection))]
@@ -475,6 +473,12 @@ namespace BrokerClient.brokerService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetBrowser", ReplyAction="http://tempuri.org/IBrokerService/GetBrowserResponse")]
         System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
+        void OPCConnect(string opcEndpoint);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
+        System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -614,6 +618,14 @@ namespace BrokerClient.brokerService {
         
         public System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync() {
             return base.Channel.GetBrowserAsync();
+        }
+        
+        public void OPCConnect(string opcEndpoint) {
+            base.Channel.OPCConnect(opcEndpoint);
+        }
+        
+        public System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint) {
+            return base.Channel.OPCConnectAsync(opcEndpoint);
         }
     }
 }

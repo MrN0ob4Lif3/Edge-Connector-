@@ -201,22 +201,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Session" nillable="true" type="tns:Session" />
-  <xs:complexType name="EncodeableFactory">
-    <xs:sequence />
-  </xs:complexType>
-  <xs:element name="EncodeableFactory" nillable="true" type="tns:EncodeableFactory" />
-  <xs:complexType name="NamespaceTable">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:StringTable">
-        <xs:sequence />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="NamespaceTable" nillable="true" type="tns:NamespaceTable" />
-  <xs:complexType name="StringTable">
-    <xs:sequence />
-  </xs:complexType>
-  <xs:element name="StringTable" nillable="true" type="tns:StringTable" />
   <xs:complexType name="NodeId">
     <xs:sequence>
       <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
@@ -490,6 +474,22 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfMonitoredItem" nillable="true" type="tns:ArrayOfMonitoredItem" />
+  <xs:complexType name="EncodeableFactory">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="EncodeableFactory" nillable="true" type="tns:EncodeableFactory" />
+  <xs:complexType name="NamespaceTable">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:StringTable">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NamespaceTable" nillable="true" type="tns:NamespaceTable" />
+  <xs:complexType name="StringTable">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="StringTable" nillable="true" type="tns:StringTable" />
   <xs:complexType name="ArrayOfSubscription">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Subscription" nillable="true" type="tns:Subscription" />

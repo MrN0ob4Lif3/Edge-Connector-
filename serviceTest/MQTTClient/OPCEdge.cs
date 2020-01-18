@@ -142,12 +142,13 @@ namespace BrokerClient
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
+            /*
             m_session = client.GetSession();
             if (m_session != null)
             {
                 opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
             }
-
+            */
 
         }
         #endregion
@@ -501,6 +502,7 @@ namespace BrokerClient
         }
         #endregion
 
+        #region OPC-MQTT Methods
         //MQTT publication of OPC subscriptions.
         public void OPCPublish(Session session)
         {
@@ -627,6 +629,7 @@ namespace BrokerClient
                 }
             }
         }
+        #endregion
 
         #region Session State
         public Task SaveSessionAsync(Session session)
@@ -677,5 +680,10 @@ namespace BrokerClient
         }
         #endregion
 
+        private void OPCConnectBtn_Click(object sender, EventArgs e)
+        {
+            string endpointURL = "opc.tcp://opcua.rocks:4840";
+            client.OPCConnect(endpointURL);
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace ServiceLogic
         ApplicationInstance OPCApplicationInstance();
         ConfiguredEndpointCollection OPCEndpoints();
         Session OPCSession();
+        void OPCConnect(String opcEndpoint);
 
     }
 

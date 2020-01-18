@@ -13,6 +13,9 @@ using Opc.Ua.Client.Controls;
 using System.Threading.Tasks;
 using Opc.Ua.Client;
 using System.Security.Cryptography.X509Certificates;
+using System.IO;
+using System.Reflection;
+using Newtonsoft.Json;
 
 namespace brokerWindows
 {
@@ -41,7 +44,6 @@ namespace brokerWindows
         public Browser m_browser;
         private CertificateValidationEventHandler m_CertificateValidation;
         static bool autoAccept = true;
-
         #endregion
 
         public brokerWindows()
@@ -71,6 +73,16 @@ namespace brokerWindows
                     ApplicationType = ApplicationType.ClientAndServer,
                     ConfigSectionName = "Opc.Ua.SampleClient"
                 };
+                //load the application configuration.
+                application.LoadApplicationConfiguration(false).Wait();
+                // check the application certificate.
+                application.CheckApplicationInstanceCertificate(false, 0).Wait();
+                m_configuration = app_configuration = application.ApplicationConfiguration;
+                // get list of cached endpoints.
+                m_endpoints = m_configuration.LoadCachedEndpoints(true);
+                m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
+                m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+
                 //OPC Server connection.
                 string endpointURL = "opc.tcp://opcua.rocks:4840";
                 OPCConnect(application, endpointURL);
@@ -196,16 +208,6 @@ namespace brokerWindows
         /// 
         public async void OPCConnect(ApplicationInstance application, string endpointURL)
         {
-            //load the application configuration.
-            application.LoadApplicationConfiguration(false).Wait();
-            // check the application certificate.
-            application.CheckApplicationInstanceCertificate(false, 0).Wait();
-            m_configuration = app_configuration = application.ApplicationConfiguration;
-            // get list of cached endpoints.
-            m_endpoints = m_configuration.LoadCachedEndpoints(true);
-            m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
-            m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
-
             // load the application configuration.
             ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
             // check the application certificate.
@@ -237,6 +239,8 @@ namespace brokerWindows
             m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
             //Register keep alive handler
             m_session.KeepAlive += Client_KeepAlive;
+            string Sessions = string.Format(@"Retained Sessions\{0}.json", m_session.SessionName);
+            File.AppendAllText(Sessions, JsonConvert.SerializeObject(m_session) + "\n");
         }
 
         /// <summary>
@@ -282,6 +286,12 @@ namespace brokerWindows
         Session IServiceCallback.OPCSession()
         {
             return m_session;
+        }
+
+        //Callback to connect to OPC endpoint
+        void IServiceCallback.OPCConnect(String opcEndpoint)
+        {
+            OPCConnect(this.application, opcEndpoint);
         }
         #endregion
 

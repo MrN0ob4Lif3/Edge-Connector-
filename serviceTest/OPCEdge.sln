@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Server", "SampleApplications\SDK\Opc.Ua.Server\Opc.Ua.Server.csproj", "{6C449A1E-244E-4515-9949-A7E22012537C}"
 EndProject
@@ -47,10 +47,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brokerWindows", "brokerWindows\brokerWindows.csproj", "{1C21376B-D7AE-4F19-9210-F87296C23FBE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLogic", "ServiceLogic\ServiceLogic.csproj", "{804A4D28-85E5-447E-98F4-C0BCE79BE509}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFTest", "WCFTest\WCFTest.csproj", "{499F70C3-D845-44C4-A259-AB86222BDDA4}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OPCEdge", "OPCEdge\OPCEdge.vdproj", "{E842CF52-1565-482D-8264-86ED754C669E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -207,24 +203,6 @@ Global
 		{804A4D28-85E5-447E-98F4-C0BCE79BE509}.Release|x64.Build.0 = Release|Any CPU
 		{804A4D28-85E5-447E-98F4-C0BCE79BE509}.Release|x86.ActiveCfg = Release|Any CPU
 		{804A4D28-85E5-447E-98F4-C0BCE79BE509}.Release|x86.Build.0 = Release|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Debug|x64.Build.0 = Debug|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Debug|x86.Build.0 = Debug|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x64.ActiveCfg = Release|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x64.Build.0 = Release|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x86.ActiveCfg = Release|Any CPU
-		{499F70C3-D845-44C4-A259-AB86222BDDA4}.Release|x86.Build.0 = Release|Any CPU
-		{E842CF52-1565-482D-8264-86ED754C669E}.Debug|Any CPU.ActiveCfg = Debug
-		{E842CF52-1565-482D-8264-86ED754C669E}.Debug|x64.ActiveCfg = Debug
-		{E842CF52-1565-482D-8264-86ED754C669E}.Debug|x86.ActiveCfg = Debug
-		{E842CF52-1565-482D-8264-86ED754C669E}.Release|Any CPU.ActiveCfg = Release
-		{E842CF52-1565-482D-8264-86ED754C669E}.Release|x64.ActiveCfg = Release
-		{E842CF52-1565-482D-8264-86ED754C669E}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

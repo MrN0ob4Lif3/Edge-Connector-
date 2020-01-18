@@ -15,29 +15,17 @@
   <xs:element name="SessionClient" nillable="true" type="tns:SessionClient" />
   <xs:complexType name="ClientBase">
     <xs:sequence>
-      <xs:element xmlns:q2="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="Endpoint" nillable="true" type="q2:EndpointDescription" />
-      <xs:element xmlns:q3="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="EndpointConfiguration" nillable="true" type="q3:EndpointConfiguration" />
-      <xs:element minOccurs="0" name="InnerChannel" nillable="true" type="xs:anyType" />
-      <xs:element minOccurs="0" name="MessageContext" nillable="true" type="tns:ServiceMessageContext" />
-      <xs:element minOccurs="0" name="OperationTimeout" type="xs:int" />
-      <xs:element minOccurs="0" name="ReturnDiagnostics" type="tns:DiagnosticsMasks" />
-      <xs:element minOccurs="0" name="TransportChannel" nillable="true" type="xs:anyType" />
-      <xs:element minOccurs="0" name="UseTransportChannel" type="xs:boolean" />
+      <xs:element xmlns:q2="http://opcfoundation.org/UA/2008/02/Types.xsd" name="m_authenticationToken" nillable="true" type="q2:NodeId" />
+      <xs:element name="m_channel" nillable="true" type="xs:anyType" />
+      <xs:element name="m_disposed" type="xs:boolean" />
+      <xs:element name="m_lock" nillable="true" type="xs:anyType" />
+      <xs:element name="m_nextRequestHandle" type="xs:int" />
+      <xs:element name="m_pendingRequestCount" type="xs:int" />
+      <xs:element name="m_returnDiagnostics" type="tns:DiagnosticsMasks" />
+      <xs:element name="m_useTransportChannel" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ClientBase" nillable="true" type="tns:ClientBase" />
-  <xs:complexType name="ServiceMessageContext">
-    <xs:sequence>
-      <xs:element xmlns:q4="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="Factory" nillable="true" type="q4:EncodeableFactory" />
-      <xs:element minOccurs="0" name="MaxArrayLength" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxByteStringLength" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxMessageSize" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxStringLength" type="xs:int" />
-      <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="NamespaceUris" nillable="true" type="q5:NamespaceTable" />
-      <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="ServerUris" nillable="true" type="q6:StringTable" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ServiceMessageContext" nillable="true" type="tns:ServiceMessageContext" />
   <xs:simpleType name="DiagnosticsMasks">
     <xs:list>
       <xs:simpleType>
@@ -224,7 +212,7 @@
   <xs:element name="DiagnosticsMasks" nillable="true" type="tns:DiagnosticsMasks" />
   <xs:complexType name="FilterContext">
     <xs:sequence>
-      <xs:element xmlns:q7="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="NamespaceUris" nillable="true" type="q7:NamespaceTable" />
+      <xs:element xmlns:q3="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="NamespaceUris" nillable="true" type="q3:NamespaceTable" />
       <xs:element minOccurs="0" name="TypeTree" nillable="true" type="xs:anyType" />
     </xs:sequence>
   </xs:complexType>
