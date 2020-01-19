@@ -383,9 +383,9 @@ namespace brokerService
             return Host.Current.OPCSession();
         }
 
-        public void OPCConnect(string opcEndpoint)
+        public void OPCConnect(string opcEndpoint, String filePath)
         {
-            Host.Current.OPCConnect(opcEndpoint);
+            Host.Current.OPCConnect(opcEndpoint, filePath);
         }
 
         public Browser GetBrowser()

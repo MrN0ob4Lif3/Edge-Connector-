@@ -85,7 +85,7 @@ namespace brokerWindows
 
                 //OPC Server connection.
                 string endpointURL = "opc.tcp://opcua.rocks:4840";
-                OPCConnect(application, endpointURL);
+                //OPCConnect(application, endpointURL);
             }
             catch (Exception ex)
             {
@@ -206,7 +206,7 @@ namespace brokerWindows
         /// Creates a session with the endpoint.
         /// </summary>
         /// 
-        public async void OPCConnect(ApplicationInstance application, string endpointURL)
+        public async void OPCConnect(ApplicationInstance application, string endpointURL, string filePath)
         {
             // load the application configuration.
             ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
@@ -239,8 +239,35 @@ namespace brokerWindows
             m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
             //Register keep alive handler
             m_session.KeepAlive += Client_KeepAlive;
-            string Sessions = string.Format(@"Retained Sessions\{0}.json", m_session.SessionName);
-            File.AppendAllText(Sessions, JsonConvert.SerializeObject(m_session) + "\n");
+            try
+            {
+                string Sessions = Path.Combine(@"C:\Users\Andrew\Documents\SITUofGFYP-AY1920", string.Format(@"Retained Sessions\{0}.json", m_session.SessionName));
+                string SessionsFolder = Path.Combine(@"C:\Users\Andrew\Documents\SITUofGFYP-AY1920", (@"Retained Sessions"));
+                Directory.CreateDirectory(SessionsFolder);
+                //Stores edited subscription values in 'Retained Subscriptions' folder.
+                foreach (string session in Directory.GetFiles(SessionsFolder, "*.json"))
+                {
+                    String sessionDetails = File.ReadAllText(session);
+                    if (sessionDetails.Contains(m_session.SessionName))
+                    {
+                        File.Delete(session);
+                        string modifiedSession = Path.Combine(@"C:\Users\Andrew\Documents\SITUofGFYP-AY1920", string.Format(@"Retained Sessions\{0}.json", m_session.SessionName));
+                        File.AppendAllText(modifiedSession, JsonConvert.SerializeObject(m_session) + "\n");
+                        break;
+                    }
+                }
+                File.AppendAllText(Sessions, JsonConvert.SerializeObject(m_session) + "\n");
+            }
+            catch (Exception e)
+            {
+                // Create an EventLog instance and assign its source.
+                EventLog myLog = new EventLog
+                {
+                    Source = "brokerServiceOPCClient"
+                };
+                // Write an informational entry to the event log.
+                myLog.WriteEntry(e.Message);
+            }
         }
 
         /// <summary>
@@ -289,9 +316,9 @@ namespace brokerWindows
         }
 
         //Callback to connect to OPC endpoint
-        void IServiceCallback.OPCConnect(String opcEndpoint)
+        void IServiceCallback.OPCConnect(String opcEndpoint, String filePath)
         {
-            OPCConnect(this.application, opcEndpoint);
+            OPCConnect(this.application, opcEndpoint, filePath);
         }
         #endregion
 

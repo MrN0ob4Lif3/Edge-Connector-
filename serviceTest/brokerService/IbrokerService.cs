@@ -57,7 +57,7 @@ namespace brokerService
         Browser GetBrowser();
 
         [OperationContract]
-        void OPCConnect(String opcEndpoint);
+        void OPCConnect(String opcEndpoint, String filePath);
         #endregion
     }
 

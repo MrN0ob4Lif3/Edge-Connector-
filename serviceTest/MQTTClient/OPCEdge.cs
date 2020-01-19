@@ -38,6 +38,7 @@ namespace BrokerClient
         string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
         string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
+        string testFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         System.Threading.Timer publishTimer;
         #endregion
 
@@ -683,7 +684,7 @@ namespace BrokerClient
         private void OPCConnectBtn_Click(object sender, EventArgs e)
         {
             string endpointURL = "opc.tcp://opcua.rocks:4840";
-            client.OPCConnect(endpointURL);
+            client.OPCConnect(endpointURL, testFolder);
         }
     }
 }

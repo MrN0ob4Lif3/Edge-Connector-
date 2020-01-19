@@ -417,9 +417,9 @@ namespace Opc.Ua.Sample.Controls
                     String subscriptionDetails = File.ReadAllText(sub);
                     if (subscriptionDetails.Contains(tempDisplayName))
                     {
+                        File.Delete(sub);
                         string modifiedSubscription = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", m_subscription.DisplayName));
                         File.AppendAllText(modifiedSubscription, JsonConvert.SerializeObject(m_subscription) + "\n");
-                        File.Delete(sub);
                         break;
                     }
                 }

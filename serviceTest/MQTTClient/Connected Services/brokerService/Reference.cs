@@ -475,10 +475,10 @@ namespace BrokerClient.brokerService {
         System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
-        void OPCConnect(string opcEndpoint);
+        void OPCConnect(string opcEndpoint, string filePath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
-        System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint);
+        System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint, string filePath);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -620,12 +620,12 @@ namespace BrokerClient.brokerService {
             return base.Channel.GetBrowserAsync();
         }
         
-        public void OPCConnect(string opcEndpoint) {
-            base.Channel.OPCConnect(opcEndpoint);
+        public void OPCConnect(string opcEndpoint, string filePath) {
+            base.Channel.OPCConnect(opcEndpoint, filePath);
         }
         
-        public System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint) {
-            return base.Channel.OPCConnectAsync(opcEndpoint);
+        public System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint, string filePath) {
+            return base.Channel.OPCConnectAsync(opcEndpoint, filePath);
         }
     }
 }
