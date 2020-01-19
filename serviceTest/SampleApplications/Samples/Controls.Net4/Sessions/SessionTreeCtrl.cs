@@ -601,7 +601,7 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Adds a session to the tree.
         /// </summary>
-        private void AddNode(Session session)
+        public void AddNode(Session session)
         {
             if (session == null) throw new ArgumentNullException("session");
 

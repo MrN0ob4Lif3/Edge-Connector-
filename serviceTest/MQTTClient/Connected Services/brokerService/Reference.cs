@@ -369,7 +369,7 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
         System.Threading.Tasks.Task<Opc.Ua.Client.Session> GetSessionAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetBrowser", ReplyAction="http://tempuri.org/IBrokerService/GetBrowserResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/SetBrowser", ReplyAction="http://tempuri.org/IBrokerService/SetBrowserResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.IssuedIdentityToken))]
@@ -469,16 +469,16 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.InstalledApplication))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.StartMode))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterContext))]
-        Opc.Ua.Client.Browser GetBrowser();
+        void SetBrowser(Opc.Ua.Client.Browser clientBrowser);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetBrowser", ReplyAction="http://tempuri.org/IBrokerService/GetBrowserResponse")]
-        System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
-        void OPCConnect(string opcEndpoint, string filePath);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/SetBrowser", ReplyAction="http://tempuri.org/IBrokerService/SetBrowserResponse")]
+        System.Threading.Tasks.Task SetBrowserAsync(Opc.Ua.Client.Browser clientBrowser);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
-        System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint, string filePath);
+        void OPCConnect(string opcEndpoint);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
+        System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -612,20 +612,20 @@ namespace BrokerClient.brokerService {
             return base.Channel.GetSessionAsync();
         }
         
-        public Opc.Ua.Client.Browser GetBrowser() {
-            return base.Channel.GetBrowser();
+        public void SetBrowser(Opc.Ua.Client.Browser clientBrowser) {
+            base.Channel.SetBrowser(clientBrowser);
         }
         
-        public System.Threading.Tasks.Task<Opc.Ua.Client.Browser> GetBrowserAsync() {
-            return base.Channel.GetBrowserAsync();
+        public System.Threading.Tasks.Task SetBrowserAsync(Opc.Ua.Client.Browser clientBrowser) {
+            return base.Channel.SetBrowserAsync(clientBrowser);
         }
         
-        public void OPCConnect(string opcEndpoint, string filePath) {
-            base.Channel.OPCConnect(opcEndpoint, filePath);
+        public void OPCConnect(string opcEndpoint) {
+            base.Channel.OPCConnect(opcEndpoint);
         }
         
-        public System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint, string filePath) {
-            return base.Channel.OPCConnectAsync(opcEndpoint, filePath);
+        public System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint) {
+            return base.Channel.OPCConnectAsync(opcEndpoint);
         }
     }
 }

@@ -159,10 +159,11 @@ namespace Opc.Ua.Sample.Controls
 
                 Cursor = Cursors.WaitCursor;
 
-                ThreadPool.QueueUserWorkItem(Open, new object[] { m_session, SessionNameTB.Text, identity, m_preferredLocales, m_checkDomain });
-                
+                //ThreadPool.QueueUserWorkItem(Open, new object[] { m_session, SessionNameTB.Text, identity, m_preferredLocales, m_checkDomain });
+                m_session.SessionName = SessionNameTB.Text;
                 CancelBTN.Enabled = false;
                 OkBTN.Enabled = false;
+                DialogResult = DialogResult.OK;
             }
             catch (Exception exception)
             {

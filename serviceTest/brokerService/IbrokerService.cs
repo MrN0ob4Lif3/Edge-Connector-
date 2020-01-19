@@ -54,10 +54,10 @@ namespace brokerService
         Session GetSession();
 
         [OperationContract]
-        Browser GetBrowser();
+        void SetBrowser(Browser clientBrowser);
 
         [OperationContract]
-        void OPCConnect(String opcEndpoint, String filePath);
+        void OPCConnect(String opcEndpoint);
         #endregion
     }
 

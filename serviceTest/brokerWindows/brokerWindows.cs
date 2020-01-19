@@ -22,6 +22,10 @@ namespace brokerWindows
     public partial class brokerWindows : ServiceBase, IServiceCallback
     {
         ServiceHost host;
+        static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
+        string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
+        string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
 
         #region MQTT Properties
         public IManagedMqttClient managedMqtt;
@@ -44,6 +48,7 @@ namespace brokerWindows
         public Browser m_browser;
         private CertificateValidationEventHandler m_CertificateValidation;
         static bool autoAccept = true;
+        System.Threading.Timer publishTimer;
         #endregion
 
         public brokerWindows()
@@ -81,11 +86,18 @@ namespace brokerWindows
                 // get list of cached endpoints.
                 m_endpoints = m_configuration.LoadCachedEndpoints(true);
                 m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
-                m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+                if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+                {
+                    app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+                }
+                //m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
                 //OPC Server connection.
                 string endpointURL = "opc.tcp://opcua.rocks:4840";
                 //OPCConnect(application, endpointURL);
+
+                //Use timer callback to monitor and publish subscriptions.
+                publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
             }
             catch (Exception ex)
             {
@@ -206,7 +218,7 @@ namespace brokerWindows
         /// Creates a session with the endpoint.
         /// </summary>
         /// 
-        public async void OPCConnect(ApplicationInstance application, string endpointURL, string filePath)
+        public async void OPCConnect(ApplicationInstance application, string endpointURL)
         {
             // load the application configuration.
             ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
@@ -216,8 +228,7 @@ namespace brokerWindows
             {
                 throw new Exception("Application instance certificate invalid!");
             }
-
-            if (haveAppCertificate)
+            else if (haveAppCertificate)
             {
                 config.ApplicationUri = Utils.GetApplicationUriFromCertificate(config.SecurityConfiguration.ApplicationCertificate.Certificate);
                 if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
@@ -226,48 +237,42 @@ namespace brokerWindows
                 }
                 config.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
-            else
-            {
-                Console.WriteLine("    WARN: missing application certificate, using unsecure connection.");
-            }
 
-            //Select endpoint after discovery.
-            EndpointDescription selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointURL, haveAppCertificate, 15000);
-            //Creates session with OPC Server
-            m_endpoint_configuration = EndpointConfiguration.Create(config);
-            m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
-            m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
-            //Register keep alive handler
-            m_session.KeepAlive += Client_KeepAlive;
+            //Checks if endpoint URL selected is same as retained endpoint URL
+            String retainedEndpoint = null;
+            String sessionEndpoint = endpointURL;
+            retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
+
             try
             {
-                string Sessions = Path.Combine(@"C:\Users\Andrew\Documents\SITUofGFYP-AY1920", string.Format(@"Retained Sessions\{0}.json", m_session.SessionName));
-                string SessionsFolder = Path.Combine(@"C:\Users\Andrew\Documents\SITUofGFYP-AY1920", (@"Retained Sessions"));
-                Directory.CreateDirectory(SessionsFolder);
-                //Stores edited subscription values in 'Retained Subscriptions' folder.
-                foreach (string session in Directory.GetFiles(SessionsFolder, "*.json"))
+                EndpointDescription selectedEndpoint;
+                if (retainedEndpoint == null)
                 {
-                    String sessionDetails = File.ReadAllText(session);
-                    if (sessionDetails.Contains(m_session.SessionName))
-                    {
-                        File.Delete(session);
-                        string modifiedSession = Path.Combine(@"C:\Users\Andrew\Documents\SITUofGFYP-AY1920", string.Format(@"Retained Sessions\{0}.json", m_session.SessionName));
-                        File.AppendAllText(modifiedSession, JsonConvert.SerializeObject(m_session) + "\n");
-                        break;
-                    }
+                    selectedEndpoint = CoreClientUtils.SelectEndpoint(sessionEndpoint, haveAppCertificate, 15000);
                 }
-                File.AppendAllText(Sessions, JsonConvert.SerializeObject(m_session) + "\n");
-            }
-            catch (Exception e)
-            {
-                // Create an EventLog instance and assign its source.
-                EventLog myLog = new EventLog
+                else
                 {
-                    Source = "brokerServiceOPCClient"
-                };
-                // Write an informational entry to the event log.
-                myLog.WriteEntry(e.Message);
+                    selectedEndpoint = CoreClientUtils.SelectEndpoint(retainedEndpoint, haveAppCertificate, 15000);
+                }
+                //Select endpoint after discovery.
+                //Creates session with OPC Server
+                m_endpoint_configuration = EndpointConfiguration.Create(config);
+                m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
+                m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
             }
+            catch (Exception ex)
+            {
+                // Log the exception.
+                EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
+            }
+
+            //Recreates prior session's subscriptions and monitored items.
+            if (sessionEndpoint == retainedEndpoint)
+            {
+                //RecreateSession(m_session);
+            }
+            //Register keep alive handler
+            m_session.KeepAlive += Client_KeepAlive;
         }
 
         /// <summary>
@@ -315,10 +320,19 @@ namespace brokerWindows
             return m_session;
         }
 
-        //Callback to connect to OPC endpoint
-        void IServiceCallback.OPCConnect(String opcEndpoint, String filePath)
+        void IServiceCallback.SetOPCBrowser(Browser clientBrowser)
         {
-            OPCConnect(this.application, opcEndpoint, filePath);
+            clientBrowser.BrowseDirection = m_browser.BrowseDirection;
+            clientBrowser.ReferenceTypeId = m_browser.ReferenceTypeId;
+            clientBrowser.IncludeSubtypes = m_browser.IncludeSubtypes;
+            clientBrowser.NodeClassMask = m_browser.NodeClassMask;
+            clientBrowser.ContinueUntilDone = m_browser.ContinueUntilDone;
+        }
+
+        //Callback to connect to OPC endpoint
+        void IServiceCallback.OPCConnect(String opcEndpoint)
+        {
+            OPCConnect(this.application, opcEndpoint);
         }
         #endregion
 
@@ -402,6 +416,204 @@ namespace brokerWindows
         }
         #endregion
         #endregion
+
+        #region Session State
+        //Saves endpoint
+        public Task SaveSessionAsync(Session session)
+        {
+            string sessionFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+
+            if (File.Exists(sessionFile))
+            {
+                return Task.FromResult(0);
+            }
+            else
+            {
+                File.AppendAllText(sessionFile, JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
+                return Task.FromResult(0);
+            }
+        }
+
+        //Loads retained endpoint
+        public Task<String> LoadSessionAsync(String sessionEndpoint)
+        {
+            String retainedSession = null;
+            String[] sessionFiles = Directory.GetFiles(sessionFolder, "*.json");
+            if (sessionFiles != null)
+            {
+                foreach (string session in sessionFiles)
+                {
+                    try
+                    {
+                        String[] sessionFile = File.ReadAllLines(session);
+                        foreach (string retainedEndpoint in sessionFile)
+                        {
+                            retainedSession = JsonConvert.DeserializeObject<String>(retainedEndpoint);
+                            if (retainedSession.Contains(sessionEndpoint))
+                            {
+                                return Task.FromResult(retainedSession);
+                            }
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                return null;
+            }
+            return Task.FromResult(retainedSession);
+        }
+
+        //Session recreation method.
+        public void RecreateSession(Session session)
+        {
+            //Recreating retained subscriptions.
+            foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
+            {
+                String testSubscriptions = File.ReadAllText(sub);
+                if (testSubscriptions != "")
+                {
+                    try
+                    {
+                        //Recreates subscription based on retained subscription details.
+                        Subscription retainedSubscription;
+                        Subscription tempSubscription = new Subscription(session.DefaultSubscription);
+                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(testSubscriptions);
+                        session.AddSubscription(tempSubscription);
+                        tempSubscription.DisplayName = retainedSubscription.DisplayName;
+                        tempSubscription.PublishingInterval = retainedSubscription.PublishingInterval;
+                        tempSubscription.KeepAliveCount = retainedSubscription.KeepAliveCount;
+                        tempSubscription.LifetimeCount = retainedSubscription.LifetimeCount;
+                        tempSubscription.MaxNotificationsPerPublish = retainedSubscription.MaxNotificationsPerPublish;
+                        tempSubscription.Priority = retainedSubscription.Priority;
+                        tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
+                        tempSubscription.Create();
+                        Host.Current.MQTTSubscribe(tempSubscription.DisplayName);
+
+                        //Checks for monitored items belonging to subscription and recreates them.
+                        foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
+                        {
+                            if (item != "")
+                            {
+                                if (item.Contains(string.Format("{0}.json", tempSubscription.DisplayName)))
+                                {
+                                    try
+                                    {
+                                        String[] testItems = File.ReadAllLines(item);
+                                        foreach (string testItem in testItems)
+                                        {
+                                            //Checking and recreating monitored items for each subscription.
+                                            ReferenceDescription retainedItem;
+                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
+                                            Subscribe(tempSubscription, retainedItem);
+                                        }
+                                        break;
+                                    }
+                                    catch { }
+                                }
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Adds a item to a subscription.
+        /// </summary>
+        public void Subscribe(Subscription subscription, ReferenceDescription reference)
+        {
+            MonitoredItem monitoredItem = new MonitoredItem(subscription.DefaultItem);
+
+            monitoredItem.DisplayName = subscription.Session.NodeCache.GetDisplayText(reference);
+            monitoredItem.StartNodeId = (NodeId)reference.NodeId;
+            monitoredItem.NodeClass = (NodeClass)reference.NodeClass;
+            monitoredItem.AttributeId = Attributes.Value;
+            monitoredItem.SamplingInterval = 0;
+            monitoredItem.QueueSize = 1;
+
+            // add condition fields to any event filter.
+            EventFilter filter = monitoredItem.Filter as EventFilter;
+
+            if (filter != null)
+            {
+                monitoredItem.AttributeId = Attributes.EventNotifier;
+                monitoredItem.QueueSize = 0;
+            }
+
+            subscription.AddItem(monitoredItem);
+            subscription.ApplyChanges();
+        }
+
+        //MQTT publication of OPC subscriptions.
+        public void OPCPublish(Session session)
+        {
+            if (session != null)
+            {
+                try
+                {
+                    //Checks if any subscriptions within session.
+                    if (session.SubscriptionCount > 0)
+                    {
+                        //Iterates through session subscriptions.
+                        IEnumerable<Subscription> subscriptions = session.Subscriptions;
+                        foreach (Subscription subscription in subscriptions)
+                        {
+                            // If subscription is invalid somehow, move on to next.
+                            if (subscription == null)
+                            {
+                                continue;
+                            }
+                            IDictionary<String, String> subscriptionPayload = new Dictionary<String, String>();
+                            double subscriptionInterval = subscription.CurrentPublishingInterval;
+                            subscription.CurrentPublishedTime = DateTime.Now;
+                            TimeSpan intervalCheck = subscription.CurrentPublishedTime.Subtract(subscription.PreviousPublishedTime);
+                            //Checks if subscription has already been published to MQTT broker.
+                            double intervalDifference = (double)intervalCheck.TotalMilliseconds;
+                            //Checks if publishing interval has been reached and weather subscription has been published at least once.
+                            if (intervalDifference < subscriptionInterval && subscription.SubscriptionPublished == true)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                //Iterates through subscription items.               
+                                if (subscription.MonitoredItemCount > 0)
+                                {
+                                    IEnumerable<MonitoredItem> monitoredItems = subscription.MonitoredItems;
+                                    //Adds monitored items to a 'payload' dictionary to be seralized as a JSON string.
+                                    foreach (MonitoredItem monitoredItem in monitoredItems)
+                                    {
+                                        if (monitoredItem.LastValue != null)
+                                        {
+                                            string monitoredDisplayName = monitoredItem.DisplayName;
+                                            string monitoredValue = monitoredItem.LastValue.ToString();
+                                            subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
+                                        }
+                                        string message = JsonConvert.SerializeObject(subscriptionPayload);
+                                        Host.Current.MQTTPublish(subscription.DisplayName, message);
+                                        Host.Current.MQTTSubscribe(subscription.DisplayName);
+                                        subscription.PreviousPublishedTime = DateTime.Now;
+                                        subscription.SubscriptionPublished = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    // Log the exception.
+                    EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
+                }
+            }
+        }
     }
 }
 

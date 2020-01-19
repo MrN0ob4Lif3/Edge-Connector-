@@ -123,11 +123,11 @@
   <wsdl:message name="IBrokerService_GetSession_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetSessionResponse" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_GetBrowser_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetBrowser" />
+  <wsdl:message name="IBrokerService_SetBrowser_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetBrowser" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_GetBrowser_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetBrowserResponse" />
+  <wsdl:message name="IBrokerService_SetBrowser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetBrowserResponse" />
   </wsdl:message>
   <wsdl:message name="IBrokerService_OPCConnect_InputMessage">
     <wsdl:part name="parameters" element="tns:OPCConnect" />
@@ -188,9 +188,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetSession" message="tns:IBrokerService_GetSession_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetSessionResponse" message="tns:IBrokerService_GetSession_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetBrowser">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetBrowser" message="tns:IBrokerService_GetBrowser_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetBrowserResponse" message="tns:IBrokerService_GetBrowser_OutputMessage" />
+    <wsdl:operation name="SetBrowser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/SetBrowser" message="tns:IBrokerService_SetBrowser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/SetBrowserResponse" message="tns:IBrokerService_SetBrowser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="OPCConnect">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCConnect" message="tns:IBrokerService_OPCConnect_InputMessage" />
@@ -316,8 +316,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetBrowser">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetBrowser" style="document" />
+    <wsdl:operation name="SetBrowser">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/SetBrowser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -455,8 +455,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetBrowser">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetBrowser" style="document" />
+    <wsdl:operation name="SetBrowser">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/SetBrowser" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

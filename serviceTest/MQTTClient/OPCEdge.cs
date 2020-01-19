@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BrokerClient
 {
@@ -35,11 +36,20 @@ namespace BrokerClient
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
         IDictionary<String, String> publishPayload = new Dictionary<String, String>();
-        string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
-        string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
-        string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
-        string testFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        //string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
+        //string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
+        //string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
+
+        static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
+        string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
+        string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
         System.Threading.Timer publishTimer;
+        static bool autoAccept = true;
+        public EndpointConfiguration m_endpoint_configuration;
+        private ConfiguredEndpoint m_endpoint;
+        ApplicationInstance application;
+        ServiceMessageContext m_messageContext;
         #endregion
 
         #region Startup Settings
@@ -55,36 +65,27 @@ namespace BrokerClient
             key.SetValue(StartupValue, Application.ExecutablePath.ToString());
         }
 
-        //Continuously checks if service is running, if not, restart application instance to refresh connection to restarted service.
-        public void CheckService()
-        {
-            while (true)
-            {
-                try
-                {
-                    client.Open();
-                }
-                catch
-                {
-                    Application.Restart();
-                }
-            }
-        }
-
         public void InitializeClients()
         {
             Directory.CreateDirectory(itemsFolder);
             Directory.CreateDirectory(subscriptionsFolder);
             Directory.CreateDirectory(sessionFolder);
             //Loading OPC elements
-            ApplicationInstance application = client.GetApplicationInstance();
+            //ApplicationInstance application = client.GetApplicationInstance();
+            //Initialize OPC Application Instance
+            application = new ApplicationInstance
+            {
+                ApplicationName = "MQTT-OPC Broker",
+                ApplicationType = ApplicationType.ClientAndServer,
+                ConfigSectionName = "Opc.Ua.SampleClient"
+            };
             // load the application configuration.
             application.LoadApplicationConfiguration(false).Wait();
             // check the application certificate.
             application.CheckApplicationInstanceCertificate(false, 0).Wait();
             m_configuration = app_configuration = application.ApplicationConfiguration;
             // get list of cached endpoints.
-            m_endpoints = client.GetEndpoints();
+            m_endpoints = m_configuration.LoadCachedEndpoints(true);
             m_endpoints.DiscoveryUrls = app_configuration.ClientConfiguration.WellKnownDiscoveryUrls;
             if (!app_configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
             {
@@ -115,14 +116,21 @@ namespace BrokerClient
             //Loading MQTT elements
             publishPayload = new Dictionary<String, String>();
             connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            m_topicList = client.MQTTSubscribedTopics();
-            // Initialize Form controls.
-            if (m_topicList != null)
+            try
             {
-                foreach (String topic in m_topicList)
+                client.Open();
+                m_topicList = client.MQTTSubscribedTopics();
+            }
+            catch
+            {
+                // Initialize Form controls.
+                if (m_topicList != null)
                 {
-                    topicListPub.Items.Add(topic);
-                    topicListSub.Items.Add(topic);
+                    foreach (String topic in m_topicList)
+                    {
+                        topicListPub.Items.Add(topic);
+                        topicListSub.Items.Add(topic);
+                    }
                 }
             }
 
@@ -134,8 +142,8 @@ namespace BrokerClient
             {
                 publishPayload.Add(publishKey2.Text, publishValue2.Text);
             }
-            string message = JsonConvert.SerializeObject(publishPayload);
-            client.MQTTPublishTopicAsync("Artc/Harmony/Connector/EdgeToCloud", message);
+            //string message = JsonConvert.SerializeObject(publishPayload);
+            //client.MQTTPublishTopicAsync("Artc/Harmony/Connector/EdgeToCloud", message);
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
@@ -176,7 +184,6 @@ namespace BrokerClient
                 {
                     client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
                 }
-
             }
         }
         //Subscribe to topic.
@@ -300,8 +307,6 @@ namespace BrokerClient
             brokerNotify.Visible = false;
         }
 
-
-
         private void MqttMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             //if the form is closed  
@@ -312,23 +317,22 @@ namespace BrokerClient
             this.ShowInTaskbar = true;
             brokerNotify.Visible = true;
         }
+        
         private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.publishTimer.Change(Timeout.Infinite, Timeout.Infinite);
             this.publishTimer.Dispose();
         }
 
-
         #endregion
 
         #region OPC Controls
-
         #region OPC Connect
         void OpcEndpoints_ConnectEndpoint(object sender, ConnectEndpointEventArgs e)
         {
             try
             {
-                Connect(e.Endpoint);
+                OPCConnect(this.application, opcEndpoints.SelectedEndpoint);
             }
             catch (Exception exception)
             {
@@ -338,50 +342,96 @@ namespace BrokerClient
         }
 
         /// <summary>
-        /// Connects to a server.
+        /// Creates a session with the endpoint.
         /// </summary>
-        public async void Connect(ConfiguredEndpoint endpoint)
+        /// 
+        public async void OPCConnect(ApplicationInstance application, ConfiguredEndpoint endpoint)
         {
             if (endpoint == null)
             {
                 return;
             }
-            Session session = await opcSession.Connect(endpoint);
-
-            if (session != null)
+            // load the application configuration.
+            ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
+            // check the application certificate.
+            bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(false, 0);
+            if (!haveAppCertificate)
             {
-                // stop any reconnect operation.
-                if (m_reconnectHandler != null)
+                throw new Exception("Application instance certificate invalid!");
+            }
+            else if (haveAppCertificate)
+            {
+                config.ApplicationUri = Utils.GetApplicationUriFromCertificate(config.SecurityConfiguration.ApplicationCertificate.Certificate);
+                if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
                 {
-                    m_reconnectHandler.Dispose();
-                    m_reconnectHandler = null;
+                    autoAccept = true;
                 }
-                m_session = session;
-                m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
-                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
-                StandardClient_KeepAlive(m_session, null);
+                config.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+            }
+            //Checks if endpoint URL selected is same as retained endpoint URL
+            string endpointURL = endpoint.EndpointUrl.ToString();
+            string retainedEndpoint = null;
+            bool retainSession = false;
+            retainedEndpoint = await LoadSessionAsync(endpointURL);
+            try
+            {
+                EndpointDescription selectedEndpoint;
+                if (retainedEndpoint == null || !retainSession)
+                {
+                    selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointURL, haveAppCertificate, 15000);
+                }
+                else
+                {
+                    selectedEndpoint = CoreClientUtils.SelectEndpoint(retainedEndpoint, haveAppCertificate, 15000);
+                }
+                //Select endpoint after discovery.
+                //Creates session with OPC Server
+                m_endpoint_configuration = EndpointConfiguration.Create(config);
+                m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
+                m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
+                //Open dialog to declare Session name.
+                new SessionOpenDlg().ShowDialog(m_session, opcSession.PreferredLocales);
+                // delete the existing session.
+                opcSession.Close();
+                // add session to tree.
+                opcSession.AddNode(m_session);
 
-                //Checks if endpoint URL selected is same as retained endpoint URL
-                String retainedEndpoint = null;
-                String sessionEndpoint = session.Endpoint.EndpointUrl;
-                retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
-                //If no retained endpoints, saves current endpoint.
-                if (retainedEndpoint == null)
+                if (m_session != null)
                 {
-                    //Saves session endpoint URL.
-                    await SaveSessionAsync(session);
-                    return;
+                    // stop any reconnect operation.
+                    if (m_reconnectHandler != null)
+                    {
+                        m_reconnectHandler.Dispose();
+                        m_reconnectHandler = null;
+                    }
+                    //Register keep alive handler & sets view
+                    m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                    opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+                    StandardClient_KeepAlive(m_session, null);
+
+                    //If no retained endpoints, saves current endpoint.
+                    if (retainedEndpoint == null)
+                    {
+                        //Saves session endpoint URL.
+                        await SaveSessionAsync(m_session);
+                        return;
+                    }
+                    //Recreates prior session's subscriptions and monitored items.
+                    if (retainedEndpoint == endpointURL)
+                    {
+                        RecreateSession(m_session);
+                    }
                 }
-                //Recreates prior session's subscriptions and monitored items.
-                if (sessionEndpoint == retainedEndpoint)
-                {
-                    RecreateSession(m_session);
-                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception.
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion
 
-        #region OPC Client Alive / Reconnect / Publish
+        #region OPC Client Alive / Reconnect / Certificate Validator
         /// <summary>
         /// Updates the status control and publishes OPC subscriptions to MQTT broker when a keep alive event occurs 
         /// </summary>
@@ -479,7 +529,6 @@ namespace BrokerClient
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
-        #endregion
 
         /// <summary>
         /// Prompts for user input if certificate validation has error.
@@ -501,6 +550,7 @@ namespace BrokerClient
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+        #endregion
         #endregion
 
         #region OPC-MQTT Methods
@@ -633,9 +683,11 @@ namespace BrokerClient
         #endregion
 
         #region Session State
+        //Saves endpoint
         public Task SaveSessionAsync(Session session)
         {
             string sessionFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+
             if (File.Exists(sessionFile))
             {
                 return Task.FromResult(0);
@@ -646,7 +698,8 @@ namespace BrokerClient
                 return Task.FromResult(0);
             }
         }
-
+        
+        //Loads retained endpoint
         public Task<String> LoadSessionAsync(String sessionEndpoint)
         {
             String retainedSession = null;
@@ -683,8 +736,55 @@ namespace BrokerClient
 
         private void OPCConnectBtn_Click(object sender, EventArgs e)
         {
-            string endpointURL = "opc.tcp://opcua.rocks:4840";
-            client.OPCConnect(endpointURL, testFolder);
+            string endpointURL = "opc.tcp://localhost:51210/UA/SampleServer";
+            client.OPCConnect(endpointURL);
         }
     }
 }
+
+/*
+/// <summary>
+/// Connects to a server.
+/// </summary>
+public async void Connect(ConfiguredEndpoint endpoint)
+{
+    if (endpoint == null)
+    {
+        return;
+    }
+    Session session = await opcSession.Connect(endpoint);
+
+    if (session != null)
+    {
+        // stop any reconnect operation.
+        if (m_reconnectHandler != null)
+        {
+            m_reconnectHandler.Dispose();
+            m_reconnectHandler = null;
+        }
+        m_session = session;
+        m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+        opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+
+        StandardClient_KeepAlive(m_session, null);
+
+        //Checks if endpoint URL selected is same as retained endpoint URL
+        String retainedEndpoint = null;
+        String sessionEndpoint = session.Endpoint.EndpointUrl;
+        retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
+        //If no retained endpoints, saves current endpoint.
+        if (retainedEndpoint == null)
+        {
+            //Saves session endpoint URL.
+            await SaveSessionAsync(session);
+            return;
+        }
+        //Recreates prior session's subscriptions and monitored items.
+        if (sessionEndpoint == retainedEndpoint)
+        {
+            RecreateSession(m_session);
+        }
+    }
+}
+#endregion
+*/

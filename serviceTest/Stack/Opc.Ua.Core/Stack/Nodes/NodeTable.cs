@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Opc.Ua
 {
@@ -86,10 +87,11 @@ namespace Opc.Ua
             bool           isInverse, 
             bool           includeSubtypes);
     }
-    
+
     /// <summary>
     /// A table of nodes.
     /// </summary>
+    [DataContract(Namespace = Namespaces.OpcUaXsd)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public class NodeTable : INodeTable, IEnumerable<INode>
     {

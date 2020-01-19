@@ -367,32 +367,26 @@ namespace brokerService
                 }
             }
         }
-
         public ApplicationInstance GetApplicationInstance()
         {
             return Host.Current.OPCApplicationInstance();
         }
-
         public ConfiguredEndpointCollection GetEndpoints()
         {
             return Host.Current.OPCEndpoints();
         }
-
         public Session GetSession()
         {
             return Host.Current.OPCSession();
         }
-
-        public void OPCConnect(string opcEndpoint, String filePath)
+        public void SetBrowser(Browser clientBrowser)
         {
-            Host.Current.OPCConnect(opcEndpoint, filePath);
+            Host.Current.SetOPCBrowser(clientBrowser);
         }
-
-        public Browser GetBrowser()
+        public void OPCConnect(string opcEndpoint)
         {
-            return m_browser;
+            Host.Current.OPCConnect(opcEndpoint);
         }
-
         #region Session alive / re-connect
         /// <summary>
         /// Handles a keep alive event from a session.

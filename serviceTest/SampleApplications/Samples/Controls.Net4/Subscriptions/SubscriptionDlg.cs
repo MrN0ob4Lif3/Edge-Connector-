@@ -64,8 +64,9 @@ namespace Opc.Ua.Sample.Controls
         private SubscriptionStateChangedEventHandler m_SubscriptionStateChanged;
         private CreateMonitoredItemsDlg m_createDialog;
         private EventHandler m_PublishStatusChanged;
+        private static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
         #endregion
-        
+
         #region Public Interface
         /// <summary>
         /// Creates a new subscription.
@@ -407,8 +408,8 @@ namespace Opc.Ua.Sample.Controls
                 {
                     return;
                 }
-                string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
-                string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
+                string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
+                string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
                 m_subscription.Modify();
                     
                 //Stores edited subscription values in 'Retained Subscriptions' folder.
@@ -418,7 +419,7 @@ namespace Opc.Ua.Sample.Controls
                     if (subscriptionDetails.Contains(tempDisplayName))
                     {
                         File.Delete(sub);
-                        string modifiedSubscription = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", m_subscription.DisplayName));
+                        string modifiedSubscription = Path.Combine(tempFolder, string.Format(@"Retained Subscriptions\{0}.json", m_subscription.DisplayName));
                         File.AppendAllText(modifiedSubscription, JsonConvert.SerializeObject(m_subscription) + "\n");
                         break;
                     }
@@ -429,7 +430,7 @@ namespace Opc.Ua.Sample.Controls
                 {
                     if(item.Contains(tempDisplayName))
                     {
-                        string modifiedItem = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Monitored Items\{0}.json", m_subscription.DisplayName));
+                        string modifiedItem = Path.Combine(tempFolder, string.Format(@"Retained Monitored Items\{0}.json", m_subscription.DisplayName));
                         File.Move(item, modifiedItem);
                         File.Delete(item);
                         break;

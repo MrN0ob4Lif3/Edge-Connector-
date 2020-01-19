@@ -156,23 +156,22 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetBrowser">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetBrowserResponse">
+  <xs:element name="SetBrowser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetBrowserResult" nillable="true" type="q6:Browser" />
+        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="clientBrowser" nillable="true" type="q6:Browser" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetBrowserResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
   <xs:element name="OPCConnect">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="opcEndpoint" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="filePath" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

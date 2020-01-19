@@ -11,12 +11,14 @@
 */
 
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Opc.Ua
 {
     /// <summary>
     /// Stores the type tree for a server. 
     /// </summary>
+    [DataContract(Namespace = Namespaces.OpcUaXsd)]
     public class TypeTable : ITypeTable
     {
         #region Constructors

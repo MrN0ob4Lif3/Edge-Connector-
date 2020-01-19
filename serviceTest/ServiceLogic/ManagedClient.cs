@@ -27,7 +27,8 @@ namespace ServiceLogic
         ApplicationInstance OPCApplicationInstance();
         ConfiguredEndpointCollection OPCEndpoints();
         Session OPCSession();
-        void OPCConnect(String opcEndpoint, String filePath);
+        void SetOPCBrowser(Browser clientBrowser);
+        void OPCConnect(String opcEndpoint);
 
     }
 

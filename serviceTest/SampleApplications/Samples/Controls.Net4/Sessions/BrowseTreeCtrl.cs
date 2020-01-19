@@ -67,8 +67,7 @@ namespace Opc.Ua.Sample.Controls
         private event MethodCalledEventHandler m_MethodCalled;
         private BrowserEventHandler m_BrowserMoreReferences;
         private SessionTreeCtrl m_SessionTreeCtrl;
-        string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items\RetainedItems.json");
-        string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions\RetainedSubscriptions.json");
+        private static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
         #endregion
 
         #region Public Interface
@@ -186,10 +185,10 @@ namespace Opc.Ua.Sample.Controls
             }
 
             // check if session is connected.
-            if (m_browser == null || !m_browser.Session.Connected)
-            {
-                return;
-            }
+            //if (m_browser == null || !m_browser.Session.Connected)
+            //{
+            //    return;
+            //}
 
             if (NodeId.IsNull(rootId))
             {
@@ -230,6 +229,87 @@ namespace Opc.Ua.Sample.Controls
         public void SetRoot(Session session, NodeId rootId)
         {
             SetRoot(new Browser(session), rootId);
+        }
+
+        /// <summary>
+        /// Sets the view for the control without Session object.
+        /// </summary>
+        public void SetView(BrowseViewType viewType, NodeId viewId)
+        {
+            Clear();
+
+            Browser browser = new Browser();
+
+            browser.BrowseDirection = BrowseDirection.Forward;
+            browser.ReferenceTypeId = null;
+            browser.IncludeSubtypes = true;
+            browser.NodeClassMask = 0;
+            browser.ContinueUntilDone = false;
+
+            NodeId rootId = Objects.RootFolder;
+            ShowReferences = false;
+
+            switch (viewType)
+            {
+                case BrowseViewType.All:
+                    {
+                        ShowReferences = true;
+                        break;
+                    }
+
+                case BrowseViewType.Objects:
+                    {
+                        rootId = Objects.ObjectsFolder;
+                        browser.ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences;
+                        break;
+                    }
+
+                case BrowseViewType.Types:
+                    {
+                        rootId = Objects.TypesFolder;
+                        browser.ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences;
+                        break;
+                    }
+
+                case BrowseViewType.ObjectTypes:
+                    {
+                        rootId = ObjectTypes.BaseObjectType;
+                        browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                        break;
+                    }
+
+                case BrowseViewType.EventTypes:
+                    {
+                        rootId = ObjectTypes.BaseEventType;
+                        browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                        break;
+                    }
+
+                case BrowseViewType.DataTypes:
+                    {
+                        rootId = DataTypeIds.BaseDataType;
+                        browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                        break;
+                    }
+
+                case BrowseViewType.ReferenceTypes:
+                    {
+                        rootId = ReferenceTypeIds.References;
+                        browser.ReferenceTypeId = ReferenceTypeIds.HasChild;
+                        break;
+                    }
+
+                case BrowseViewType.ServerDefinedView:
+                    {
+                        rootId = viewId;
+                        browser.View = new ViewDescription();
+                        browser.View.ViewId = viewId;
+                        ShowReferences = true;
+                        break;
+                    }
+            }
+
+            SetRoot(browser, rootId);
         }
 
         /// <summary>
@@ -1128,8 +1208,8 @@ namespace Opc.Ua.Sample.Controls
                     //Saves subscription and monitored item details in file for recreation.
                     if (subscription != null)
                     {
-                        string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
-                        string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
+                        string Items = Path.Combine(tempFolder, string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
+                        string Subscriptions = Path.Combine(tempFolder, string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
                         Subscribe(subscription, reference);
                         File.AppendAllText(Subscriptions, JsonConvert.SerializeObject(subscription) + "\n");
                         File.AppendAllText(Items, JsonConvert.SerializeObject(reference) + "\n");
@@ -1163,8 +1243,8 @@ namespace Opc.Ua.Sample.Controls
                 //Saves subscription and monitored item details in file for recreation.
                 if (subscription != null)
                 {
-                    string Items = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
-                    string Subscriptions = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
+                    string Items = Path.Combine(tempFolder, string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
+                    string Subscriptions = Path.Combine(tempFolder, string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
                     Subscribe(subscription, reference);
                     File.AppendAllText(Items, JsonConvert.SerializeObject(reference) + "\n");
                 }
