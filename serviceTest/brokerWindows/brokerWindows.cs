@@ -101,7 +101,6 @@ namespace brokerWindows
             }
             catch (Exception ex)
             {
-                // Log the exception.
                 EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
             }                 
         }
@@ -269,7 +268,7 @@ namespace brokerWindows
             //Recreates prior session's subscriptions and monitored items.
             if (sessionEndpoint == retainedEndpoint)
             {
-                //RecreateSession(m_session);
+                RecreateSession(m_session);
             }
             //Register keep alive handler
             m_session.KeepAlive += Client_KeepAlive;
@@ -513,12 +512,18 @@ namespace brokerWindows
                                         }
                                         break;
                                     }
-                                    catch { }
+                                    catch (Exception ex)
+                                    {
+                                        EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
+                                    }
                                 }
                             }
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
+                    }
                 }
             }
         }
@@ -607,7 +612,7 @@ namespace brokerWindows
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     // Log the exception.
                     EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
