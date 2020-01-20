@@ -49,6 +49,7 @@ namespace brokerWindows
         private CertificateValidationEventHandler m_CertificateValidation;
         static bool autoAccept = true;
         System.Threading.Timer publishTimer;
+        System.Threading.Timer updateTimer;
         #endregion
 
         public brokerWindows()

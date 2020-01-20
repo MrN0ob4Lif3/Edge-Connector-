@@ -39,12 +39,13 @@ namespace BrokerClient
         //string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
         //string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
         //string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
+        //string tempFolder2 = Path.Combine(tempFolder, @"Retained Messages");
+
 
         static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
         string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
         string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
-        string tempFolder2 = Path.Combine(tempFolder, @"Retained Messages");
         System.Threading.Timer publishTimer;
         static bool autoAccept = true;
         public EndpointConfiguration m_endpoint_configuration;
@@ -71,7 +72,7 @@ namespace BrokerClient
             Directory.CreateDirectory(itemsFolder);
             Directory.CreateDirectory(subscriptionsFolder);
             Directory.CreateDirectory(sessionFolder);
-            Directory.CreateDirectory(tempFolder2);
+            //Directory.CreateDirectory(tempFolder2);
             //Loading OPC elements
             //ApplicationInstance application = client.GetApplicationInstance();
             //Initialize OPC Application Instance
@@ -411,13 +412,9 @@ namespace BrokerClient
                     opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
                     StandardClient_KeepAlive(m_session, null);
 
-                    //If no retained endpoints, saves current endpoint.
-                    if (retainedEndpoint == null)
-                    {
-                        //Saves session endpoint URL.
-                        await SaveSessionAsync(m_session);
-                        return;
-                    }
+                    //Saves session endpoint URL.
+                    await SaveSessionAsync(m_session);
+
                     //Recreates prior session's subscriptions and monitored items.
                     if (retainedEndpoint == endpointURL)
                     {
@@ -694,15 +691,39 @@ namespace BrokerClient
         //Saves endpoint
         public Task SaveSessionAsync(Session session)
         {
+            string sessionEndpoint = session.Endpoint.EndpointUrl;
             string sessionFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
 
             if (File.Exists(sessionFile))
             {
+                try
+                {
+                    string[] sessionEndpoints = File.ReadAllLines(sessionFile);
+                    foreach (string endpoint in sessionEndpoints)
+                    {
+                        if (endpoint.Contains(sessionEndpoint))
+                        {
+                            File.Delete(endpoint);
+                            string newFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+                            File.AppendAllText(sessionFile, JsonConvert.SerializeObject(sessionEndpoint));
+                            return Task.FromResult(0);
+                        }
+                        else
+                        {
+                            return Task.FromResult(0);
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    // Log the exception.
+                    MessageBox.Show(ex.Message);
+                }
                 return Task.FromResult(0);
             }
             else
             {
-                File.AppendAllText(sessionFile, JsonConvert.SerializeObject(session.Endpoint.EndpointUrl));
+                File.AppendAllText(sessionFile, JsonConvert.SerializeObject(sessionEndpoint));
                 return Task.FromResult(0);
             }
         }
@@ -728,9 +749,10 @@ namespace BrokerClient
                             }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-
+                        // Log the exception.
+                        MessageBox.Show(ex.Message);
                     }
                 }
             }
