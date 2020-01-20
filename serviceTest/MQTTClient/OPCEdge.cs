@@ -44,6 +44,7 @@ namespace BrokerClient
         string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
         string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
+        string tempFolder2 = Path.Combine(tempFolder, @"Retained Messages");
         System.Threading.Timer publishTimer;
         static bool autoAccept = true;
         public EndpointConfiguration m_endpoint_configuration;
@@ -70,6 +71,7 @@ namespace BrokerClient
             Directory.CreateDirectory(itemsFolder);
             Directory.CreateDirectory(subscriptionsFolder);
             Directory.CreateDirectory(sessionFolder);
+            Directory.CreateDirectory(tempFolder2);
             //Loading OPC elements
             //ApplicationInstance application = client.GetApplicationInstance();
             //Initialize OPC Application Instance
@@ -597,13 +599,19 @@ namespace BrokerClient
                                         {
                                             string monitoredDisplayName = monitoredItem.DisplayName;
                                             string monitoredValue = monitoredItem.LastValue.ToString();
-                                            subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
+                                            NodeId itemID = monitoredItem.ResolvedNodeId;
+                                            DataValue nodeValue = session.ReadValue(itemID);
+                                            string actualValue = nodeValue.Value.ToString();
+                                            subscriptionPayload.Add(monitoredDisplayName, actualValue);                                  
                                         }
                                         string message = JsonConvert.SerializeObject(subscriptionPayload);
                                         client.MQTTPublishTopicAsync(subscription.DisplayName, message);
                                         client.MQTTSubscribeTopic(subscription.DisplayName);
                                         subscription.PreviousPublishedTime = DateTime.Now;
                                         subscription.SubscriptionPublished = true;
+                                        //string tempFile = Path.Combine(tempFolder2, string.Format(@"{0}.json", subscription.DisplayName));
+                                        //string test = JsonConvert.DeserializeObject(message).ToString();
+                                        //File.AppendAllText(tempFile, test);
                                     }
                                 }
                             }

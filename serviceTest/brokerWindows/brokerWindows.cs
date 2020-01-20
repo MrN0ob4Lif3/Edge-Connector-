@@ -599,7 +599,10 @@ namespace brokerWindows
                                         {
                                             string monitoredDisplayName = monitoredItem.DisplayName;
                                             string monitoredValue = monitoredItem.LastValue.ToString();
-                                            subscriptionPayload.Add(monitoredDisplayName, monitoredValue);
+                                            NodeId itemID = monitoredItem.ResolvedNodeId;
+                                            DataValue nodeValue = session.ReadValue(itemID);
+                                            string actualValue = nodeValue.Value.ToString();
+                                            subscriptionPayload.Add(monitoredDisplayName, actualValue);
                                         }
                                         string message = JsonConvert.SerializeObject(subscriptionPayload);
                                         Host.Current.MQTTPublish(subscription.DisplayName, message);
