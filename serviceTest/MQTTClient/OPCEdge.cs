@@ -435,8 +435,7 @@ namespace BrokerClient
         {
             try
             {
-                Subscription subscription = e.subscription;
-                client.OPCSubscribe(subscription);
+                client.OPCSubscribe(e.subscription);
             }
             catch (Exception exception)
             {

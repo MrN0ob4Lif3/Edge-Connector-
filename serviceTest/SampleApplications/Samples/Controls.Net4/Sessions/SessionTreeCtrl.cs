@@ -403,16 +403,7 @@ namespace Opc.Ua.Sample.Controls
                 // raise event.
                 if (m_SubscribeEvent != null)
                 {
-                    Subscription newSubscription = new Subscription();
-                    newSubscription.DisplayName = subscription.DisplayName;
-                    newSubscription.PublishingInterval = subscription.PublishingInterval;
-                    newSubscription.KeepAliveCount = subscription.KeepAliveCount;
-                    newSubscription.LifetimeCount = subscription.LifetimeCount;
-                    newSubscription.MaxNotificationsPerPublish = subscription.MaxNotificationsPerPublish;
-                    newSubscription.Priority = subscription.Priority;
-                    newSubscription.PublishingEnabled = subscription.PublishingEnabled;
-
-                    SubscribeEventArgs args = new SubscribeEventArgs(newSubscription);
+                    SubscribeEventArgs args = new SubscribeEventArgs(subscription);
                     try
                     {
                         m_SubscribeEvent(this, args);
