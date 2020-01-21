@@ -44,7 +44,6 @@ namespace ServiceLogic
     //MQTT functions
     public class ManagedClient 
     {
-
         //Creating a new MQTT client.
         public static IManagedMqttClient CreateManagedClient()
         {

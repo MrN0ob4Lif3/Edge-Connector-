@@ -64,6 +64,7 @@ namespace Opc.Ua.Sample.Controls
         private SubscriptionStateChangedEventHandler m_SubscriptionStateChanged;
         private CreateMonitoredItemsDlg m_createDialog;
         private EventHandler m_PublishStatusChanged;
+        private EditEventEventHandler m_EditEvent;
         private static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
         #endregion
 
@@ -141,8 +142,14 @@ namespace Opc.Ua.Sample.Controls
 
             UpdateStatus();
         }
+
+        public event EditEventEventHandler EditEvent
+        {
+            add { m_EditEvent += value; }
+            remove { m_EditEvent += value; }
+        }
         #endregion
-        
+
         #region Private Methods
         /// <summary>
         /// Updates the controls displaying the status of the subscription.
@@ -411,7 +418,14 @@ namespace Opc.Ua.Sample.Controls
                 string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
                 string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
                 m_subscription.Modify();
-                    
+
+                // raise event.
+                if (m_EditEvent != null)
+                {
+                    EditEventArgs args = new EditEventArgs(m_subscription);
+                    m_EditEvent(this, args);
+                }
+
                 //Stores edited subscription values in 'Retained Subscriptions' folder.
                 foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
                 {
@@ -506,6 +520,34 @@ namespace Opc.Ua.Sample.Controls
 				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
+        #region EditEventArgs Class
+        public class EditEventArgs : EventArgs
+        {
+            #region Constructor
+            /// <summary>
+            /// Creates a new instance.
+            /// </summary>
+            internal EditEventArgs(Subscription subscription)
+            {
+                m_subscription = subscription;
+            }
+            #endregion
+            #region Public Properties
+            public Subscription subscription
+            {
+                get { return m_subscription; }
+            }
+            #endregion
+            #region Private Fields
+            private Subscription m_subscription;
+            #endregion
+        }
+        public delegate void EditEventEventHandler(object sender, EditEventArgs e);
         #endregion
+
+        #endregion
+
+
     }
 }

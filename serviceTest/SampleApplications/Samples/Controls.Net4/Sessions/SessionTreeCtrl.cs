@@ -1307,7 +1307,6 @@ namespace Opc.Ua.Sample.Controls
                     m_dialogs.Add(subscription, dialog);
                     subscription.Handle = dialog;
                 }
-                
                 dialog.Show(subscription);
             }
             catch (Exception exception)

@@ -49,7 +49,6 @@ namespace brokerWindows
         private CertificateValidationEventHandler m_CertificateValidation;
         static bool autoAccept = true;
         System.Threading.Timer publishTimer;
-        System.Threading.Timer updateTimer;
         public static DateTime subscriptionLastModified;
         public static DateTime itemLastModified;
         #endregion
@@ -71,7 +70,8 @@ namespace brokerWindows
                 //Initialize MQTT Client.
                 managedMqtt= ManagedClient.CreateManagedClient();
                 //MQTT Broker connection
-                string brokerIP = "localhost";
+                //string brokerIP = "localhost";
+                string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
                 MQTTConnectClient(managedMqtt,brokerIP);
 
                 //Initialize OPC Application Instance
@@ -101,8 +101,6 @@ namespace brokerWindows
 
                 //Use timer callback to monitor and publish subscriptions.
                 publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
-                //Use timer callback to monitor and update session.
-                updateTimer = new System.Threading.Timer(x => SessionUpdate(m_session), null, 5000, 1000);
             }
             catch (Exception ex)
             {
@@ -327,7 +325,7 @@ namespace brokerWindows
         //Callback to add subscription to session
         void IServiceCallback.OPCSubscribe(Subscription subscription)
         {
-            //Recreates subscription based on retained subscription details.
+            //Recreates subscription based on provided subscription details.
             Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
             m_session.AddSubscription(tempSubscription);
             tempSubscription.DisplayName = subscription.DisplayName;
@@ -577,7 +575,6 @@ namespace brokerWindows
                 }
             }
         }
-        #endregion
 
         /// <summary>
         /// Adds a item to a subscription.
@@ -592,7 +589,7 @@ namespace brokerWindows
             monitoredItem.AttributeId = Attributes.Value;
             monitoredItem.SamplingInterval = 0;
             monitoredItem.QueueSize = 1;
-            
+
             // add condition fields to any event filter.
             EventFilter filter = monitoredItem.Filter as EventFilter;
 
@@ -605,6 +602,8 @@ namespace brokerWindows
             subscription.AddItem(monitoredItem);
             subscription.ApplyChanges();
         }
+        #endregion
+
 
         //MQTT publication of OPC subscriptions.
         public void OPCPublish(Session session)
@@ -673,30 +672,6 @@ namespace brokerWindows
             }
         }
     
-        public void SessionUpdate(Session session)
-        {
-            //Check for file change (Subscription)
-            //If file change, delete or edit subscriptions
-
-            //Check for file change (Monitored Item)
-            //If file change, delete or add monitored items.
-        }
-
-        public void checkFileUpdates()
-        {
-            string[] subscriptionFiles = Directory.GetFiles(subscriptionsFolder, "*.json");
-            foreach (string subscriptionFile in subscriptionFiles)
-            {
-
-            }
-
-            string[] itemFiles = Directory.GetFiles(itemsFolder, "*.json");
-            foreach (string itemFile in itemFiles)
-            {
-
-            }
-
-        }
     }
 }
 

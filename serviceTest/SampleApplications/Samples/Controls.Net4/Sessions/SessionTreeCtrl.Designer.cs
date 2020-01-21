@@ -240,6 +240,7 @@ namespace Opc.Ua.Sample.Controls
             this.SubscriptionMonitorMI.Size = new System.Drawing.Size(168, 22);
             this.SubscriptionMonitorMI.Text = "Monitor...";
             this.SubscriptionMonitorMI.Click += new System.EventHandler(this.SubscriptionMonitorMI_Click);
+           
             // 
             // SubscriptionEnabledPublishingMI
             // 

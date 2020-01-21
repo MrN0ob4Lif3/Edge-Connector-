@@ -109,9 +109,6 @@ namespace BrokerClient
             //CheckService();
             //Loading OPC Application Instance.
             InitializeClients();
-
-            //Use timer callback to monitor and publish subscriptions.
-            //publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
         }
 
         private void MqttMain_Load(object sender, EventArgs e)
@@ -392,12 +389,14 @@ namespace BrokerClient
                 m_endpoint_configuration = EndpointConfiguration.Create(config);
                 m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
                 m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
-                //Open dialog to declare Session name.
+                // Open dialog to declare Session name.
                 new SessionOpenDlg().ShowDialog(m_session, opcSession.PreferredLocales);
-                // delete the existing session.
+                // Deletes the existing session.
                 opcSession.Close();
-                // add session to tree.
+                // Adds session to tree.
                 opcSession.AddNode(m_session);
+                // Passes endpointURL to service for connection.
+                client.OPCConnect(selectedEndpoint.EndpointUrl);
 
                 if (m_session != null)
                 {
@@ -478,6 +477,11 @@ namespace BrokerClient
             {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
+        }
+        //Passes modified subscription to service session to reflect changes.
+        public void OPCEdit(object sender)
+        {
+            
         }
         #endregion
 
@@ -601,77 +605,6 @@ namespace BrokerClient
             }
         }
         #endregion
-        #endregion
-
-        #region OPC-MQTT Methods
-        //MQTT publication of OPC subscriptions.
-        public void OPCPublish(Session session)
-        {
-            if (session != null)
-            {
-                try
-                {
-                    //Checks if any subscriptions within session.
-                    if (session.SubscriptionCount > 0)
-                    {
-                        //Iterates through session subscriptions.
-                        IEnumerable<Subscription> subscriptions = session.Subscriptions;
-                        foreach (Subscription subscription in subscriptions)
-                        {
-                            // If subscription is invalid somehow, move on to next.
-                            if (subscription == null)
-                            {
-                                continue;
-                            }
-                            IDictionary<String, String> subscriptionPayload = new Dictionary<String, String>();
-                            double subscriptionInterval = subscription.CurrentPublishingInterval;
-                            subscription.CurrentPublishedTime = DateTime.Now;
-                            TimeSpan intervalCheck = subscription.CurrentPublishedTime.Subtract(subscription.PreviousPublishedTime);
-                            //Checks if subscription has already been published to MQTT broker.
-                            double intervalDifference = (double)intervalCheck.TotalMilliseconds;
-                            //Checks if publishing interval has been reached and weather subscription has been published at least once.
-                            if (intervalDifference < subscriptionInterval && subscription.SubscriptionPublished == true)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                //Iterates through subscription items.               
-                                if (subscription.MonitoredItemCount > 0)
-                                {
-                                    IEnumerable<MonitoredItem> monitoredItems = subscription.MonitoredItems;
-                                    //Adds monitored items to a 'payload' dictionary to be seralized as a JSON string.
-                                    foreach (MonitoredItem monitoredItem in monitoredItems)
-                                    {
-                                        if (monitoredItem.LastValue != null)
-                                        {
-                                            string monitoredDisplayName = monitoredItem.DisplayName;
-                                            string monitoredValue = monitoredItem.LastValue.ToString();
-                                            NodeId itemID = monitoredItem.ResolvedNodeId;
-                                            DataValue nodeValue = session.ReadValue(itemID);
-                                            string actualValue = nodeValue.Value.ToString();
-                                            subscriptionPayload.Add(monitoredDisplayName, actualValue);
-                                        }
-                                        string message = JsonConvert.SerializeObject(subscriptionPayload);
-                                        client.MQTTPublishTopicAsync(subscription.DisplayName, message);
-                                        client.MQTTSubscribeTopic(subscription.DisplayName);
-                                        subscription.PreviousPublishedTime = DateTime.Now;
-                                        subscription.SubscriptionPublished = true;
-                                        //string tempFile = Path.Combine(mainFolder2, string.Format(@"{0}.json", subscription.DisplayName));
-                                        //string test = JsonConvert.DeserializeObject(message).ToString();
-                                        //File.AppendAllText(tempFile, test);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
-        }
         #endregion
 
         #region Session State
@@ -821,11 +754,6 @@ namespace BrokerClient
         }
         #endregion
 
-        private void OPCConnectBtn_Click(object sender, EventArgs e)
-        {
-            string endpointURL = "opc.tcp://localhost:51210/UA/SampleServer";
-            client.OPCConnect(endpointURL);
-        }
     }
 }
 

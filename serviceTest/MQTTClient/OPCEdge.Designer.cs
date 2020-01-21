@@ -58,7 +58,6 @@
             this.opcBrowse = new Opc.Ua.Sample.Controls.BrowseTreeCtrl();
             this.opcSession = new Opc.Ua.Sample.Controls.SessionTreeCtrl();
             this.opcEndpoints = new Opc.Ua.Client.Controls.EndpointSelectorCtrl();
-            this.OPCConnectBtn = new System.Windows.Forms.Button();
             this.MqttTabs.SuspendLayout();
             this.subscribeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -357,22 +356,11 @@
             this.opcEndpoints.TabIndex = 14;
             this.opcEndpoints.ConnectEndpoint += new Opc.Ua.Client.Controls.ConnectEndpointEventHandler(this.OpcEndpoints_ConnectEndpoint);
             // 
-            // OPCConnectBtn
-            // 
-            this.OPCConnectBtn.Location = new System.Drawing.Point(816, 57);
-            this.OPCConnectBtn.Name = "OPCConnectBtn";
-            this.OPCConnectBtn.Size = new System.Drawing.Size(75, 23);
-            this.OPCConnectBtn.TabIndex = 18;
-            this.OPCConnectBtn.Text = "OPCConnect";
-            this.OPCConnectBtn.UseVisualStyleBackColor = true;
-            this.OPCConnectBtn.Click += new System.EventHandler(this.OPCConnectBtn_Click);
-            // 
             // BrokerMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1505, 450);
-            this.Controls.Add(this.OPCConnectBtn);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.opcBrowse);
             this.Controls.Add(this.opcSession);
@@ -436,7 +424,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox publishValue2;
         private System.Windows.Forms.TextBox publishKey2;
-        private System.Windows.Forms.Button OPCConnectBtn;
     }
 }
 
