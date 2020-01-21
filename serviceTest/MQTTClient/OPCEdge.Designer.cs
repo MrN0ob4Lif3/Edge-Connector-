@@ -327,6 +327,7 @@
             this.opcBrowse.SessionTreeCtrl = this.opcSession;
             this.opcBrowse.Size = new System.Drawing.Size(435, 318);
             this.opcBrowse.TabIndex = 16;
+            this.opcBrowse.MonitorEvent += new Opc.Ua.Sample.Controls.MonitorEventEventHandler(this.OPCMonitor);
             // 
             // opcSession
             // 
@@ -341,6 +342,7 @@
             this.opcSession.ServerStatusCtrl = null;
             this.opcSession.Size = new System.Drawing.Size(208, 318);
             this.opcSession.TabIndex = 15;
+            this.opcSession.SubscribeEvent += new Opc.Ua.Sample.Controls.SubscribeEventEventHandler(this.OPCSubscribe);
             // 
             // opcEndpoints
             // 

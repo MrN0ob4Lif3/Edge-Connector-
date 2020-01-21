@@ -318,28 +318,70 @@ namespace brokerWindows
             return m_endpoints;
         }
 
-        //Callback to return OPC Session
-        Session IServiceCallback.OPCSession()
-        {
-            return m_session;
-        }
-
-        void IServiceCallback.SetOPCBrowser(Browser clientBrowser)
-        {
-            clientBrowser.BrowseDirection = m_browser.BrowseDirection;
-            clientBrowser.ReferenceTypeId = m_browser.ReferenceTypeId;
-            clientBrowser.IncludeSubtypes = m_browser.IncludeSubtypes;
-            clientBrowser.NodeClassMask = m_browser.NodeClassMask;
-            clientBrowser.ContinueUntilDone = m_browser.ContinueUntilDone;
-        }
-
         //Callback to connect to OPC endpoint
         void IServiceCallback.OPCConnect(String opcEndpoint)
         {
             OPCConnect(this.application, opcEndpoint);
         }
-        #endregion
 
+        //Callback to add subscription to session
+        void IServiceCallback.OPCSubscribe(Subscription subscription)
+        {
+            //Recreates subscription based on retained subscription details.
+            Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
+            m_session.AddSubscription(tempSubscription);
+            tempSubscription.DisplayName = subscription.DisplayName;
+            tempSubscription.PublishingInterval = subscription.PublishingInterval;
+            tempSubscription.KeepAliveCount = subscription.KeepAliveCount;
+            tempSubscription.LifetimeCount = subscription.LifetimeCount;
+            tempSubscription.MaxNotificationsPerPublish = subscription.MaxNotificationsPerPublish;
+            tempSubscription.Priority = subscription.Priority;
+            tempSubscription.PublishingEnabled = subscription.PublishingEnabled;
+            tempSubscription.Create();
+            Host.Current.MQTTSubscribe(tempSubscription.DisplayName);
+        }
+
+        //Callback to remove subscription from session
+        void IServiceCallback.OPCUnsubscribe(Subscription subscription)
+        {
+            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub.DisplayName == subscription.DisplayName)
+                {
+                    m_session.RemoveSubscription(sub);
+                }
+            }
+        }    
+        
+        //Callback to add monitored item to subscription
+        void IServiceCallback.OPCMonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub.DisplayName == subscription.DisplayName)
+                {
+                    sub.AddItem(monitoredItem);
+                    sub.ApplyChanges();
+                }
+            }
+        }
+
+        //Callback to remove monitored item from subscription.
+        void IServiceCallback.OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub.DisplayName == subscription.DisplayName)
+                {
+                    sub.RemoveItem(monitoredItem);
+                    sub.ApplyChanges();
+                }
+            }
+        }
+        #endregion
         #region OPC Session Creation Methods
         /// <summary>
         /// Gets or sets a flag indicating that the domain checks should be ignored when connecting.
@@ -478,15 +520,15 @@ namespace brokerWindows
             //Recreating retained subscriptions.
             foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
             {
-                String testSubscriptions = File.ReadAllText(sub);
-                if (testSubscriptions != "")
+                String readSubscription = File.ReadAllText(sub);
+                if (readSubscription != "")
                 {
                     try
                     {
                         //Recreates subscription based on retained subscription details.
                         Subscription retainedSubscription;
                         Subscription tempSubscription = new Subscription(session.DefaultSubscription);
-                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(testSubscriptions);
+                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(readSubscription);
                         session.AddSubscription(tempSubscription);
                         tempSubscription.DisplayName = retainedSubscription.DisplayName;
                         tempSubscription.PublishingInterval = retainedSubscription.PublishingInterval;
@@ -547,7 +589,7 @@ namespace brokerWindows
             monitoredItem.AttributeId = Attributes.Value;
             monitoredItem.SamplingInterval = 0;
             monitoredItem.QueueSize = 1;
-
+            
             // add condition fields to any event filter.
             EventFilter filter = monitoredItem.Filter as EventFilter;
 

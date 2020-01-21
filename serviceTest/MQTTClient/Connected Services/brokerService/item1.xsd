@@ -78,36 +78,6 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="OPCConnectClient">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="OPCConnectClientResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="OPCSubscribeTopic">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="OPCSubscribeTopicResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="OPCUnsubscribeTopic">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="OPCUnsubscribeTopicResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
   <xs:element name="Connect">
     <xs:complexType>
       <xs:sequence>
@@ -144,30 +114,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetSession">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetSessionResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="GetSessionResult" nillable="true" type="q5:Session" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SetBrowser">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="clientBrowser" nillable="true" type="q6:Browser" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SetBrowserResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
   <xs:element name="OPCConnect">
     <xs:complexType>
       <xs:sequence>
@@ -176,6 +122,56 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="OPCConnectResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCSubscribe">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q5:Subscription" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCSubscribeResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCUnsubscribe">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q6:Subscription" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCUnsubscribeResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCMonitor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q7:Subscription" />
+        <xs:element xmlns:q8="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="monitoredItem" nillable="true" type="q8:MonitoredItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCMonitorResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCUnmonitor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q9:Subscription" />
+        <xs:element xmlns:q10="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="monitoredItem" nillable="true" type="q10:MonitoredItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCUnmonitorResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>

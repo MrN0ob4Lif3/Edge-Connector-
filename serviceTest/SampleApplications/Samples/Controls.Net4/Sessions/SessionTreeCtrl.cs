@@ -73,6 +73,7 @@ namespace Opc.Ua.Sample.Controls
         private static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
         private string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
+        private event SubscribeEventEventHandler m_SubscribeEvent;
         #endregion
 
         #region Public Interface
@@ -398,6 +399,14 @@ namespace Opc.Ua.Sample.Controls
             {
                 m_dialogs.Add(subscription, dialog);
                 subscription.Handle = dialog;
+                // raise event.
+                if (m_SubscribeEvent != null)
+                {
+                    SubscribeEventArgs args = new SubscribeEventArgs(subscription);
+                    m_SubscribeEvent(this, args);
+                }
+
+
                 return subscription;
             }
 
@@ -425,8 +434,18 @@ namespace Opc.Ua.Sample.Controls
             AddNode(session);
             SelectNode();
         }
+
+        /// <summary>
+        /// Raised when a new subscription is added.
+        /// </summary>
+        /// 
+        public event SubscribeEventEventHandler SubscribeEvent
+        {
+            add { m_SubscribeEvent += value; }
+            remove { m_SubscribeEvent += value; }
+        }
         #endregion
-        
+
         #region Overridden Members
         /// <see cref="BaseTreeCtrl.EnableMenuItems" />
         protected override void EnableMenuItems(TreeNode clickedNode)
@@ -1397,4 +1416,29 @@ namespace Opc.Ua.Sample.Controls
             }
         }
     }
+
+    #region SubscribeEventArgs Class
+    public class SubscribeEventArgs : EventArgs
+    {
+        #region Constructor
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        internal SubscribeEventArgs(Subscription subscription)
+        {
+            m_subscription = subscription;
+        }
+        #endregion
+        #region Public Properties
+        public Subscription subscription
+        {
+            get { return m_subscription; }
+        }
+        #endregion
+        #region Private Fields
+        private Subscription m_subscription;
+        #endregion
+    }
+    public delegate void SubscribeEventEventHandler(object sender, SubscribeEventArgs e);
+    #endregion
 }

@@ -41,8 +41,6 @@
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Client" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IBrokerService_MQTTConnectClientAsync_InputMessage">
@@ -81,24 +79,6 @@
   <wsdl:message name="IBrokerService_OPCCreateClient_OutputMessage">
     <wsdl:part name="parameters" element="tns:OPCCreateClientResponse" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_OPCConnectClient_InputMessage">
-    <wsdl:part name="parameters" element="tns:OPCConnectClient" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_OPCConnectClient_OutputMessage">
-    <wsdl:part name="parameters" element="tns:OPCConnectClientResponse" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_OPCSubscribeTopic_InputMessage">
-    <wsdl:part name="parameters" element="tns:OPCSubscribeTopic" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_OPCSubscribeTopic_OutputMessage">
-    <wsdl:part name="parameters" element="tns:OPCSubscribeTopicResponse" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_OPCUnsubscribeTopic_InputMessage">
-    <wsdl:part name="parameters" element="tns:OPCUnsubscribeTopic" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_OPCUnsubscribeTopic_OutputMessage">
-    <wsdl:part name="parameters" element="tns:OPCUnsubscribeTopicResponse" />
-  </wsdl:message>
   <wsdl:message name="IBrokerService_Connect_InputMessage">
     <wsdl:part name="parameters" element="tns:Connect" />
   </wsdl:message>
@@ -117,23 +97,35 @@
   <wsdl:message name="IBrokerService_GetEndpoints_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetEndpointsResponse" />
   </wsdl:message>
-  <wsdl:message name="IBrokerService_GetSession_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetSession" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_GetSession_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetSessionResponse" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_SetBrowser_InputMessage">
-    <wsdl:part name="parameters" element="tns:SetBrowser" />
-  </wsdl:message>
-  <wsdl:message name="IBrokerService_SetBrowser_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SetBrowserResponse" />
-  </wsdl:message>
   <wsdl:message name="IBrokerService_OPCConnect_InputMessage">
     <wsdl:part name="parameters" element="tns:OPCConnect" />
   </wsdl:message>
   <wsdl:message name="IBrokerService_OPCConnect_OutputMessage">
     <wsdl:part name="parameters" element="tns:OPCConnectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCSubscribe_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCSubscribe" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCSubscribe_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCSubscribeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCUnsubscribe_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCUnsubscribe" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCUnsubscribe_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCUnsubscribeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCMonitor_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCMonitor" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCMonitor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCMonitorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCUnmonitor_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCUnmonitor" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCUnmonitor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCUnmonitorResponse" />
   </wsdl:message>
   <wsdl:portType name="IBrokerService">
     <wsdl:operation name="MQTTConnectClientAsync">
@@ -160,18 +152,6 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCCreateClient" message="tns:IBrokerService_OPCCreateClient_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCCreateClientResponse" message="tns:IBrokerService_OPCCreateClient_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="OPCConnectClient">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCConnectClient" message="tns:IBrokerService_OPCConnectClient_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCConnectClientResponse" message="tns:IBrokerService_OPCConnectClient_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="OPCSubscribeTopic">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCSubscribeTopic" message="tns:IBrokerService_OPCSubscribeTopic_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCSubscribeTopicResponse" message="tns:IBrokerService_OPCSubscribeTopic_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="OPCUnsubscribeTopic">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" message="tns:IBrokerService_OPCUnsubscribeTopic_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse" message="tns:IBrokerService_OPCUnsubscribeTopic_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="Connect">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/Connect" message="tns:IBrokerService_Connect_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/ConnectResponse" message="tns:IBrokerService_Connect_OutputMessage" />
@@ -184,17 +164,25 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetEndpoints" message="tns:IBrokerService_GetEndpoints_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetEndpointsResponse" message="tns:IBrokerService_GetEndpoints_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetSession">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/GetSession" message="tns:IBrokerService_GetSession_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/GetSessionResponse" message="tns:IBrokerService_GetSession_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="SetBrowser">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/SetBrowser" message="tns:IBrokerService_SetBrowser_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/SetBrowserResponse" message="tns:IBrokerService_SetBrowser_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="OPCConnect">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCConnect" message="tns:IBrokerService_OPCConnect_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCConnectResponse" message="tns:IBrokerService_OPCConnect_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCSubscribe">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCSubscribe" message="tns:IBrokerService_OPCSubscribe_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCSubscribeResponse" message="tns:IBrokerService_OPCSubscribe_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnsubscribe">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribe" message="tns:IBrokerService_OPCUnsubscribe_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnsubscribeResponse" message="tns:IBrokerService_OPCUnsubscribe_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCMonitor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCMonitor" message="tns:IBrokerService_OPCMonitor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCMonitorResponse" message="tns:IBrokerService_OPCMonitor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnmonitor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnmonitor" message="tns:IBrokerService_OPCUnmonitor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnmonitorResponse" message="tns:IBrokerService_OPCUnmonitor_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IBrokerService" type="tns:IBrokerService">
@@ -253,33 +241,6 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OPCConnectClient">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCConnectClient" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="OPCSubscribeTopic">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCSubscribeTopic" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="OPCUnsubscribeTopic">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Connect">
       <soap:operation soapAction="http://tempuri.org/IBrokerService/Connect" style="document" />
       <wsdl:input>
@@ -307,26 +268,44 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetSession">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/GetSession" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetBrowser">
-      <soap:operation soapAction="http://tempuri.org/IBrokerService/SetBrowser" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="OPCConnect">
       <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCConnect" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCSubscribe">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCSubscribe" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnsubscribe">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribe" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCMonitor">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCMonitor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnmonitor">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCUnmonitor" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -392,33 +371,6 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OPCConnectClient">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCConnectClient" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="OPCSubscribeTopic">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCSubscribeTopic" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="OPCUnsubscribeTopic">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Connect">
       <soap12:operation soapAction="http://tempuri.org/IBrokerService/Connect" style="document" />
       <wsdl:input>
@@ -446,26 +398,44 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetSession">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/GetSession" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetBrowser">
-      <soap12:operation soapAction="http://tempuri.org/IBrokerService/SetBrowser" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="OPCConnect">
       <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCConnect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCSubscribe">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCSubscribe" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnsubscribe">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnsubscribe" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCMonitor">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCMonitor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCUnmonitor">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnmonitor" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -65,6 +65,7 @@ namespace Opc.Ua.Sample.Controls
         private ReferenceDescriptionCollection m_references;
         private event NodesSelectedEventHandler m_ItemsSelected;
         private event MethodCalledEventHandler m_MethodCalled;
+        private event MonitorEventEventHandler m_monitorEvent;
         private BrowserEventHandler m_BrowserMoreReferences;
         private SessionTreeCtrl m_SessionTreeCtrl;
         private static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
@@ -154,6 +155,12 @@ namespace Opc.Ua.Sample.Controls
         {
             add { m_MethodCalled += value; }
             remove { m_MethodCalled -= value; }
+        }
+
+        public event MonitorEventEventHandler MonitorEvent
+        {
+            add { m_monitorEvent += value; }
+            remove { m_monitorEvent += value; }
         }
 
         /// <summary>
@@ -701,6 +708,12 @@ namespace Opc.Ua.Sample.Controls
 
             subscription.AddItem(monitoredItem);
             subscription.ApplyChanges();
+            // raise event.
+            if (m_monitorEvent != null)
+            {
+                MonitorEventArgs args = new MonitorEventArgs(subscription, monitoredItem);
+                m_monitorEvent(this, args);
+            }
         }
 
         /// <summary>
@@ -1187,7 +1200,7 @@ namespace Opc.Ua.Sample.Controls
             }
         }
 
-        private void SubscribeNewMI_Click(object sender, EventArgs e)
+        public void SubscribeNewMI_Click(object sender, EventArgs e)
         {
             try
             {
@@ -1224,7 +1237,7 @@ namespace Opc.Ua.Sample.Controls
             }
         }
 
-        void Subscription_Click(object sender, EventArgs e)
+        public void Subscription_Click(object sender, EventArgs e)
         {
             try
             {
@@ -1491,5 +1504,36 @@ namespace Opc.Ua.Sample.Controls
     /// The delegate used to receive notifications when nodes are picked in the dialog.
     /// </summary>
     public delegate void MethodCalledEventHandler(object sender, MethodCalledEventArgs e);
-    #endregion   
+    #endregion
+
+    #region MonitorEventArgs
+    public class MonitorEventArgs : EventArgs
+    {
+        #region Constructor
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        internal MonitorEventArgs(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            m_monitoredItem = monitoredItem;
+            m_subscription = subscription;
+        }
+        #endregion
+        #region Public Properties
+        public MonitoredItem monitoredItem
+        {
+            get { return m_monitoredItem; }
+        }
+        public Subscription subscription
+        {
+            get { return m_subscription; }
+        }
+        #endregion
+        #region Private Fields
+        private MonitoredItem m_monitoredItem;
+        private Subscription m_subscription;
+        #endregion
+    }
+    public delegate void MonitorEventEventHandler(object sender, MonitorEventArgs e);
+    #endregion
 }

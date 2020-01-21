@@ -32,14 +32,6 @@ namespace brokerService
         [OperationContract]
         void OPCCreateClient(String opcIP, bool securityCheck);
 
-        [OperationContract]
-        void OPCConnectClient();
-
-        [OperationContract]
-        void OPCSubscribeTopic();
-
-        [OperationContract]
-        void OPCUnsubscribeTopic();
 
         [OperationContract]
         void Connect(ConfiguredEndpoint endpoint);
@@ -51,13 +43,20 @@ namespace brokerService
         ConfiguredEndpointCollection GetEndpoints();
 
         [OperationContract]
-        Session GetSession();
-
-        [OperationContract]
-        void SetBrowser(Browser clientBrowser);
-
-        [OperationContract]
         void OPCConnect(String opcEndpoint);
+
+        [OperationContract]
+        void OPCSubscribe(Subscription subscription);
+
+        [OperationContract]
+        void OPCUnsubscribe(Subscription subscription);
+
+        [OperationContract]
+        void OPCMonitor(Subscription subscription, MonitoredItem monitoredItem);
+
+        [OperationContract]
+        void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem);
+
         #endregion
     }
 

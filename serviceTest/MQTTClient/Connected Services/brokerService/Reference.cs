@@ -223,24 +223,6 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCCreateClient", ReplyAction="http://tempuri.org/IBrokerService/OPCCreateClientResponse")]
         System.Threading.Tasks.Task OPCCreateClientAsync(string opcIP, bool securityCheck);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnectClient", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectClientResponse")]
-        void OPCConnectClient();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnectClient", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectClientResponse")]
-        System.Threading.Tasks.Task OPCConnectClientAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCSubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCSubscribeTopicResponse")]
-        void OPCSubscribeTopic();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCSubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCSubscribeTopicResponse")]
-        System.Threading.Tasks.Task OPCSubscribeTopicAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse")]
-        void OPCUnsubscribeTopic();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribeTopic", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeTopicResponse")]
-        System.Threading.Tasks.Task OPCUnsubscribeTopicAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/Connect", ReplyAction="http://tempuri.org/IBrokerService/ConnectResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
@@ -263,222 +245,47 @@ namespace BrokerClient.brokerService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetEndpoints", ReplyAction="http://tempuri.org/IBrokerService/GetEndpointsResponse")]
         System.Threading.Tasks.Task<Opc.Ua.ConfiguredEndpointCollection> GetEndpointsAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.IssuedIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BinaryEncodingSupport))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointComIdentity))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ComSpecification))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SecurityConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateTrustList))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateStoreIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfCertificateIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfTransportConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TransportConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TransportQuotas))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerBaseConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfServerSecurityPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerSecurityPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfSamplingRateGroup))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SamplingRateGroup))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiscoveryServerConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfServerRegistration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerRegistration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TraceConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfApplicationAccessRule))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationAccessRule))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AccessControlType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationAccessRight))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpointCollection))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.ApplicationInstance))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.MemberInfo))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.Type))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.SecuredApplication))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.ApplicationType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateStoreIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateList))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfCertificateIdentifier1))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfBaseAddresses))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfSecurityProfiles))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.SecurityProfile))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfExtensions))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(string[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SessionClient))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientBase))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiagnosticsMasks))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.NodeCache))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.LocalizedText))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfString))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MessageSecurityMode))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfUserTokenPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserTokenPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserTokenType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Uuid))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfXmlElement))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfEndpointDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfLocalizedText))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeId))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TimestampsToReturn))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeClass))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.QualifiedName))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MonitoringMode))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MonitoringFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeTrigger))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfSimpleAttributeOperand))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SimpleAttributeOperand))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterOperand))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfQualifiedName))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ContentFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfContentFilterElement))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ContentFilterElement))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterOperator))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfExtensionObject))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ExtensionObject))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Browser))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ViewDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BrowseDirection))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.InstalledApplication))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.StartMode))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterContext))]
-        Opc.Ua.Client.Session GetSession();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/GetSession", ReplyAction="http://tempuri.org/IBrokerService/GetSessionResponse")]
-        System.Threading.Tasks.Task<Opc.Ua.Client.Session> GetSessionAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/SetBrowser", ReplyAction="http://tempuri.org/IBrokerService/SetBrowserResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.IssuedIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BinaryEncodingSupport))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointComIdentity))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ComSpecification))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SecurityConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateTrustList))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateStoreIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfCertificateIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfTransportConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TransportConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TransportQuotas))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerBaseConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfServerSecurityPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerSecurityPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfSamplingRateGroup))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SamplingRateGroup))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiscoveryServerConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfServerRegistration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ServerRegistration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TraceConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfApplicationAccessRule))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationAccessRule))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AccessControlType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationAccessRight))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpointCollection))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ConfiguredEndpoint[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.ApplicationInstance))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.MemberInfo))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.Type))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.SecuredApplication))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.ApplicationType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateStoreIdentifier))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.CertificateList))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfCertificateIdentifier1))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfBaseAddresses))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfSecurityProfiles))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Security.SecurityProfile))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfExtensions))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(string[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SessionClient))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ClientBase))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DiagnosticsMasks))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.NodeCache))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.LocalizedText))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ApplicationType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfString))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MessageSecurityMode))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfUserTokenPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserTokenPolicy))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserTokenType))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EndpointConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Uuid))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfXmlElement))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfEndpointDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfLocalizedText))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeId))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.TimestampsToReturn))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NodeClass))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.QualifiedName))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MonitoringMode))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.MonitoringFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeTrigger))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfSimpleAttributeOperand))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.SimpleAttributeOperand))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterOperand))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfQualifiedName))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ContentFilter))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfContentFilterElement))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ContentFilterElement))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterOperator))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BrokerClient.brokerService.ListOfExtensionObject))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ExtensionObject))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateConfiguration))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.MonitoredItem[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EncodeableFactory))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.NamespaceTable))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.StringTable))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Client.Subscription[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.ViewDescription))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.BrowseDirection))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.InstalledApplication))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.Configuration.StartMode))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.FilterContext))]
-        void SetBrowser(Opc.Ua.Client.Browser clientBrowser);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/SetBrowser", ReplyAction="http://tempuri.org/IBrokerService/SetBrowserResponse")]
-        System.Threading.Tasks.Task SetBrowserAsync(Opc.Ua.Client.Browser clientBrowser);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
         void OPCConnect(string opcEndpoint);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCConnect", ReplyAction="http://tempuri.org/IBrokerService/OPCConnectResponse")]
         System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCSubscribe", ReplyAction="http://tempuri.org/IBrokerService/OPCSubscribeResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
+        void OPCSubscribe(Opc.Ua.Client.Subscription subscription);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCSubscribe", ReplyAction="http://tempuri.org/IBrokerService/OPCSubscribeResponse")]
+        System.Threading.Tasks.Task OPCSubscribeAsync(Opc.Ua.Client.Subscription subscription);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribe", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
+        void OPCUnsubscribe(Opc.Ua.Client.Subscription subscription);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnsubscribe", ReplyAction="http://tempuri.org/IBrokerService/OPCUnsubscribeResponse")]
+        System.Threading.Tasks.Task OPCUnsubscribeAsync(Opc.Ua.Client.Subscription subscription);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCMonitor", ReplyAction="http://tempuri.org/IBrokerService/OPCMonitorResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
+        void OPCMonitor(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCMonitor", ReplyAction="http://tempuri.org/IBrokerService/OPCMonitorResponse")]
+        System.Threading.Tasks.Task OPCMonitorAsync(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnmonitor", ReplyAction="http://tempuri.org/IBrokerService/OPCUnmonitorResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.DataChangeFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.EventFilter))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.AggregateFilter))]
+        void OPCUnmonitor(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnmonitor", ReplyAction="http://tempuri.org/IBrokerService/OPCUnmonitorResponse")]
+        System.Threading.Tasks.Task OPCUnmonitorAsync(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -556,30 +363,6 @@ namespace BrokerClient.brokerService {
             return base.Channel.OPCCreateClientAsync(opcIP, securityCheck);
         }
         
-        public void OPCConnectClient() {
-            base.Channel.OPCConnectClient();
-        }
-        
-        public System.Threading.Tasks.Task OPCConnectClientAsync() {
-            return base.Channel.OPCConnectClientAsync();
-        }
-        
-        public void OPCSubscribeTopic() {
-            base.Channel.OPCSubscribeTopic();
-        }
-        
-        public System.Threading.Tasks.Task OPCSubscribeTopicAsync() {
-            return base.Channel.OPCSubscribeTopicAsync();
-        }
-        
-        public void OPCUnsubscribeTopic() {
-            base.Channel.OPCUnsubscribeTopic();
-        }
-        
-        public System.Threading.Tasks.Task OPCUnsubscribeTopicAsync() {
-            return base.Channel.OPCUnsubscribeTopicAsync();
-        }
-        
         public void Connect(Opc.Ua.ConfiguredEndpoint endpoint) {
             base.Channel.Connect(endpoint);
         }
@@ -604,28 +387,44 @@ namespace BrokerClient.brokerService {
             return base.Channel.GetEndpointsAsync();
         }
         
-        public Opc.Ua.Client.Session GetSession() {
-            return base.Channel.GetSession();
-        }
-        
-        public System.Threading.Tasks.Task<Opc.Ua.Client.Session> GetSessionAsync() {
-            return base.Channel.GetSessionAsync();
-        }
-        
-        public void SetBrowser(Opc.Ua.Client.Browser clientBrowser) {
-            base.Channel.SetBrowser(clientBrowser);
-        }
-        
-        public System.Threading.Tasks.Task SetBrowserAsync(Opc.Ua.Client.Browser clientBrowser) {
-            return base.Channel.SetBrowserAsync(clientBrowser);
-        }
-        
         public void OPCConnect(string opcEndpoint) {
             base.Channel.OPCConnect(opcEndpoint);
         }
         
         public System.Threading.Tasks.Task OPCConnectAsync(string opcEndpoint) {
             return base.Channel.OPCConnectAsync(opcEndpoint);
+        }
+        
+        public void OPCSubscribe(Opc.Ua.Client.Subscription subscription) {
+            base.Channel.OPCSubscribe(subscription);
+        }
+        
+        public System.Threading.Tasks.Task OPCSubscribeAsync(Opc.Ua.Client.Subscription subscription) {
+            return base.Channel.OPCSubscribeAsync(subscription);
+        }
+        
+        public void OPCUnsubscribe(Opc.Ua.Client.Subscription subscription) {
+            base.Channel.OPCUnsubscribe(subscription);
+        }
+        
+        public System.Threading.Tasks.Task OPCUnsubscribeAsync(Opc.Ua.Client.Subscription subscription) {
+            return base.Channel.OPCUnsubscribeAsync(subscription);
+        }
+        
+        public void OPCMonitor(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem) {
+            base.Channel.OPCMonitor(subscription, monitoredItem);
+        }
+        
+        public System.Threading.Tasks.Task OPCMonitorAsync(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem) {
+            return base.Channel.OPCMonitorAsync(subscription, monitoredItem);
+        }
+        
+        public void OPCUnmonitor(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem) {
+            base.Channel.OPCUnmonitor(subscription, monitoredItem);
+        }
+        
+        public System.Threading.Tasks.Task OPCUnmonitorAsync(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem) {
+            return base.Channel.OPCUnmonitorAsync(subscription, monitoredItem);
         }
     }
 }

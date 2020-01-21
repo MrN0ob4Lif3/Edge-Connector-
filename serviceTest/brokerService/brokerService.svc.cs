@@ -246,35 +246,6 @@ namespace brokerService
             }
         }
         #endregion
-
-        public void OPCConnectClient() { }
-
-        //OPC client connection.
-        public void OPCConnectClient(ConfiguredEndpoint endpoint, SessionTreeCtrl opcSession, Opc.Ua.Sample.Controls.BrowseTreeCtrl opcBrowse)
-        {
-            try
-            {
-                //Connect(endpoint, opcSession, opcBrowse);
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-        //OPC topic subscription.
-        public void OPCSubscribeTopic()
-        {
-            //subscribe to specified data value
-            if (m_session == null)
-            {
-                return;
-            }
-        }
-        //OPC topic unsubscription.
-        public void OPCUnsubscribeTopic()
-        {
-            //unsubscribe from specified data value
-        }
         #endregion
 
         /// <summary>
@@ -375,14 +346,7 @@ namespace brokerService
         {
             return Host.Current.OPCEndpoints();
         }
-        public Session GetSession()
-        {
-            return Host.Current.OPCSession();
-        }
-        public void SetBrowser(Browser clientBrowser)
-        {
-            Host.Current.SetOPCBrowser(clientBrowser);
-        }
+
         public void OPCConnect(string opcEndpoint)
         {
             Host.Current.OPCConnect(opcEndpoint);
@@ -524,6 +488,30 @@ namespace brokerService
             }
         }
         #endregion
+       
+        //Passes subscription to service session for subscription.
+        public void OPCSubscribe(Subscription subscription)
+        {
+            Host.Current.OPCSubscribe(subscription);
+        }
+        //Passes subscription to service session for unsubscription.
+
+        public void OPCUnsubscribe(Subscription subscription)
+        {
+            Host.Current.OPCUnsubscribe(subscription);
+        }
+
+        //Passes monitored item to service session to add to subscription.
+        public void OPCMonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            Host.Current.OPCMonitor(subscription, monitoredItem);
+        }
+
+        //Passes monitored item to service session to remove from subscription.
+        public void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            Host.Current.OPCUnmonitor(subscription, monitoredItem);
+        }
 
     }
 }

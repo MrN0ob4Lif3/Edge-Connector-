@@ -414,7 +414,6 @@ namespace BrokerClient
 
                     //Saves session endpoint URL.
                     await SaveSessionAsync(m_session);
-
                     //Recreates prior session's subscriptions and monitored items.
                     if (retainedEndpoint == endpointURL)
                     {
@@ -427,6 +426,30 @@ namespace BrokerClient
                 // Log the exception.
                 MessageBox.Show(ex.Message);
             }
+        }
+        #endregion
+
+        #region OPC Subscription / Monitored Items
+        //Passes subscription to service session for subscription.
+        public void OPCSubscribe(object sender, SubscribeEventArgs e)
+        {
+            client.OPCSubscribe(e.subscription);
+        }
+        //Passes subscription to service session for unsubscription.
+        public void OPCUnsubscribe(Subscription subscription)
+        {
+            client.OPCUnsubscribe(subscription);
+        }
+
+        //Passes monitored item to service session to add to subscription.
+        public void OPCMonitor(object sender, MonitorEventArgs e)
+        {
+            client.OPCMonitor(e.subscription, e.monitoredItem);
+        }
+        //Passes monitored item to service session to remove from subscription.
+        public void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            client.OPCUnmonitor(subscription, monitoredItem);
         }
         #endregion
 
@@ -621,76 +644,6 @@ namespace BrokerClient
                 }
             }
         }
-
-        //Session recreation method.
-        public void RecreateSession(Session session)
-        {
-            //Recreating retained subscriptions.
-            foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
-            {
-                String testSubscriptions = File.ReadAllText(sub);
-                if (testSubscriptions != "")
-                {
-                    try
-                    {
-                        //Recreates subscription based on retained subscription details.
-                        Subscription retainedSubscription;
-                        Subscription tempSubscription = new Subscription(session.DefaultSubscription);
-                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(testSubscriptions);
-                        session.AddSubscription(tempSubscription);
-                        tempSubscription.DisplayName = retainedSubscription.DisplayName;
-                        tempSubscription.PublishingInterval = retainedSubscription.PublishingInterval;
-                        tempSubscription.KeepAliveCount = retainedSubscription.KeepAliveCount;
-                        tempSubscription.LifetimeCount = retainedSubscription.LifetimeCount;
-                        tempSubscription.MaxNotificationsPerPublish = retainedSubscription.MaxNotificationsPerPublish;
-                        tempSubscription.Priority = retainedSubscription.Priority;
-                        tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
-                        tempSubscription.Create();
-                        client.MQTTSubscribeTopic(tempSubscription.DisplayName);
-
-                        //Checks for monitored items belonging to subscription and recreates them.
-                        foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
-                        {
-                            if (item != "")
-                            {
-                                if (item.Contains(string.Format("{0}.json", tempSubscription.DisplayName)))
-                                {
-                                    try
-                                    {
-                                        String[] testItems = File.ReadAllLines(item);
-                                        foreach (string testItem in testItems)
-                                        {
-                                            //Checking and recreating monitored items for each subscription.
-                                            ReferenceDescription retainedItem;
-                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
-                                            opcBrowse.Subscribe(tempSubscription, retainedItem);
-                                            if (topicListPub.Items.Contains(tempSubscription.DisplayName))
-                                            {
-                                                continue;
-                                            }
-                                            else
-                                            {
-                                                topicListPub.Items.Add((tempSubscription.DisplayName));
-                                                topicListSub.Items.Add((tempSubscription.DisplayName));
-                                            }
-                                        }
-                                        break;
-                                    }
-                                    catch 
-                                    {
-                                        MessageBox.Show("Error Recreating.");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Error Recreating.");
-                    }
-                }
-            }
-        }
         #endregion
 
         #region Session State
@@ -767,6 +720,76 @@ namespace BrokerClient
                 return null;
             }
             return Task.FromResult(retainedSession);
+        }
+
+        //Session recreation method.
+        public void RecreateSession(Session session)
+        {
+            //Recreating retained subscriptions.
+            foreach (string sub in Directory.GetFiles(subscriptionsFolder, "*.json"))
+            {
+                String readSubscription = File.ReadAllText(sub);
+                if (readSubscription != "")
+                {
+                    try
+                    {
+                        //Recreates subscription based on retained subscription details.
+                        Subscription retainedSubscription;
+                        Subscription tempSubscription = new Subscription(session.DefaultSubscription);
+                        retainedSubscription = JsonConvert.DeserializeObject<Subscription>(readSubscription);
+                        session.AddSubscription(tempSubscription);
+                        tempSubscription.DisplayName = retainedSubscription.DisplayName;
+                        tempSubscription.PublishingInterval = retainedSubscription.PublishingInterval;
+                        tempSubscription.KeepAliveCount = retainedSubscription.KeepAliveCount;
+                        tempSubscription.LifetimeCount = retainedSubscription.LifetimeCount;
+                        tempSubscription.MaxNotificationsPerPublish = retainedSubscription.MaxNotificationsPerPublish;
+                        tempSubscription.Priority = retainedSubscription.Priority;
+                        tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
+                        tempSubscription.Create();
+                        client.MQTTSubscribeTopic(tempSubscription.DisplayName);
+
+                        //Checks for monitored items belonging to subscription and recreates them.
+                        foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
+                        {
+                            if (item != "")
+                            {
+                                if (item.Contains(string.Format("{0}.json", tempSubscription.DisplayName)))
+                                {
+                                    try
+                                    {
+                                        String[] testItems = File.ReadAllLines(item);
+                                        foreach (string testItem in testItems)
+                                        {
+                                            //Checking and recreating monitored items for each subscription.
+                                            ReferenceDescription retainedItem;
+                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
+                                            opcBrowse.Subscribe(tempSubscription, retainedItem);
+                                            if (topicListPub.Items.Contains(tempSubscription.DisplayName))
+                                            {
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                topicListPub.Items.Add((tempSubscription.DisplayName));
+                                                topicListSub.Items.Add((tempSubscription.DisplayName));
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Error Recreating.");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Error Recreating.");
+                    }
+                }
+            }
         }
         #endregion
 
