@@ -38,6 +38,7 @@ using Opc.Ua.Client.Controls;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Opc.Ua.Sample.Controls
 {
@@ -402,10 +403,25 @@ namespace Opc.Ua.Sample.Controls
                 // raise event.
                 if (m_SubscribeEvent != null)
                 {
-                    SubscribeEventArgs args = new SubscribeEventArgs(subscription);
-                    m_SubscribeEvent(this, args);
-                }
+                    Subscription newSubscription = new Subscription();
+                    newSubscription.DisplayName = subscription.DisplayName;
+                    newSubscription.PublishingInterval = subscription.PublishingInterval;
+                    newSubscription.KeepAliveCount = subscription.KeepAliveCount;
+                    newSubscription.LifetimeCount = subscription.LifetimeCount;
+                    newSubscription.MaxNotificationsPerPublish = subscription.MaxNotificationsPerPublish;
+                    newSubscription.Priority = subscription.Priority;
+                    newSubscription.PublishingEnabled = subscription.PublishingEnabled;
 
+                    SubscribeEventArgs args = new SubscribeEventArgs(newSubscription);
+                    try
+                    {
+                        m_SubscribeEvent(this, args);
+                    }
+                    catch (Exception exception)
+                    {
+                        GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+                    }
+                }
 
                 return subscription;
             }

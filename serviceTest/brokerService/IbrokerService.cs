@@ -32,7 +32,6 @@ namespace brokerService
         [OperationContract]
         void OPCCreateClient(String opcIP, bool securityCheck);
 
-
         [OperationContract]
         void Connect(ConfiguredEndpoint endpoint);
 

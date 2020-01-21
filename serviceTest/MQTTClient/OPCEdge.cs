@@ -111,7 +111,7 @@ namespace BrokerClient
             InitializeClients();
 
             //Use timer callback to monitor and publish subscriptions.
-            publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
+            //publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
         }
 
         private void MqttMain_Load(object sender, EventArgs e)
@@ -320,7 +320,7 @@ namespace BrokerClient
             this.ShowInTaskbar = true;
             brokerNotify.Visible = true;
         }
-        
+
         private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.publishTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -433,23 +433,52 @@ namespace BrokerClient
         //Passes subscription to service session for subscription.
         public void OPCSubscribe(object sender, SubscribeEventArgs e)
         {
-            client.OPCSubscribe(e.subscription);
+            try
+            {
+                Subscription subscription = e.subscription;
+                client.OPCSubscribe(subscription);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
         }
         //Passes subscription to service session for unsubscription.
         public void OPCUnsubscribe(Subscription subscription)
         {
-            client.OPCUnsubscribe(subscription);
+            try
+            {
+                client.OPCUnsubscribe(subscription);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
         }
 
         //Passes monitored item to service session to add to subscription.
         public void OPCMonitor(object sender, MonitorEventArgs e)
         {
-            client.OPCMonitor(e.subscription, e.monitoredItem);
+            try
+            {
+                client.OPCMonitor(e.subscription, e.monitoredItem);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
         }
         //Passes monitored item to service session to remove from subscription.
         public void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
         {
-            client.OPCUnmonitor(subscription, monitoredItem);
+            try
+            {
+                client.OPCUnmonitor(subscription, monitoredItem);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
         }
         #endregion
 
@@ -622,7 +651,7 @@ namespace BrokerClient
                                             NodeId itemID = monitoredItem.ResolvedNodeId;
                                             DataValue nodeValue = session.ReadValue(itemID);
                                             string actualValue = nodeValue.Value.ToString();
-                                            subscriptionPayload.Add(monitoredDisplayName, actualValue);                                  
+                                            subscriptionPayload.Add(monitoredDisplayName, actualValue);
                                         }
                                         string message = JsonConvert.SerializeObject(subscriptionPayload);
                                         client.MQTTPublishTopicAsync(subscription.DisplayName, message);
@@ -673,7 +702,7 @@ namespace BrokerClient
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // Log the exception.
                     MessageBox.Show(ex.Message);
@@ -686,7 +715,7 @@ namespace BrokerClient
                 return Task.FromResult(0);
             }
         }
-        
+
         //Loads retained endpoint
         public Task<String> LoadSessionAsync(String sessionEndpoint)
         {
