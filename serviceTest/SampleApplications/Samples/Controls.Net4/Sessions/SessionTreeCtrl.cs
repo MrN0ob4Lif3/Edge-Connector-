@@ -37,6 +37,7 @@ using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Opc.Ua.Sample.Controls
 {
@@ -69,8 +70,11 @@ namespace Opc.Ua.Sample.Controls
         private ServiceMessageContext m_messageContext;
         private ConfiguredEndpoint m_endpoint;
         private string m_filePath;
+        private static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        private string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
+        string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
         #endregion
-        
+
         #region Public Interface
         /// <summary>
         /// The configuration to use when creating sessions.
@@ -319,7 +323,17 @@ namespace Opc.Ua.Sample.Controls
 
             Session session = subscription.Session;
             session.RemoveSubscription(subscription);
-            
+
+            //Removes subscription from retaind subscription folder.
+            foreach (string subscriptionFile in Directory.GetFiles(subscriptionsFolder))
+            {
+                if (subscriptionFile.Contains(subscription.DisplayName))
+                {
+                    File.Delete(subscriptionFile);
+                    break;
+                }
+            }
+
             TreeNode node = FindNode(NodesTV.Nodes, subscription);
 
             if (node != null)
@@ -349,6 +363,22 @@ namespace Opc.Ua.Sample.Controls
             Subscription subscription = monitoredItem.Subscription;
             subscription.RemoveItem(monitoredItem);
             subscription.ApplyChanges();;
+
+            //Removes monitored item from retained items file.
+            foreach(string itemFile in Directory.GetFiles(itemsFolder))
+            {
+                if(itemFile.Contains(subscription.DisplayName))
+                {
+                    var tempFile = Path.GetTempFileName();
+                    var linesToKeep = File.ReadLines(itemFile).Where(l => !l.Contains(monitoredItem.DisplayName));
+
+                    File.WriteAllLines(tempFile, linesToKeep);
+
+                    File.Delete(itemFile);
+                    File.Move(tempFile, itemFile);
+                }
+            }
+
             NodesTV.SelectedNode = FindNode(NodesTV.Nodes, subscription);
         }
 

@@ -39,13 +39,13 @@ namespace BrokerClient
         //string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
         //string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
         //string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
-        //string tempFolder2 = Path.Combine(tempFolder, @"Retained Messages");
+        //string mainFolder2 = Path.Combine(mainFolder, @"Retained Messages");
 
 
-        static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
-        string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
-        string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
-        string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
+        static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
+        string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
+        string sessionFolder = Path.Combine(mainFolder, @"Retained Sessions");
         System.Threading.Timer publishTimer;
         static bool autoAccept = true;
         public EndpointConfiguration m_endpoint_configuration;
@@ -72,7 +72,7 @@ namespace BrokerClient
             Directory.CreateDirectory(itemsFolder);
             Directory.CreateDirectory(subscriptionsFolder);
             Directory.CreateDirectory(sessionFolder);
-            //Directory.CreateDirectory(tempFolder2);
+            //Directory.CreateDirectory(mainFolder2);
             //Loading OPC elements
             //ApplicationInstance application = client.GetApplicationInstance();
             //Initialize OPC Application Instance
@@ -606,7 +606,7 @@ namespace BrokerClient
                                         client.MQTTSubscribeTopic(subscription.DisplayName);
                                         subscription.PreviousPublishedTime = DateTime.Now;
                                         subscription.SubscriptionPublished = true;
-                                        //string tempFile = Path.Combine(tempFolder2, string.Format(@"{0}.json", subscription.DisplayName));
+                                        //string tempFile = Path.Combine(mainFolder2, string.Format(@"{0}.json", subscription.DisplayName));
                                         //string test = JsonConvert.DeserializeObject(message).ToString();
                                         //File.AppendAllText(tempFile, test);
                                     }
@@ -676,12 +676,18 @@ namespace BrokerClient
                                         }
                                         break;
                                     }
-                                    catch { }
+                                    catch 
+                                    {
+                                        MessageBox.Show("Error Recreating.");
+                                    }
                                 }
                             }
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                        MessageBox.Show("Error Recreating.");
+                    }
                 }
             }
         }
@@ -703,7 +709,7 @@ namespace BrokerClient
                     {
                         if (endpoint.Contains(sessionEndpoint))
                         {
-                            File.Delete(endpoint);
+                            File.Delete(sessionFile);
                             string newFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
                             File.AppendAllText(sessionFile, JsonConvert.SerializeObject(sessionEndpoint));
                             return Task.FromResult(0);

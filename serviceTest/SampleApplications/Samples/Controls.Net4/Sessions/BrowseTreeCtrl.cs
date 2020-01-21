@@ -67,7 +67,9 @@ namespace Opc.Ua.Sample.Controls
         private event MethodCalledEventHandler m_MethodCalled;
         private BrowserEventHandler m_BrowserMoreReferences;
         private SessionTreeCtrl m_SessionTreeCtrl;
-        private static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        private static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        private string Items;
+        private string Subscriptions;
         #endregion
 
         #region Public Interface
@@ -1208,8 +1210,8 @@ namespace Opc.Ua.Sample.Controls
                     //Saves subscription and monitored item details in file for recreation.
                     if (subscription != null)
                     {
-                        string Items = Path.Combine(tempFolder, string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
-                        string Subscriptions = Path.Combine(tempFolder, string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
+                        Items = Path.Combine(mainFolder, string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
+                        Subscriptions = Path.Combine(mainFolder, string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
                         Subscribe(subscription, reference);
                         File.AppendAllText(Subscriptions, JsonConvert.SerializeObject(subscription) + "\n");
                         File.AppendAllText(Items, JsonConvert.SerializeObject(reference) + "\n");
@@ -1243,8 +1245,8 @@ namespace Opc.Ua.Sample.Controls
                 //Saves subscription and monitored item details in file for recreation.
                 if (subscription != null)
                 {
-                    string Items = Path.Combine(tempFolder, string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
-                    string Subscriptions = Path.Combine(tempFolder, string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
+                    Items = Path.Combine(mainFolder, string.Format(@"Retained Monitored Items\{0}.json", subscription.DisplayName));
+                    Subscriptions = Path.Combine(mainFolder, string.Format(@"Retained Subscriptions\{0}.json", subscription.DisplayName));
                     Subscribe(subscription, reference);
                     File.AppendAllText(Items, JsonConvert.SerializeObject(reference) + "\n");
                 }

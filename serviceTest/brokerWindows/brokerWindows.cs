@@ -50,6 +50,8 @@ namespace brokerWindows
         static bool autoAccept = true;
         System.Threading.Timer publishTimer;
         System.Threading.Timer updateTimer;
+        public static DateTime subscriptionLastModified;
+        public static DateTime itemLastModified;
         #endregion
 
         public brokerWindows()
@@ -99,6 +101,8 @@ namespace brokerWindows
 
                 //Use timer callback to monitor and publish subscriptions.
                 publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
+                //Use timer callback to monitor and update session.
+                updateTimer = new System.Threading.Timer(x => SessionUpdate(m_session), null, 5000, 1000);
             }
             catch (Exception ex)
             {
@@ -622,6 +626,31 @@ namespace brokerWindows
                     EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
                 }
             }
+        }
+    
+        public void SessionUpdate(Session session)
+        {
+            //Check for file change (Subscription)
+            //If file change, delete or edit subscriptions
+
+            //Check for file change (Monitored Item)
+            //If file change, delete or add monitored items.
+        }
+
+        public void checkFileUpdates()
+        {
+            string[] subscriptionFiles = Directory.GetFiles(subscriptionsFolder, "*.json");
+            foreach (string subscriptionFile in subscriptionFiles)
+            {
+
+            }
+
+            string[] itemFiles = Directory.GetFiles(itemsFolder, "*.json");
+            foreach (string itemFile in itemFiles)
+            {
+
+            }
+
         }
     }
 }
