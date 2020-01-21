@@ -75,6 +75,10 @@ namespace Opc.Ua.Sample.Controls
         private string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
         private event SubscribeEventEventHandler m_SubscribeEvent;
+
+        private event DeleteSessionEventHandler m_DeleteSession;
+        private event DeleteSubscriptionEventHandler m_DeleteSubscription;
+        private event DeleteItemEventHandler m_DeleteItem;
         #endregion
 
         #region Public Interface
@@ -304,6 +308,14 @@ namespace Opc.Ua.Sample.Controls
             }
 
             session.Close();
+
+            // raise event.
+            if (m_DeleteSession != null)
+            {
+                DeleteSessionArgs args = new DeleteSessionArgs(session);
+                m_DeleteSession(this, args);
+            }
+
             NodesTV.SelectedNode = null;
             SelectNode();
         }
@@ -334,6 +346,13 @@ namespace Opc.Ua.Sample.Controls
                     File.Delete(subscriptionFile);
                     break;
                 }
+            }
+
+            // raise event.
+            if (m_DeleteSubscription != null)
+            {
+                DeleteSubscriptionArgs args = new DeleteSubscriptionArgs(subscription);
+                m_DeleteSubscription(this, args);
             }
 
             TreeNode node = FindNode(NodesTV.Nodes, subscription);
@@ -380,6 +399,14 @@ namespace Opc.Ua.Sample.Controls
                     File.Move(tempFile, itemFile);
                 }
             }
+
+            // raise event.
+            if (m_DeleteItem != null)
+            {
+                DeleteItemArgs args = new DeleteItemArgs(subscription, monitoredItem);
+                m_DeleteItem(this, args);
+            }
+
 
             NodesTV.SelectedNode = FindNode(NodesTV.Nodes, subscription);
         }
@@ -450,6 +477,36 @@ namespace Opc.Ua.Sample.Controls
         {
             add { m_SubscribeEvent += value; }
             remove { m_SubscribeEvent += value; }
+        }
+
+        /// <summary>
+        /// Raised when the delete session method is called.
+        /// </summary>
+        /// 
+        public event DeleteSessionEventHandler DeleteSession
+        {
+            add { m_DeleteSession += value; }
+            remove { m_DeleteSession += value; }
+        }
+
+        /// <summary>
+        /// Raised when the delete subscription method is called.
+        /// </summary>
+        /// 
+        public event DeleteSubscriptionEventHandler DeleteSubscription
+        {
+            add { m_DeleteSubscription += value; }
+            remove { m_DeleteSubscription += value; }
+        }
+
+        /// <summary>
+        /// Raised when the delete item method is called.
+        /// </summary>
+        /// 
+        public event DeleteItemEventHandler DeleteItem
+        {
+            add { m_DeleteItem += value; }
+            remove { m_DeleteItem += value; }
         }
         #endregion
 
@@ -1447,5 +1504,87 @@ namespace Opc.Ua.Sample.Controls
         #endregion
     }
     public delegate void SubscribeEventEventHandler(object sender, SubscribeEventArgs e);
+    #endregion
+
+
+    #region DeleteSessionArgs Class
+    public class DeleteSessionArgs : EventArgs
+    {
+        #region Constructor
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        internal DeleteSessionArgs(Session session)
+        {
+            m_session = session;
+        }
+        #endregion
+        #region Public Properties   
+        public Session session
+        {
+            get { return m_session; }
+        }
+        #endregion
+        #region Private Fields
+        private Session m_session;
+        #endregion
+    }
+    public delegate void DeleteSessionEventHandler(object sender, DeleteSessionArgs e);
+    #endregion
+
+    #region DeleteSubscriptionArgs Class
+    public class DeleteSubscriptionArgs : EventArgs
+    {
+        #region Constructor
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        internal DeleteSubscriptionArgs(Subscription subscription)
+        {
+            m_subscription = subscription;
+        }
+        #endregion
+        #region Public Properties   
+        public Subscription subscription
+        {
+            get { return m_subscription; }
+        }
+        #endregion
+        #region Private Fields
+        private Subscription m_subscription;
+        #endregion
+    }
+    public delegate void DeleteSubscriptionEventHandler(object sender, DeleteSubscriptionArgs e);
+    #endregion
+
+    #region DeleteItemArgs Class
+    public class DeleteItemArgs : EventArgs
+    {
+        #region Constructor
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        internal DeleteItemArgs(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            m_subscription = subscription;
+            m_monitoredItem = monitoredItem;
+        }
+        #endregion
+        #region Public Properties
+        public Subscription subscription
+        {
+            get { return m_subscription; }
+        }
+        public MonitoredItem monitoredItem
+        {
+            get { return m_monitoredItem; }
+        }
+        #endregion
+        #region Private Fields
+        private Subscription m_subscription;
+        private MonitoredItem m_monitoredItem;
+        #endregion
+    }
+    public delegate void DeleteItemEventHandler(object sender, DeleteItemArgs e);
     #endregion
 }

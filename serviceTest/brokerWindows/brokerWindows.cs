@@ -350,6 +350,7 @@ namespace brokerWindows
                 if (sub.DisplayName == subscription.DisplayName)
                 {
                     m_session.RemoveSubscription(sub);
+                    break;
                 }
             }
         }    
@@ -364,6 +365,7 @@ namespace brokerWindows
                 {
                     sub.AddItem(monitoredItem);
                     sub.ApplyChanges();
+                    break;
                 }
             }
         }
@@ -378,6 +380,7 @@ namespace brokerWindows
                 {
                     sub.RemoveItem(monitoredItem);
                     sub.ApplyChanges();
+                    break;
                 }
             }
         }

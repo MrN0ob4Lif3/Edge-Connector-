@@ -443,11 +443,11 @@ namespace BrokerClient
             }
         }
         //Passes subscription to service session for unsubscription.
-        public void OPCUnsubscribe(Subscription subscription)
+        public void OPCUnsubscribe(object sender, DeleteSubscriptionArgs e)
         {
             try
             {
-                client.OPCUnsubscribe(subscription);
+                client.OPCUnsubscribe(e.subscription);
             }
             catch (Exception exception)
             {
@@ -468,11 +468,11 @@ namespace BrokerClient
             }
         }
         //Passes monitored item to service session to remove from subscription.
-        public void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
+        public void OPCUnmonitor(object sender, DeleteItemArgs e)
         {
             try
             {
-                client.OPCUnmonitor(subscription, monitoredItem);
+                client.OPCUnmonitor(e.subscription, e.monitoredItem);
             }
             catch (Exception exception)
             {

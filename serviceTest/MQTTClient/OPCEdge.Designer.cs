@@ -343,6 +343,7 @@
             this.opcSession.Size = new System.Drawing.Size(208, 318);
             this.opcSession.TabIndex = 15;
             this.opcSession.SubscribeEvent += new Opc.Ua.Sample.Controls.SubscribeEventEventHandler(this.OPCSubscribe);
+            this.opcSession.DeleteSubscription += new Opc.Ua.Sample.Controls.DeleteSubscriptionEventHandler(this.OPCUnsubscribe);
             // 
             // opcEndpoints
             // 
