@@ -488,7 +488,7 @@ namespace brokerService
             }
         }
         #endregion
-       
+
         //Passes subscription to service session for subscription.
         public void OPCSubscribe(Subscription subscription)
         {
@@ -513,5 +513,10 @@ namespace brokerService
             Host.Current.OPCUnmonitor(subscription, monitoredItem);
         }
 
+        //Checks if service has a session running and disconnects if connected.
+        public bool CheckConnected()
+        {
+            return Host.Current.CheckConnected();
+        }
     }
 }

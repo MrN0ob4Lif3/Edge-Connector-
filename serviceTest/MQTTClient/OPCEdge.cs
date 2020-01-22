@@ -116,6 +116,7 @@ namespace BrokerClient
             //Loading MQTT elements
             publishPayload = new Dictionary<String, String>();
             connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
+            
             try
             {
                 client.Open();
@@ -395,9 +396,11 @@ namespace BrokerClient
                 opcSession.Close();
                 // Adds session to tree.
                 opcSession.AddNode(m_session);
+                //Checks if service has a session connected and disconnects if connected.
+                client.CheckConnected();
                 // Passes endpointURL to service for connection.
                 client.OPCConnect(selectedEndpoint.EndpointUrl);
-
+                
                 if (m_session != null)
                 {
                     // stop any reconnect operation.
@@ -708,7 +711,7 @@ namespace BrokerClient
                         tempSubscription.PublishingEnabled = retainedSubscription.PublishingEnabled;
                         tempSubscription.Create();
                         client.MQTTSubscribeTopic(tempSubscription.DisplayName);
-
+                        
                         //Checks for monitored items belonging to subscription and recreates them.
                         foreach (string item in Directory.GetFiles(itemsFolder, "*.json"))
                         {

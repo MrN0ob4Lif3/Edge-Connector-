@@ -188,6 +188,7 @@
       <xs:element minOccurs="0" name="CurrentPublishedTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="PreviousPublishedTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="SubscriptionPublished" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ServiceModifyCheck" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Subscription" nillable="true" type="tns:Subscription" />

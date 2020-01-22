@@ -127,6 +127,12 @@
   <wsdl:message name="IBrokerService_OPCUnmonitor_OutputMessage">
     <wsdl:part name="parameters" element="tns:OPCUnmonitorResponse" />
   </wsdl:message>
+  <wsdl:message name="IBrokerService_CheckConnected_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckConnected" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_CheckConnected_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckConnectedResponse" />
+  </wsdl:message>
   <wsdl:portType name="IBrokerService">
     <wsdl:operation name="MQTTConnectClientAsync">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/MQTTConnectClientAsync" message="tns:IBrokerService_MQTTConnectClientAsync_InputMessage" />
@@ -183,6 +189,10 @@
     <wsdl:operation name="OPCUnmonitor">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnmonitor" message="tns:IBrokerService_OPCUnmonitor_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnmonitorResponse" message="tns:IBrokerService_OPCUnmonitor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckConnected">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/CheckConnected" message="tns:IBrokerService_CheckConnected_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/CheckConnectedResponse" message="tns:IBrokerService_CheckConnected_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IBrokerService" type="tns:IBrokerService">
@@ -313,6 +323,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CheckConnected">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/CheckConnected" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IBrokerService" type="tns:IBrokerService">
     <wsp:PolicyReference URI="#NetTcpBinding_IBrokerService_policy" />
@@ -436,6 +455,15 @@
     </wsdl:operation>
     <wsdl:operation name="OPCUnmonitor">
       <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnmonitor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckConnected">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/CheckConnected" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

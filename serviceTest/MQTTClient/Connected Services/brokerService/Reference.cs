@@ -286,6 +286,12 @@ namespace BrokerClient.brokerService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/OPCUnmonitor", ReplyAction="http://tempuri.org/IBrokerService/OPCUnmonitorResponse")]
         System.Threading.Tasks.Task OPCUnmonitorAsync(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/CheckConnected", ReplyAction="http://tempuri.org/IBrokerService/CheckConnectedResponse")]
+        bool CheckConnected();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBrokerService/CheckConnected", ReplyAction="http://tempuri.org/IBrokerService/CheckConnectedResponse")]
+        System.Threading.Tasks.Task<bool> CheckConnectedAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -425,6 +431,14 @@ namespace BrokerClient.brokerService {
         
         public System.Threading.Tasks.Task OPCUnmonitorAsync(Opc.Ua.Client.Subscription subscription, Opc.Ua.Client.MonitoredItem monitoredItem) {
             return base.Channel.OPCUnmonitorAsync(subscription, monitoredItem);
+        }
+        
+        public bool CheckConnected() {
+            return base.Channel.CheckConnected();
+        }
+        
+        public System.Threading.Tasks.Task<bool> CheckConnectedAsync() {
+            return base.Channel.CheckConnectedAsync();
         }
     }
 }

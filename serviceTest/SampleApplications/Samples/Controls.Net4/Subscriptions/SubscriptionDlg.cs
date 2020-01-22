@@ -418,7 +418,7 @@ namespace Opc.Ua.Sample.Controls
                 string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
                 string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
                 m_subscription.Modify();
-
+                
                 // raise event.
                 if (m_EditEvent != null)
                 {

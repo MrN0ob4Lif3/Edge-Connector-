@@ -59,7 +59,7 @@ namespace brokerWindows
         }
 
         protected override void OnStart(string[] args)
-        {   
+        {
             try
             {
                 //Set the static callback reference and creates interface for WinForms by hosting a WCF Service.
@@ -68,11 +68,11 @@ namespace brokerWindows
                 // Log an event to indicate successful start.
                 EventLog.WriteEntry("Successful start.", EventLogEntryType.Information);
                 //Initialize MQTT Client.
-                managedMqtt= ManagedClient.CreateManagedClient();
+                managedMqtt = ManagedClient.CreateManagedClient();
                 //MQTT Broker connection
                 //string brokerIP = "localhost";
                 string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-                MQTTConnectClient(managedMqtt,brokerIP);
+                MQTTConnectClient(managedMqtt, brokerIP);
 
                 //Initialize OPC Application Instance
                 application = new ApplicationInstance
@@ -105,7 +105,7 @@ namespace brokerWindows
             catch (Exception ex)
             {
                 EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
-            }                 
+            }
         }
 
         protected override void OnStop()
@@ -135,10 +135,10 @@ namespace brokerWindows
         }
 
         #region MQTT Methods
-        public async void MQTTConnectClient(IManagedMqttClient managedMqtt,string brokerIP)
+        public async void MQTTConnectClient(IManagedMqttClient managedMqtt, string brokerIP)
         {
-            await ManagedClient.ManagedMqttConnectTCPAsync(managedMqtt, brokerIP);
-            //await ManagedClient.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
+            //await ManagedClient.ManagedMqttConnectTCPAsync(managedMqtt, brokerIP);
+            await ManagedClient.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
         }
 
         #region Callback methods
@@ -162,7 +162,7 @@ namespace brokerWindows
             await mqttClientSemaphore.WaitAsync();
             try
             {
-                if(m_topicSet.Contains(topic))
+                if (m_topicSet.Contains(topic))
                 {
                     return;
                 }
@@ -351,8 +351,8 @@ namespace brokerWindows
                     break;
                 }
             }
-        }    
-        
+        }
+
         //Callback to add monitored item to subscription
         void IServiceCallback.OPCMonitor(Subscription subscription, MonitoredItem monitoredItem)
         {
@@ -381,6 +381,20 @@ namespace brokerWindows
                     break;
                 }
             }
+        }
+
+        //Callback to check if session is running in service and disconnects if connected.
+        bool IServiceCallback.CheckConnected()
+        {
+            if(m_session != null)
+            {
+                if (m_session.Connected)
+                {
+                    m_session.Close();
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
         #region OPC Session Creation Methods

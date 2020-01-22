@@ -109,6 +109,7 @@ namespace Opc.Ua.Client
                 m_published                  = template.m_published;
                 m_currentPublishedTime       = template.m_currentPublishedTime;
                 m_previousPublishedTime      = template.m_previousPublishedTime;
+                m_serviceModify              = template.m_serviceModify;
 
                 if (copyEventHandlers)
                 {
@@ -159,6 +160,7 @@ namespace Opc.Ua.Client
             m_published                  = false;
             m_currentPublishedTime       = DateTime.Now;
             m_previousPublishedTime      = DateTime.Now;
+            m_serviceModify              = false;
 
             m_defaultItem = new MonitoredItem();
 
@@ -400,6 +402,16 @@ namespace Opc.Ua.Client
         {
             get { return m_previousPublishedTime; }
             set { m_previousPublishedTime = value; }
+        }
+
+        /// <summary>
+        /// Latest publication time for subscription.
+        /// </summary>
+        [DataMember(Order = 14)]
+        public bool ServiceModifyCheck
+        {
+            get { return m_serviceModify; }
+            set { m_serviceModify = value; }
         }
 
         /// <summary>
@@ -725,6 +737,15 @@ namespace Opc.Ua.Client
             }
 
             m_changeMask = SubscriptionChangeMask.None;
+        }
+
+        public bool ServiceModify()
+        {
+            if(m_StateChanged != null)
+            {
+                return m_serviceModify;
+            }
+            return m_serviceModify;
         }
 
         /// <summary>
@@ -2046,6 +2067,7 @@ namespace Opc.Ua.Client
         private bool m_published;
         private DateTime m_currentPublishedTime;
         private DateTime m_previousPublishedTime;
+        private bool  m_serviceModify;
         
         private Session m_session;
         private object m_handle;

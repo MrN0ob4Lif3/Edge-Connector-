@@ -1308,6 +1308,7 @@ namespace Opc.Ua.Sample.Controls
                     subscription.Handle = dialog;
                 }
                 dialog.Show(subscription);
+                
             }
             catch (Exception exception)
             {
