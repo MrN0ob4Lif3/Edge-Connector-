@@ -383,6 +383,18 @@ namespace brokerWindows
             }
         }
 
+        //Callback to have service disconnect and close session.
+        void IServiceCallback.OPCDisconnect()
+        {
+            if (m_session != null)
+            {
+                if (m_session.Connected)
+                {
+                    m_session.Close();
+                }
+            }
+        }
+
         //Callback to check if session is running in service and disconnects if connected.
         bool IServiceCallback.CheckConnected()
         {
@@ -390,7 +402,6 @@ namespace brokerWindows
             {
                 if (m_session.Connected)
                 {
-                    m_session.Close();
                     return true;
                 }
             }

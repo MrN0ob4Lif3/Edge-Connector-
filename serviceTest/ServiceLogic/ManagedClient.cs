@@ -31,6 +31,7 @@ namespace ServiceLogic
         void OPCUnsubscribe(Subscription subscription);
         void OPCMonitor(Subscription subscription, MonitoredItem monitoredItem);
         void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem);
+        void OPCDisconnect();
         bool CheckConnected();
 
     }

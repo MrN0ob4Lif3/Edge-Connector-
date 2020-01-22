@@ -99,6 +99,16 @@ namespace BrokerClient
         //Initializes specific elements for OPC and MQTT interfaces to work.
         public BrokerMain()
         {
+            try
+            {
+                client.Open();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Service has not been started yet.");
+                this.Close();
+                System.Environment.Exit(1);
+            }
             InitializeComponent();
             SetStartup();
             //Loading controller for WCF service.
@@ -397,7 +407,10 @@ namespace BrokerClient
                 // Adds session to tree.
                 opcSession.AddNode(m_session);
                 //Checks if service has a session connected and disconnects if connected.
-                client.CheckConnected();
+                if (client.CheckConnected())
+                {
+                    client.OPCDisconnect();
+                }
                 // Passes endpointURL to service for connection.
                 client.OPCConnect(selectedEndpoint.EndpointUrl);
                 
@@ -482,9 +495,16 @@ namespace BrokerClient
             }
         }
         //Passes modified subscription to service session to reflect changes.
-        public void OPCEdit(object sender)
+        public void OPCDisconnect(object sender, DeleteSessionArgs e)
         {
-            
+            try
+            {
+                client.OPCDisconnect();
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            }
         }
         #endregion
 

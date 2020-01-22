@@ -57,6 +57,9 @@ namespace brokerService
         void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem);
 
         [OperationContract]
+        void OPCDisconnect();
+
+        [OperationContract]
         bool CheckConnected();
 
         #endregion

@@ -513,6 +513,12 @@ namespace brokerService
             Host.Current.OPCUnmonitor(subscription, monitoredItem);
         }
 
+        //Calls service session to disconnect and close existing session
+        public void OPCDisconnect()
+        {
+            Host.Current.OPCDisconnect();
+        }
+
         //Checks if service has a session running and disconnects if connected.
         public bool CheckConnected()
         {

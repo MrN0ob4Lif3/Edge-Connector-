@@ -176,6 +176,16 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="OPCDisconnect">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OPCDisconnectResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="CheckConnected">
     <xs:complexType>
       <xs:sequence />

@@ -127,6 +127,12 @@
   <wsdl:message name="IBrokerService_OPCUnmonitor_OutputMessage">
     <wsdl:part name="parameters" element="tns:OPCUnmonitorResponse" />
   </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCDisconnect_InputMessage">
+    <wsdl:part name="parameters" element="tns:OPCDisconnect" />
+  </wsdl:message>
+  <wsdl:message name="IBrokerService_OPCDisconnect_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OPCDisconnectResponse" />
+  </wsdl:message>
   <wsdl:message name="IBrokerService_CheckConnected_InputMessage">
     <wsdl:part name="parameters" element="tns:CheckConnected" />
   </wsdl:message>
@@ -189,6 +195,10 @@
     <wsdl:operation name="OPCUnmonitor">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCUnmonitor" message="tns:IBrokerService_OPCUnmonitor_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCUnmonitorResponse" message="tns:IBrokerService_OPCUnmonitor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OPCDisconnect">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/OPCDisconnect" message="tns:IBrokerService_OPCDisconnect_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBrokerService/OPCDisconnectResponse" message="tns:IBrokerService_OPCDisconnect_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="CheckConnected">
       <wsdl:input wsaw:Action="http://tempuri.org/IBrokerService/CheckConnected" message="tns:IBrokerService_CheckConnected_InputMessage" />
@@ -316,6 +326,15 @@
     </wsdl:operation>
     <wsdl:operation name="OPCUnmonitor">
       <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCUnmonitor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCDisconnect">
+      <soap:operation soapAction="http://tempuri.org/IBrokerService/OPCDisconnect" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -455,6 +474,15 @@
     </wsdl:operation>
     <wsdl:operation name="OPCUnmonitor">
       <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCUnmonitor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OPCDisconnect">
+      <soap12:operation soapAction="http://tempuri.org/IBrokerService/OPCDisconnect" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
