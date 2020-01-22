@@ -768,6 +768,7 @@ namespace BrokerClient
         }
         #endregion
 
+        #region Service State
         public void CheckService()
         {
             try
@@ -791,52 +792,7 @@ namespace BrokerClient
                 }
             }
         }
+        #endregion
     }
 }
 
-/*
-/// <summary>
-/// Connects to a server.
-/// </summary>
-public async void Connect(ConfiguredEndpoint endpoint)
-{
-    if (endpoint == null)
-    {
-        return;
-    }
-    Session session = await opcSession.Connect(endpoint);
-
-    if (session != null)
-    {
-        // stop any reconnect operation.
-        if (m_reconnectHandler != null)
-        {
-            m_reconnectHandler.Dispose();
-            m_reconnectHandler = null;
-        }
-        m_session = session;
-        m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
-        opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
-
-        StandardClient_KeepAlive(m_session, null);
-
-        //Checks if endpoint URL selected is same as retained endpoint URL
-        String retainedEndpoint = null;
-        String sessionEndpoint = session.Endpoint.EndpointUrl;
-        retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
-        //If no retained endpoints, saves current endpoint.
-        if (retainedEndpoint == null)
-        {
-            //Saves session endpoint URL.
-            await SaveSessionAsync(session);
-            return;
-        }
-        //Recreates prior session's subscriptions and monitored items.
-        if (sessionEndpoint == retainedEndpoint)
-        {
-            RecreateSession(m_session);
-        }
-    }
-}
-#endregion
-*/

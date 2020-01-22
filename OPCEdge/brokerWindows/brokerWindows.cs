@@ -96,8 +96,15 @@ namespace brokerWindows
                 //m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
                 //OPC Server connection.
-                string endpointURL = "opc.tcp://opcua.rocks:4840";
-                //OPCConnect(application, endpointURL);
+                foreach(string sessionFile in Directory.GetFiles(sessionFolder, "*.json"))
+                {
+                    String readSession = File.ReadAllText(sessionFile);
+                    if(readSession != "")
+                    {
+                        OPCConnect(application, readSession);
+                        break;
+                    }
+                }
 
                 //Use timer callback to monitor and publish subscriptions.
                 publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
