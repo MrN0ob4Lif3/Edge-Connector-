@@ -46,7 +46,8 @@ namespace BrokerClient
         string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
         string sessionFolder = Path.Combine(mainFolder, @"Retained Sessions");
-        System.Threading.Timer publishTimer;
+        System.Threading.Timer checkService;
+        private delegate void FormDelegate();
         static bool autoAccept = true;
         public EndpointConfiguration m_endpoint_configuration;
         private ConfiguredEndpoint m_endpoint;
@@ -99,26 +100,16 @@ namespace BrokerClient
         //Initializes specific elements for OPC and MQTT interfaces to work.
         public BrokerMain()
         {
-            try
-            {
-                client.Open();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Service has not been started yet.");
-                this.Close();
-                System.Environment.Exit(1);
-            }
-            InitializeComponent();
-            SetStartup();
             //Loading controller for WCF service.
             client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
             brokerWindows = new ServiceController("brokerWindows");
-            //New thread to monitor for service disruption.
-            //Thread checkService = new Thread(CheckService);
-            //CheckService();
+            CheckService();
+            InitializeComponent();
+            SetStartup();
             //Loading OPC Application Instance.
             InitializeClients();
+            //Use timer callback to check if service is still running
+            checkService = new System.Threading.Timer(x => StopClient(), null, 5000, 1000);
         }
 
         private void MqttMain_Load(object sender, EventArgs e)
@@ -331,8 +322,8 @@ namespace BrokerClient
 
         private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.publishTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            this.publishTimer.Dispose();
+            this.checkService.Change(Timeout.Infinite, Timeout.Infinite);
+            this.checkService.Dispose();
         }
 
         #endregion
@@ -777,6 +768,34 @@ namespace BrokerClient
         }
         #endregion
 
+        public void CheckService()
+        {
+            try
+            {
+                client.Open();
+            }
+            catch (Exception ex)
+            {
+                if(this.InvokeRequired)
+                {
+                    var form = new FormDelegate(CheckService);
+                    this.checkService.Change(Timeout.Infinite, Timeout.Infinite);
+                    this.checkService.Dispose();
+                    this.Invoke(form);
+                }
+                else
+                {
+                    MessageBox.Show("Service is not running. Please restart it.");
+                    this.Close();
+                    System.Environment.Exit(1);
+                }
+            }
+        }
+
+        public void StopClient()
+        {
+            CheckService();
+        }
     }
 }
 
