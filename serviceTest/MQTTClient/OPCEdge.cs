@@ -109,7 +109,7 @@ namespace BrokerClient
             //Loading OPC Application Instance.
             InitializeClients();
             //Use timer callback to check if service is still running
-            checkService = new System.Threading.Timer(x => StopClient(), null, 5000, 1000);
+            checkService = new System.Threading.Timer(x => CheckService(), null, 5000, 1000);
         }
 
         private void MqttMain_Load(object sender, EventArgs e)
@@ -772,7 +772,7 @@ namespace BrokerClient
         {
             try
             {
-                client.Open();
+                client.CheckConnected();
             }
             catch (Exception ex)
             {
@@ -790,11 +790,6 @@ namespace BrokerClient
                     System.Environment.Exit(1);
                 }
             }
-        }
-
-        public void StopClient()
-        {
-            CheckService();
         }
     }
 }
