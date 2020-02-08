@@ -1,0 +1,21 @@
+1) Navigate to Artc.Harmony.EntityFrameworkCore
+
+2) Open Package Manager Console
+
+3) Run 'Update-Database' command.
+If errors:
+- Navigate to Harmony\src\Core\Artc.Harmony.Core\Web\WebContentFolderHelper.cs
+- Line 23: Check if directory path and solution name is correct. 
+- Line 39: Check if directoty path and folder name is correct.
+
+4) Run Artc.Harmony.Web.Host
+
+5) Open Harmony\src\Clients\CoreUI in Visual Studio Code
+
+6) Open terminal and run 'ng serve'
+- May need to run 'npm install' if packages have not yet been installed. 'ng build' to check for missing packages or errors.
+- Currenly need to remove "node_modules/snazzy-info-window/dist/snazzy-info-window-complex-styles.css" from Line 41 and 180 of angular.json
+
+7) Web client will host on localhost:4200
+- Credentials are 'admin' and '123qwe'. Multi-tenancy not working in development mode? 
+- Data may not be stored, internal errors when accessing shopfloor.
