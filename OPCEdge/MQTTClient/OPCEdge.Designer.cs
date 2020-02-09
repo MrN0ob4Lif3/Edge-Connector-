@@ -58,6 +58,7 @@
             this.opcBrowse = new Opc.Ua.Sample.Controls.BrowseTreeCtrl();
             this.opcSession = new Opc.Ua.Sample.Controls.SessionTreeCtrl();
             this.opcEndpoints = new Opc.Ua.Client.Controls.EndpointSelectorCtrl();
+            this.OpcConnectionLabel = new System.Windows.Forms.Label();
             this.MqttTabs.SuspendLayout();
             this.subscribeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -342,9 +343,9 @@
             this.opcSession.Size = new System.Drawing.Size(208, 318);
             this.opcSession.TabIndex = 15;
             this.opcSession.SubscribeEvent += new Opc.Ua.Sample.Controls.SubscribeEventEventHandler(this.OPCSubscribe);
+            this.opcSession.DeleteSession += new Opc.Ua.Sample.Controls.DeleteSessionEventHandler(this.OPCDisconnect);
             this.opcSession.DeleteSubscription += new Opc.Ua.Sample.Controls.DeleteSubscriptionEventHandler(this.OPCUnsubscribe);
             this.opcSession.DeleteItem += new Opc.Ua.Sample.Controls.DeleteItemEventHandler(this.OPCUnmonitor);
-            this.opcSession.DeleteSession += new Opc.Ua.Sample.Controls.DeleteSessionEventHandler(this.OPCDisconnect);
             // 
             // opcEndpoints
             // 
@@ -358,11 +359,21 @@
             this.opcEndpoints.TabIndex = 14;
             this.opcEndpoints.ConnectEndpoint += new Opc.Ua.Client.Controls.ConnectEndpointEventHandler(this.OpcEndpoints_ConnectEndpoint);
             // 
-            // BrokerMain
+            // OpcConnectionLabel
+            // 
+            this.OpcConnectionLabel.AutoSize = true;
+            this.OpcConnectionLabel.Location = new System.Drawing.Point(817, 7);
+            this.OpcConnectionLabel.Name = "OpcConnectionLabel";
+            this.OpcConnectionLabel.Size = new System.Drawing.Size(239, 13);
+            this.OpcConnectionLabel.TabIndex = 18;
+            this.OpcConnectionLabel.Text = "Currently Connected to:  No endpoint connected.";
+            // 
+            // OpcEdgeMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1505, 450);
+            this.Controls.Add(this.OpcConnectionLabel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.opcBrowse);
             this.Controls.Add(this.opcSession);
@@ -370,7 +381,7 @@
             this.Controls.Add(this.MqttTabs);
             this.Controls.Add(this.connectionStringMQTT);
             this.Controls.Add(this.connectButtonMQTT);
-            this.Name = "BrokerMain";
+            this.Name = "OpcEdgeMain";
             this.Text = "OPC-UA - MQTT Edge Connector";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MqttMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MqttMain_FormClosed);
@@ -426,6 +437,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox publishValue2;
         private System.Windows.Forms.TextBox publishKey2;
+        private System.Windows.Forms.Label OpcConnectionLabel;
     }
 }
 

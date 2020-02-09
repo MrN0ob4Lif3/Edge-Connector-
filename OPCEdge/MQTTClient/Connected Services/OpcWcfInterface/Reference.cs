@@ -15,111 +15,6 @@ namespace OpcEdgeClient.OpcWCFInterface {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfString", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="String")]
-    [System.SerializableAttribute()]
-    public class ListOfString : System.Collections.Generic.List<string> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfUserTokenPolicy", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="UserTokenPolicy")]
-    [System.SerializableAttribute()]
-    public class ListOfUserTokenPolicy : System.Collections.Generic.List<Opc.Ua.UserTokenPolicy> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfXmlElement", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="XmlElement")]
-    [System.SerializableAttribute()]
-    public class ListOfXmlElement : System.Collections.Generic.List<System.Xml.Linq.XElement> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfCertificateIdentifier", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="CertificateIdentifier")]
-    [System.SerializableAttribute()]
-    public class ListOfCertificateIdentifier : System.Collections.Generic.List<Opc.Ua.CertificateIdentifier> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfTransportConfiguration", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="TransportConfiguration")]
-    [System.SerializableAttribute()]
-    public class ListOfTransportConfiguration : System.Collections.Generic.List<Opc.Ua.TransportConfiguration> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfServerSecurityPolicy", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="ServerSecurityPolicy")]
-    [System.SerializableAttribute()]
-    public class ListOfServerSecurityPolicy : System.Collections.Generic.List<Opc.Ua.ServerSecurityPolicy> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfLocalizedText", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="LocalizedText")]
-    [System.SerializableAttribute()]
-    public class ListOfLocalizedText : System.Collections.Generic.List<Opc.Ua.LocalizedText> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfServerRegistration", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="ServerRegistration")]
-    [System.SerializableAttribute()]
-    public class ListOfServerRegistration : System.Collections.Generic.List<Opc.Ua.ServerRegistration> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfSamplingRateGroup", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="SamplingRateGroup")]
-    [System.SerializableAttribute()]
-    public class ListOfSamplingRateGroup : System.Collections.Generic.List<Opc.Ua.SamplingRateGroup> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfEndpointDescription", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="EndpointDescription")]
-    [System.SerializableAttribute()]
-    public class ListOfEndpointDescription : System.Collections.Generic.List<Opc.Ua.EndpointDescription> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfCertificateIdentifier", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="CertificateIdentifier")]
-    [System.SerializableAttribute()]
-    public class ListOfCertificateIdentifier1 : System.Collections.Generic.List<Opc.Ua.Security.CertificateIdentifier> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfBaseAddresses", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="BaseAddress")]
-    [System.SerializableAttribute()]
-    public class ListOfBaseAddresses : System.Collections.Generic.List<string> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfSecurityProfiles", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="SecurityProfile")]
-    [System.SerializableAttribute()]
-    public class ListOfSecurityProfiles : System.Collections.Generic.List<Opc.Ua.Security.SecurityProfile> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfExtensions", Namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd", ItemName="Extension")]
-    [System.SerializableAttribute()]
-    public class ListOfExtensions : System.Collections.Generic.List<System.Xml.Linq.XElement> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfApplicationAccessRule", Namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd", ItemName="ApplicationAccessRule")]
-    [System.SerializableAttribute()]
-    public class ListOfApplicationAccessRule : System.Collections.Generic.List<Opc.Ua.ApplicationAccessRule> {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ListOfSimpleAttributeOperand", Namespace="http://opcfoundation.org/UA/2008/02/Types.xsd", ItemName="SimpleAttributeOperand")]
     [System.SerializableAttribute()]
     public class ListOfSimpleAttributeOperand : System.Collections.Generic.List<Opc.Ua.SimpleAttributeOperand> {
@@ -180,34 +75,6 @@ namespace OpcEdgeClient.OpcWCFInterface {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/MQTTSubscribedTopics", ReplyAction="http://tempuri.org/IOpcWCFInterface/MQTTSubscribedTopicsResponse")]
         System.Threading.Tasks.Task<string[]> MQTTSubscribedTopicsAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/OPCCreateClient", ReplyAction="http://tempuri.org/IOpcWCFInterface/OPCCreateClientResponse")]
-        void OPCCreateClient(string opcIP, bool securityCheck);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/OPCCreateClient", ReplyAction="http://tempuri.org/IOpcWCFInterface/OPCCreateClientResponse")]
-        System.Threading.Tasks.Task OPCCreateClientAsync(string opcIP, bool securityCheck);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/Connect", ReplyAction="http://tempuri.org/IOpcWCFInterface/ConnectResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.UserNameIdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.X509IdentityToken))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.IssuedIdentityToken))]
-        void Connect(Opc.Ua.ConfiguredEndpoint endpoint);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/Connect", ReplyAction="http://tempuri.org/IOpcWCFInterface/ConnectResponse")]
-        System.Threading.Tasks.Task ConnectAsync(Opc.Ua.ConfiguredEndpoint endpoint);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/GetApplicationInstance", ReplyAction="http://tempuri.org/IOpcWCFInterface/GetApplicationInstanceResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Opc.Ua.CertificateTrustList))]
-        Opc.Ua.Configuration.ApplicationInstance GetApplicationInstance();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/GetApplicationInstance", ReplyAction="http://tempuri.org/IOpcWCFInterface/GetApplicationInstanceResponse")]
-        System.Threading.Tasks.Task<Opc.Ua.Configuration.ApplicationInstance> GetApplicationInstanceAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/GetEndpoints", ReplyAction="http://tempuri.org/IOpcWCFInterface/GetEndpointsResponse")]
-        Opc.Ua.ConfiguredEndpointCollection GetEndpoints();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/GetEndpoints", ReplyAction="http://tempuri.org/IOpcWCFInterface/GetEndpointsResponse")]
-        System.Threading.Tasks.Task<Opc.Ua.ConfiguredEndpointCollection> GetEndpointsAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/OPCConnect", ReplyAction="http://tempuri.org/IOpcWCFInterface/OPCConnectResponse")]
         void OPCConnect(string opcEndpoint);
         
@@ -267,6 +134,30 @@ namespace OpcEdgeClient.OpcWCFInterface {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/CheckService", ReplyAction="http://tempuri.org/IOpcWCFInterface/CheckServiceResponse")]
         System.Threading.Tasks.Task<bool> CheckServiceAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SessionEndpoint", ReplyAction="http://tempuri.org/IOpcWCFInterface/SessionEndpointResponse")]
+        string SessionEndpoint();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SessionEndpoint", ReplyAction="http://tempuri.org/IOpcWCFInterface/SessionEndpointResponse")]
+        System.Threading.Tasks.Task<string> SessionEndpointAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SessionsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/SessionsFolderResponse")]
+        string SessionsFolder();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SessionsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/SessionsFolderResponse")]
+        System.Threading.Tasks.Task<string> SessionsFolderAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolderResponse")]
+        string SubscriptionsFolder();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolderResponse")]
+        System.Threading.Tasks.Task<string> SubscriptionsFolderAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/ItemsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/ItemsFolderResponse")]
+        string ItemsFolder();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/ItemsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/ItemsFolderResponse")]
+        System.Threading.Tasks.Task<string> ItemsFolderAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -336,38 +227,6 @@ namespace OpcEdgeClient.OpcWCFInterface {
             return base.Channel.MQTTSubscribedTopicsAsync();
         }
         
-        public void OPCCreateClient(string opcIP, bool securityCheck) {
-            base.Channel.OPCCreateClient(opcIP, securityCheck);
-        }
-        
-        public System.Threading.Tasks.Task OPCCreateClientAsync(string opcIP, bool securityCheck) {
-            return base.Channel.OPCCreateClientAsync(opcIP, securityCheck);
-        }
-        
-        public void Connect(Opc.Ua.ConfiguredEndpoint endpoint) {
-            base.Channel.Connect(endpoint);
-        }
-        
-        public System.Threading.Tasks.Task ConnectAsync(Opc.Ua.ConfiguredEndpoint endpoint) {
-            return base.Channel.ConnectAsync(endpoint);
-        }
-        
-        public Opc.Ua.Configuration.ApplicationInstance GetApplicationInstance() {
-            return base.Channel.GetApplicationInstance();
-        }
-        
-        public System.Threading.Tasks.Task<Opc.Ua.Configuration.ApplicationInstance> GetApplicationInstanceAsync() {
-            return base.Channel.GetApplicationInstanceAsync();
-        }
-        
-        public Opc.Ua.ConfiguredEndpointCollection GetEndpoints() {
-            return base.Channel.GetEndpoints();
-        }
-        
-        public System.Threading.Tasks.Task<Opc.Ua.ConfiguredEndpointCollection> GetEndpointsAsync() {
-            return base.Channel.GetEndpointsAsync();
-        }
-        
         public void OPCConnect(string opcEndpoint) {
             base.Channel.OPCConnect(opcEndpoint);
         }
@@ -430,6 +289,38 @@ namespace OpcEdgeClient.OpcWCFInterface {
         
         public System.Threading.Tasks.Task<bool> CheckServiceAsync() {
             return base.Channel.CheckServiceAsync();
+        }
+        
+        public string SessionEndpoint() {
+            return base.Channel.SessionEndpoint();
+        }
+        
+        public System.Threading.Tasks.Task<string> SessionEndpointAsync() {
+            return base.Channel.SessionEndpointAsync();
+        }
+        
+        public string SessionsFolder() {
+            return base.Channel.SessionsFolder();
+        }
+        
+        public System.Threading.Tasks.Task<string> SessionsFolderAsync() {
+            return base.Channel.SessionsFolderAsync();
+        }
+        
+        public string SubscriptionsFolder() {
+            return base.Channel.SubscriptionsFolder();
+        }
+        
+        public System.Threading.Tasks.Task<string> SubscriptionsFolderAsync() {
+            return base.Channel.SubscriptionsFolderAsync();
+        }
+        
+        public string ItemsFolder() {
+            return base.Channel.ItemsFolder();
+        }
+        
+        public System.Threading.Tasks.Task<string> ItemsFolderAsync() {
+            return base.Channel.ItemsFolderAsync();
         }
     }
 }

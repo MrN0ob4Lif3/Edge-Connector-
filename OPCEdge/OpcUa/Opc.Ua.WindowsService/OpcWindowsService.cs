@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using Opc.Ua.Client;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using Newtonsoft.Json;
 
 namespace OpcWindowsService
@@ -22,10 +24,10 @@ namespace OpcWindowsService
     {
         #region Service Properties
         ServiceHost host;
-        static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
-        string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
-        string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
-        string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
+        static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
+        string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
+        string sessionsFolder = Path.Combine(mainFolder, @"Retained Sessions");
         bool serviceCheck = false;
         #endregion  
 
@@ -37,6 +39,7 @@ namespace OpcWindowsService
         #endregion
 
         #region OPC Properties
+        public string sessionEndpoint;
         public ApplicationInstance application;
         public ApplicationConfiguration m_configuration;
         public ApplicationConfiguration app_configuration;
@@ -45,14 +48,13 @@ namespace OpcWindowsService
         public EndpointConfiguration m_endpoint_configuration;
         public SessionReconnectHandler m_reconnectHandler;
         public const int reconnectPeriod = 10;
-        private ServiceMessageContext m_messageContext;
         public Session m_session;
         public Browser m_browser;
         private CertificateValidationEventHandler m_CertificateValidation;
         static bool autoAccept = true;
-        System.Threading.Timer publishTimer;
         public static DateTime subscriptionLastModified;
         public static DateTime itemLastModified;
+        System.Threading.Timer publishTimer;
         #endregion
 
         public OpcWindowsService()
@@ -64,6 +66,15 @@ namespace OpcWindowsService
         {
             try
             {
+                //Creates directories to store retained information.
+                DirectorySecurity sec = Directory.GetAccessControl(mainFolder);
+                SecurityIdentifier everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+                sec.AddAccessRule(new FileSystemAccessRule(everyone, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, System.Security.AccessControl.AccessControlType.Allow));
+                Directory.SetAccessControl(mainFolder, sec);
+                Directory.CreateDirectory(itemsFolder);
+                Directory.CreateDirectory(subscriptionsFolder);
+                Directory.CreateDirectory(sessionsFolder);
+
                 //Set the static callback reference and creates interface for WinForms by hosting a WCF Service.
                 Host.Current = this;
                 StartBroker();
@@ -95,10 +106,9 @@ namespace OpcWindowsService
                 {
                     app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
                 }
-                //m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
                 //If there was a pre-exising session before, attempt reconnection.
-                foreach(string sessionFile in Directory.GetFiles(sessionFolder, "*.json"))
+                foreach(string sessionFile in Directory.GetFiles(sessionsFolder, "*.json"))
                 {
                     String readSession = File.ReadAllText(sessionFile);
                     if(readSession != "")
@@ -267,7 +277,7 @@ namespace OpcWindowsService
 
             //Checks if endpoint URL selected is same as retained endpoint URL
             String retainedEndpoint = null;
-            String sessionEndpoint = endpointURL;
+            sessionEndpoint = endpointURL;
             retainedEndpoint = await LoadSessionAsync(sessionEndpoint);
 
             try
@@ -285,7 +295,7 @@ namespace OpcWindowsService
                 //Creates session with OPC Server
                 m_endpoint_configuration = EndpointConfiguration.Create(config);
                 m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
-                m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
+                m_session = await Session.Create(config, m_endpoint, false, "OpcWindowService", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
             }
             catch (Exception ex)
             {
@@ -328,117 +338,6 @@ namespace OpcWindowsService
             }
         }
 
-        #region Callback methods
-        //Callback to return OPC Application Instance
-        ApplicationInstance IServiceCallback.OPCApplicationInstance()
-        {
-            return application;
-        }
-
-        //Callback to return OPC Endpoints
-        ConfiguredEndpointCollection IServiceCallback.OPCEndpoints()
-        {
-            return m_endpoints;
-        }
-
-        //Callback to connect to OPC endpoint
-        void IServiceCallback.OPCConnect(String opcEndpoint)
-        {
-            OPCConnect(this.application, opcEndpoint);
-        }
-
-        //Callback to add subscription to session
-        void IServiceCallback.OPCSubscribe(Subscription subscription)
-        {
-            //Recreates subscription based on provided subscription details.
-            Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
-            m_session.AddSubscription(tempSubscription);
-            tempSubscription.DisplayName = subscription.DisplayName;
-            tempSubscription.PublishingInterval = subscription.PublishingInterval;
-            tempSubscription.KeepAliveCount = subscription.KeepAliveCount;
-            tempSubscription.LifetimeCount = subscription.LifetimeCount;
-            tempSubscription.MaxNotificationsPerPublish = subscription.MaxNotificationsPerPublish;
-            tempSubscription.Priority = subscription.Priority;
-            tempSubscription.PublishingEnabled = subscription.PublishingEnabled;
-            tempSubscription.Create();
-            Host.Current.MQTTSubscribe(tempSubscription.DisplayName);
-        }
-
-        //Callback to remove subscription from session
-        void IServiceCallback.OPCUnsubscribe(Subscription subscription)
-        {
-            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
-            foreach (Subscription sub in subscriptions)
-            {
-                if (sub.DisplayName == subscription.DisplayName)
-                {
-                    m_session.RemoveSubscription(sub);
-                    break;
-                }
-            }
-        }
-
-        //Callback to add monitored item to subscription
-        void IServiceCallback.OPCMonitor(Subscription subscription, MonitoredItem monitoredItem)
-        {
-            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
-            foreach (Subscription sub in subscriptions)
-            {
-                if (sub.DisplayName == subscription.DisplayName)
-                {
-                    sub.AddItem(monitoredItem);
-                    sub.ApplyChanges();
-                    break;
-                }
-            }
-        }
-
-        //Callback to remove monitored item from subscription.
-        void IServiceCallback.OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
-        {
-            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
-            foreach (Subscription sub in subscriptions)
-            {
-                if (sub.DisplayName == subscription.DisplayName)
-                {
-                    sub.RemoveItem(monitoredItem);
-                    sub.ApplyChanges();
-                    break;
-                }
-            }
-        }
-
-        //Callback to have service disconnect and close session.
-        void IServiceCallback.OPCDisconnect()
-        {
-            if (m_session != null)
-            {
-                if (m_session.Connected)
-                {
-                    m_session.Close();
-                }
-            }
-        }
-
-        //Callback to check if session is running in service and disconnects if connected.
-        bool IServiceCallback.CheckConnected()
-        {
-            if(m_session != null)
-            {
-                if (m_session.Connected)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        //Callback to check if service is running.
-        bool IServiceCallback.CheckService()
-        {
-            return serviceCheck;
-        }
-        #endregion
         #region OPC Session Creation Methods
         /// <summary>
         /// Gets or sets a flag indicating that the domain checks should be ignored when connecting.
@@ -524,7 +423,7 @@ namespace OpcWindowsService
         //Saves endpoint
         public Task SaveSessionAsync(Session session)
         {
-            string sessionFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+            string sessionFile = Path.Combine(sessionsFolder, string.Format(@"{0}.json", m_session.SessionName));
 
             if (File.Exists(sessionFile))
             {
@@ -541,7 +440,7 @@ namespace OpcWindowsService
         public Task<String> LoadSessionAsync(String sessionEndpoint)
         {
             String retainedSession = null;
-            String[] sessionFiles = Directory.GetFiles(sessionFolder, "*.json");
+            String[] sessionFiles = Directory.GetFiles(sessionsFolder, "*.json");
             if (sessionFiles != null)
             {
                 foreach (string session in sessionFiles)
@@ -660,7 +559,6 @@ namespace OpcWindowsService
         }
         #endregion
 
-
         //MQTT publication of OPC subscriptions.
         public void OPCPublish(Session session)
         {
@@ -727,6 +625,142 @@ namespace OpcWindowsService
                 }
             }
         }
-    
+
+        #region Callback methods
+
+        #region OPC Methods
+        //Callback to connect to OPC endpoint
+        void IServiceCallback.OPCConnect(String opcEndpoint)
+        {
+            OPCConnect(this.application, opcEndpoint);
+        }
+
+        //Callback to add subscription to session
+        void IServiceCallback.OPCSubscribe(Subscription subscription)
+        {
+            //Recreates subscription based on provided subscription details.
+            Subscription tempSubscription = new Subscription(m_session.DefaultSubscription);
+            m_session.AddSubscription(tempSubscription);
+            tempSubscription.DisplayName = subscription.DisplayName;
+            tempSubscription.PublishingInterval = subscription.PublishingInterval;
+            tempSubscription.KeepAliveCount = subscription.KeepAliveCount;
+            tempSubscription.LifetimeCount = subscription.LifetimeCount;
+            tempSubscription.MaxNotificationsPerPublish = subscription.MaxNotificationsPerPublish;
+            tempSubscription.Priority = subscription.Priority;
+            tempSubscription.PublishingEnabled = subscription.PublishingEnabled;
+            tempSubscription.Create();
+            Host.Current.MQTTSubscribe(tempSubscription.DisplayName);
+        }
+
+        //Callback to remove subscription from session
+        void IServiceCallback.OPCUnsubscribe(Subscription subscription)
+        {
+            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub.DisplayName == subscription.DisplayName)
+                {
+                    m_session.RemoveSubscription(sub);
+                    break;
+                }
+            }
+        }
+
+        //Callback to add monitored item to subscription
+        void IServiceCallback.OPCMonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub.DisplayName == subscription.DisplayName)
+                {
+                    sub.AddItem(monitoredItem);
+                    sub.ApplyChanges();
+                    break;
+                }
+            }
+        }
+
+        //Callback to remove monitored item from subscription.
+        void IServiceCallback.OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem)
+        {
+            IEnumerable<Subscription> subscriptions = m_session.Subscriptions;
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub.DisplayName == subscription.DisplayName)
+                {
+                    sub.RemoveItem(monitoredItem);
+                    sub.ApplyChanges();
+                    break;
+                }
+            }
+        }
+
+        //Callback to have service disconnect and close session.
+        void IServiceCallback.OPCDisconnect()
+        {
+            if (m_session != null)
+            {
+                if (m_session.Connected)
+                {
+                    m_session.Close();
+                }
+            }
+        }
+
+        //Callback to have service return it's currently connected session endpoint.
+        string IServiceCallback.SessionEndpoint()
+        {
+            if (m_session != null)
+            {
+                if (m_session.Connected)
+                {
+                    return sessionEndpoint;
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #region Service Methods
+        //Callback to check if session is running in service and disconnects if connected.
+        bool IServiceCallback.CheckConnected()
+        {
+            if (m_session != null)
+            {
+                if (m_session.Connected)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //Callback to check if service is running.
+        bool IServiceCallback.CheckService()
+        {
+            return serviceCheck;
+        }
+
+        //Callback to return path to 'Retained Sessions' folder.
+        string IServiceCallback.SessionsFolder()
+        {
+            return sessionsFolder;
+        }
+
+        //Callback to return path to 'Retained Subscriptions' folder.
+        string IServiceCallback.SubscriptionsFolder()
+        {
+            return subscriptionsFolder;
+        }
+
+        //Callback to return path to 'Retained Items' folder.
+        string IServiceCallback.ItemsFolder()
+        {
+            return itemsFolder;
+        }
+        #endregion
+
+        #endregion
     }
 }

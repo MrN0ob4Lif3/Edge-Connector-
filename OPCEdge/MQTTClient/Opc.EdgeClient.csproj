@@ -102,31 +102,13 @@
     <None Include="Connected Services\OpcWCFInterface\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWCFInterface\item1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\OpcWCFInterface\item2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\OpcWCFInterface\item3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\OpcWCFInterface\item4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\OpcWCFInterface\item5.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\OpcWCFInterface\item6.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWCFInterface\item7.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\OpcWCFInterface\item8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\OpcWCFInterface\item9.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\OpcWCFInterface\OpcWCFInterface.wsdl" />

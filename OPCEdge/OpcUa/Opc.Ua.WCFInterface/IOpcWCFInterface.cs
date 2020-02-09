@@ -30,18 +30,6 @@ namespace OpcWCFInterface
 
         #region OPC Operations
         [OperationContract]
-        void OPCCreateClient(String opcIP, bool securityCheck);
-
-        [OperationContract]
-        void Connect(ConfiguredEndpoint endpoint);
-
-        [OperationContract]
-        ApplicationInstance GetApplicationInstance();
-
-        [OperationContract]
-        ConfiguredEndpointCollection GetEndpoints();
-
-        [OperationContract]
         void OPCConnect(String opcEndpoint);
 
         [OperationContract]
@@ -64,21 +52,19 @@ namespace OpcWCFInterface
 
         [OperationContract]
         bool CheckService();
+        [OperationContract]
+        string SessionEndpoint();
+        #endregion
 
+        #region Service Operations
+        [OperationContract]
+        string SessionsFolder();
+
+        [OperationContract]
+        string SubscriptionsFolder();
+
+        [OperationContract]
+        string ItemsFolder();
         #endregion
     }
-
-    [DataContract]
-    public class SessionSurrogate
-    {
-        Session session;
-
-        [DataMember]
-        public Session OPCSession
-        {
-            get { return session; }
-            set { session = value; }
-        }
-    }
-
 }

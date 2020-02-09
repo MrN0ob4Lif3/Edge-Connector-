@@ -23,11 +23,7 @@ namespace OpcEdgeClient
     {
         #region Form Variables
         public string brokerIP;
-        OpcWCFInterface.OpcWCFInterfaceClient client;
-        ServiceController brokerWindows;
         private static Session m_session;
-        private Browser m_browser;
-        private bool m_connectedOnce;
         private ApplicationConfiguration m_configuration;
         private ApplicationConfiguration app_configuration;
         private ServiceMessageContext context;
@@ -35,24 +31,20 @@ namespace OpcEdgeClient
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
-        IDictionary<String, String> publishPayload = new Dictionary<String, String>();
-        //string itemsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Monitored Items");
-        //string subscriptionsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Subscriptions");
-        //string sessionFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Retained Session");
-        //string mainFolder2 = Path.Combine(mainFolder, @"Retained Messages");
-
-
-        static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
-        string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
-        string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
-        string sessionFolder = Path.Combine(mainFolder, @"Retained Sessions");
-        System.Threading.Timer checkService;
+        string itemsFolder;
+        string subscriptionsFolder;
+        string sessionFolder;
+        string sessionEndpoint;
         private delegate void FormDelegate();
         static bool autoAccept = true;
         public EndpointConfiguration m_endpoint_configuration;
+        private EndpointDescription selectedEndpoint;
         private ConfiguredEndpoint m_endpoint;
         ApplicationInstance application;
-        ServiceMessageContext m_messageContext;
+        ServiceController OpcWindowsService;
+        OpcWCFInterface.OpcWCFInterfaceClient client;
+        IDictionary<String, String> publishPayload = new Dictionary<String, String>();
+        System.Threading.Timer checkService;
         #endregion
 
         #region Startup Settings
@@ -68,14 +60,9 @@ namespace OpcEdgeClient
             key.SetValue(StartupValue, Application.ExecutablePath.ToString());
         }
 
-        public void InitializeClients()
+        //Initializes OPC Application instance.
+        public async void InitializeClients()
         {
-            Directory.CreateDirectory(itemsFolder);
-            Directory.CreateDirectory(subscriptionsFolder);
-            Directory.CreateDirectory(sessionFolder);
-            //Directory.CreateDirectory(mainFolder2);
-            //Loading OPC elements
-            //ApplicationInstance application = client.GetApplicationInstance();
             //Initialize OPC Application Instance
             application = new ApplicationInstance
             {
@@ -95,17 +82,93 @@ namespace OpcEdgeClient
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
-        }
+            sessionEndpoint = client.SessionEndpoint();
+            //If service is currently connected to a OPC endpoint, recreate the connection on the client.
+            if (sessionEndpoint != null)
+            {
+                // load the application configuration.
+                ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
+                // check the application certificate.
+                bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(false, 0);
+                if (!haveAppCertificate)
+                {
+                    throw new Exception("Application instance certificate invalid!");
+                }
+                else if (haveAppCertificate)
+                {
+                    config.ApplicationUri = Utils.GetApplicationUriFromCertificate(config.SecurityConfiguration.ApplicationCertificate.Certificate);
+                    if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+                    {
+                        autoAccept = true;
+                    }
+                    config.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+                }
+                try
+                {
+                    //Creates session with OPC Server
+                    selectedEndpoint = CoreClientUtils.SelectEndpoint(sessionEndpoint, haveAppCertificate, 15000);
+                    m_endpoint_configuration = EndpointConfiguration.Create(config);
+                    m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
+                    m_session = await Session.Create(config, m_endpoint, false, "OpcEdgeClient", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
+                    // Open dialog to declare Session name.
+                    //new SessionOpenDlg().ShowDialog(m_session, opcSession.PreferredLocales);
+                    // Deletes the existing session.
+                    opcSession.Close();
+                    // Adds session to tree.
+                    opcSession.AddNode(m_session);
+                    //Checks if service has a session connected and disconnects if connected.
+                    if (client.CheckConnected())
+                    {
+                        client.OPCDisconnect();
+                    }
+                    // Passes endpointURL to service for connection.
+                    client.OPCConnect(selectedEndpoint.EndpointUrl);
 
+                    if (m_session != null)
+                    {
+                        // stop any reconnect operation.
+                        if (m_reconnectHandler != null)
+                        {
+                            m_reconnectHandler.Dispose();
+                            m_reconnectHandler = null;
+                        }
+                        //Register keep alive handler & sets view
+                        m_session.KeepAlive += new KeepAliveEventHandler(StandardClient_KeepAlive);
+                        opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
+                        StandardClient_KeepAlive(m_session, null);
+
+                        //Saves session endpoint URL.
+                        m_session.SessionName = "My Session";
+                        await SaveSessionAsync(m_session);
+                        //Recreates prior session's subscriptions and monitored items.
+                        string retainedEndpoint = await LoadSessionAsync(selectedEndpoint.EndpointUrl);
+                        if (sessionEndpoint == retainedEndpoint)
+                        {
+                            RecreateSession(m_session);
+                        }
+                    }
+                    OpcConnectionLabel.Text = "Currently Connected to: " + selectedEndpoint.EndpointUrl;
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception.
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
         //Initializes specific elements for OPC and MQTT interfaces to work.
         public OpcEdgeMain()
         {
             //Loading controller for WCF service.
             client = new OpcWCFInterface.OpcWCFInterfaceClient("NetTcpBinding_IOpcWCFInterface");
-            brokerWindows = new ServiceController("brokerWindows");
+            OpcWindowsService = new ServiceController("OpcWindowsService");
             CheckService();
             InitializeComponent();
             SetStartup();
+            //Retrieves path to retained information folders from service.
+            sessionFolder = client.SessionsFolder();
+            subscriptionsFolder = client.SubscriptionsFolder();
+            itemsFolder = client.ItemsFolder();
             //Loading OPC Application Instance.
             InitializeClients();
             //Use timer callback to check if service is still running
@@ -144,8 +207,6 @@ namespace OpcEdgeClient
             {
                 publishPayload.Add(publishKey2.Text, publishValue2.Text);
             }
-            //string message = JsonConvert.SerializeObject(publishPayload);
-            //client.MQTTPublishTopicAsync("Artc/Harmony/Connector/EdgeToCloud", message);
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
@@ -153,14 +214,6 @@ namespace OpcEdgeClient
             {
                 app_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
-            /*
-            m_session = client.GetSession();
-            if (m_session != null)
-            {
-                opcBrowse.SetView(m_session, BrowseViewType.Objects, null);
-            }
-            */
-
         }
         #endregion
 
@@ -377,7 +430,6 @@ namespace OpcEdgeClient
             retainedEndpoint = await LoadSessionAsync(endpointURL);
             try
             {
-                EndpointDescription selectedEndpoint;
                 if (retainedEndpoint == null || !retainSession)
                 {
                     selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointURL, haveAppCertificate, 15000);
@@ -388,11 +440,15 @@ namespace OpcEdgeClient
                 }
                 //Select endpoint after discovery.
                 //Creates session with OPC Server
+                sessionEndpoint = selectedEndpoint.EndpointUrl;
                 m_endpoint_configuration = EndpointConfiguration.Create(config);
                 m_endpoint = new ConfiguredEndpoint(null, selectedEndpoint, m_endpoint_configuration);
-                m_session = await Session.Create(config, m_endpoint, false, "OPCEdge", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
+                m_session = await Session.Create(config, m_endpoint, false, "OpcEdgeClient", 60000, new UserIdentity(new AnonymousIdentityToken()), null);
                 // Open dialog to declare Session name.
-                new SessionOpenDlg().ShowDialog(m_session, opcSession.PreferredLocales);
+                if (new SessionOpenDlg().ShowDialog(m_session, opcSession.PreferredLocales) == false)
+                {
+                    return;
+                }
                 // Deletes the existing session.
                 opcSession.Close();
                 // Adds session to tree.
@@ -419,6 +475,7 @@ namespace OpcEdgeClient
                     StandardClient_KeepAlive(m_session, null);
 
                     //Saves session endpoint URL.
+                    m_session.SessionName = "My Session";
                     await SaveSessionAsync(m_session);
                     //Recreates prior session's subscriptions and monitored items.
                     if (retainedEndpoint == endpointURL)
@@ -426,6 +483,7 @@ namespace OpcEdgeClient
                         RecreateSession(m_session);
                     }
                 }
+                OpcConnectionLabel.Text = "Currently Connected to: " + selectedEndpoint.EndpointUrl;
             }
             catch (Exception ex)
             {
@@ -611,7 +669,8 @@ namespace OpcEdgeClient
 
             try
             {
-                GuiUtils.HandleCertificateValidationError(this, validator, e);
+                //GuiUtils.HandleCertificateValidationError(this, validator, e);
+                e.Accept = true;
             }
             catch (Exception exception)
             {

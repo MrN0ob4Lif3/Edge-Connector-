@@ -34,13 +34,7 @@
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd8" namespace="http://opcfoundation.org/UA/SDK/Installation.xsd" />
-      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd9" namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOpcWCFInterface_MQTTConnectClientAsync_InputMessage">
@@ -72,30 +66,6 @@
   </wsdl:message>
   <wsdl:message name="IOpcWCFInterface_MQTTSubscribedTopics_OutputMessage">
     <wsdl:part name="parameters" element="tns:MQTTSubscribedTopicsResponse" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_OPCCreateClient_InputMessage">
-    <wsdl:part name="parameters" element="tns:OPCCreateClient" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_OPCCreateClient_OutputMessage">
-    <wsdl:part name="parameters" element="tns:OPCCreateClientResponse" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_Connect_InputMessage">
-    <wsdl:part name="parameters" element="tns:Connect" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_Connect_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ConnectResponse" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_GetApplicationInstance_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetApplicationInstance" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_GetApplicationInstance_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetApplicationInstanceResponse" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_GetEndpoints_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetEndpoints" />
-  </wsdl:message>
-  <wsdl:message name="IOpcWCFInterface_GetEndpoints_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetEndpointsResponse" />
   </wsdl:message>
   <wsdl:message name="IOpcWCFInterface_OPCConnect_InputMessage">
     <wsdl:part name="parameters" element="tns:OPCConnect" />
@@ -145,6 +115,30 @@
   <wsdl:message name="IOpcWCFInterface_CheckService_OutputMessage">
     <wsdl:part name="parameters" element="tns:CheckServiceResponse" />
   </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_SessionEndpoint_InputMessage">
+    <wsdl:part name="parameters" element="tns:SessionEndpoint" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_SessionEndpoint_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SessionEndpointResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_SessionsFolder_InputMessage">
+    <wsdl:part name="parameters" element="tns:SessionsFolder" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_SessionsFolder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SessionsFolderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_SubscriptionsFolder_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubscriptionsFolder" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_SubscriptionsFolder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubscriptionsFolderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_ItemsFolder_InputMessage">
+    <wsdl:part name="parameters" element="tns:ItemsFolder" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_ItemsFolder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ItemsFolderResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOpcWCFInterface">
     <wsdl:operation name="MQTTConnectClientAsync">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/MQTTConnectClientAsync" message="tns:IOpcWCFInterface_MQTTConnectClientAsync_InputMessage" />
@@ -165,22 +159,6 @@
     <wsdl:operation name="MQTTSubscribedTopics">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/MQTTSubscribedTopics" message="tns:IOpcWCFInterface_MQTTSubscribedTopics_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/MQTTSubscribedTopicsResponse" message="tns:IOpcWCFInterface_MQTTSubscribedTopics_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="OPCCreateClient">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/OPCCreateClient" message="tns:IOpcWCFInterface_OPCCreateClient_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/OPCCreateClientResponse" message="tns:IOpcWCFInterface_OPCCreateClient_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="Connect">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/Connect" message="tns:IOpcWCFInterface_Connect_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/ConnectResponse" message="tns:IOpcWCFInterface_Connect_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetApplicationInstance">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/GetApplicationInstance" message="tns:IOpcWCFInterface_GetApplicationInstance_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/GetApplicationInstanceResponse" message="tns:IOpcWCFInterface_GetApplicationInstance_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetEndpoints">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/GetEndpoints" message="tns:IOpcWCFInterface_GetEndpoints_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/GetEndpointsResponse" message="tns:IOpcWCFInterface_GetEndpoints_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="OPCConnect">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/OPCConnect" message="tns:IOpcWCFInterface_OPCConnect_InputMessage" />
@@ -213,6 +191,22 @@
     <wsdl:operation name="CheckService">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/CheckService" message="tns:IOpcWCFInterface_CheckService_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/CheckServiceResponse" message="tns:IOpcWCFInterface_CheckService_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SessionEndpoint">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionEndpoint" message="tns:IOpcWCFInterface_SessionEndpoint_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionEndpointResponse" message="tns:IOpcWCFInterface_SessionEndpoint_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SessionsFolder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionsFolder" message="tns:IOpcWCFInterface_SessionsFolder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionsFolderResponse" message="tns:IOpcWCFInterface_SessionsFolder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubscriptionsFolder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolder" message="tns:IOpcWCFInterface_SubscriptionsFolder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolderResponse" message="tns:IOpcWCFInterface_SubscriptionsFolder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ItemsFolder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/ItemsFolder" message="tns:IOpcWCFInterface_ItemsFolder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/ItemsFolderResponse" message="tns:IOpcWCFInterface_ItemsFolder_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOpcWCFInterface" type="tns:IOpcWCFInterface">
@@ -255,42 +249,6 @@
     </wsdl:operation>
     <wsdl:operation name="MQTTSubscribedTopics">
       <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/MQTTSubscribedTopics" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="OPCCreateClient">
-      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/OPCCreateClient" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="Connect">
-      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/Connect" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetApplicationInstance">
-      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/GetApplicationInstance" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetEndpoints">
-      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/GetEndpoints" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -370,6 +328,42 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SessionEndpoint">
+      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/SessionEndpoint" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SessionsFolder">
+      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/SessionsFolder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscriptionsFolder">
+      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ItemsFolder">
+      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/ItemsFolder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IOpcWCFInterface" type="tns:IOpcWCFInterface">
     <wsp:PolicyReference URI="#NetTcpBinding_IOpcWCFInterface_policy" />
@@ -412,42 +406,6 @@
     </wsdl:operation>
     <wsdl:operation name="MQTTSubscribedTopics">
       <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/MQTTSubscribedTopics" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="OPCCreateClient">
-      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/OPCCreateClient" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="Connect">
-      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/Connect" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetApplicationInstance">
-      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/GetApplicationInstance" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetEndpoints">
-      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/GetEndpoints" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -520,6 +478,42 @@
     </wsdl:operation>
     <wsdl:operation name="CheckService">
       <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/CheckService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SessionEndpoint">
+      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/SessionEndpoint" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SessionsFolder">
+      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/SessionsFolder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscriptionsFolder">
+      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/SubscriptionsFolder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ItemsFolder">
+      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/ItemsFolder" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

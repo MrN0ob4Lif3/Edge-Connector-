@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" />
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" />
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
   <xs:element name="MQTTConnectClientAsync">
     <xs:complexType>
       <xs:sequence>
@@ -65,55 +63,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="OPCCreateClient">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="opcIP" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="securityCheck" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="OPCCreateClientResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Connect">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q2="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="endpoint" nillable="true" type="q2:ConfiguredEndpoint" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ConnectResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetApplicationInstance">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetApplicationInstanceResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Opc.Ua.Configuration" minOccurs="0" name="GetApplicationInstanceResult" nillable="true" type="q3:ApplicationInstance" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetEndpoints">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetEndpointsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q4="http://opcfoundation.org/UA/SDK/Configuration.xsd" minOccurs="0" name="GetEndpointsResult" nillable="true" type="q4:ConfiguredEndpointCollection" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="OPCConnect">
     <xs:complexType>
       <xs:sequence>
@@ -129,7 +78,7 @@
   <xs:element name="OPCSubscribe">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q5:Subscription" />
+        <xs:element xmlns:q2="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q2:Subscription" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -141,7 +90,7 @@
   <xs:element name="OPCUnsubscribe">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q6:Subscription" />
+        <xs:element xmlns:q3="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q3:Subscription" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -153,8 +102,8 @@
   <xs:element name="OPCMonitor">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q7:Subscription" />
-        <xs:element xmlns:q8="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="monitoredItem" nillable="true" type="q8:MonitoredItem" />
+        <xs:element xmlns:q4="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q4:Subscription" />
+        <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="monitoredItem" nillable="true" type="q5:MonitoredItem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -166,8 +115,8 @@
   <xs:element name="OPCUnmonitor">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q9:Subscription" />
-        <xs:element xmlns:q10="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="monitoredItem" nillable="true" type="q10:MonitoredItem" />
+        <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="subscription" nillable="true" type="q6:Subscription" />
+        <xs:element xmlns:q7="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="monitoredItem" nillable="true" type="q7:MonitoredItem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -207,6 +156,54 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="CheckServiceResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SessionEndpoint">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SessionEndpointResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SessionEndpointResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SessionsFolder">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SessionsFolderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SessionsFolderResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubscriptionsFolder">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubscriptionsFolderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SubscriptionsFolderResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ItemsFolder">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ItemsFolderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ItemsFolderResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

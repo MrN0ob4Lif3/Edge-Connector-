@@ -1,610 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://opcfoundation.org/UA/SDK/Configuration.xsd" elementFormDefault="qualified" targetNamespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
-  <xs:complexType name="ConfiguredEndpoint">
+<xs:schema xmlns:tns="http://opcfoundation.org/UA/2008/02/Types.xsd" elementFormDefault="qualified" targetNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Subscription">
     <xs:sequence>
-      <xs:element xmlns:q1="http://opcfoundation.org/UA/2008/02/Types.xsd" name="Endpoint" nillable="true" type="q1:EndpointDescription" />
-      <xs:element xmlns:q2="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="Configuration" nillable="true" type="q2:EndpointConfiguration" />
-      <xs:element minOccurs="0" name="UpdateBeforeConnect" type="xs:boolean" />
-      <xs:element minOccurs="0" name="BinaryEncodingSupport" type="tns:BinaryEncodingSupport" />
-      <xs:element minOccurs="0" name="SelectedUserTokenPolicy" type="xs:int" />
-      <xs:element xmlns:q3="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="UserIdentity" nillable="true" type="q3:UserIdentityToken" />
-      <xs:element minOccurs="0" name="ComIdentity" nillable="true" type="tns:EndpointComIdentity" />
-      <xs:element xmlns:q4="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="Extensions" nillable="true" type="q4:ListOfXmlElement">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
+      <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PublishingInterval" type="xs:int" />
+      <xs:element minOccurs="0" name="KeepAliveCount" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="LifetimeCount" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="MaxNotificationsPerPublish" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="PublishingEnabled" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Priority" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="TimestampsToReturn" type="tns:TimestampsToReturn" />
+      <xs:element minOccurs="0" name="MaxMessageCount" type="xs:int" />
+      <xs:element minOccurs="0" name="DefaultItem" nillable="true" type="tns:MonitoredItem" />
+      <xs:element minOccurs="0" name="MinLifetimeInterval" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="MonitoredItems" nillable="true" type="tns:ArrayOfMonitoredItem" />
+      <xs:element minOccurs="0" name="DisableMonitoredItemCache" type="xs:boolean" />
+      <xs:element minOccurs="0" name="CurrentPublishedTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="PreviousPublishedTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SubscriptionPublished" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ServiceModifyCheck" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ConfiguredEndpoint" nillable="true" type="tns:ConfiguredEndpoint" />
-  <xs:simpleType name="BinaryEncodingSupport">
+  <xs:element name="Subscription" nillable="true" type="tns:Subscription" />
+  <xs:simpleType name="TimestampsToReturn">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Optional" />
-      <xs:enumeration value="Required" />
-      <xs:enumeration value="None" />
+      <xs:enumeration value="Source_0" />
+      <xs:enumeration value="Server_1" />
+      <xs:enumeration value="Both_2" />
+      <xs:enumeration value="Neither_3" />
+      <xs:enumeration value="Invalid_4" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="BinaryEncodingSupport" nillable="true" type="tns:BinaryEncodingSupport" />
-  <xs:complexType name="EndpointComIdentity">
+  <xs:element name="TimestampsToReturn" nillable="true" type="tns:TimestampsToReturn" />
+  <xs:complexType name="MonitoredItem">
     <xs:sequence>
-      <xs:element xmlns:q5="http://opcfoundation.org/UA/2008/02/Types.xsd" name="Clsid" type="q5:Guid" />
-      <xs:element name="ProgId" nillable="true" type="xs:string" />
-      <xs:element name="Specification" type="tns:ComSpecification" />
+      <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartNodeId" nillable="true" type="tns:NodeId" />
+      <xs:element minOccurs="0" name="RelativePath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NodeClass" type="tns:NodeClass" />
+      <xs:element minOccurs="0" name="AttributeId" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="IndexRange" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Encoding" nillable="true" type="tns:QualifiedName" />
+      <xs:element minOccurs="0" name="MonitoringMode" type="tns:MonitoringMode" />
+      <xs:element minOccurs="0" name="SamplingInterval" type="xs:int" />
+      <xs:element minOccurs="0" name="Filter" nillable="true" type="tns:MonitoringFilter" />
+      <xs:element minOccurs="0" name="QueueSize" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="DiscardOldest" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="EndpointComIdentity" nillable="true" type="tns:EndpointComIdentity" />
-  <xs:simpleType name="ComSpecification">
+  <xs:element name="MonitoredItem" nillable="true" type="tns:MonitoredItem" />
+  <xs:complexType name="NodeId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NodeId" nillable="true" type="tns:NodeId" />
+  <xs:simpleType name="NodeClass">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="DA" />
-      <xs:enumeration value="AE" />
-      <xs:enumeration value="HDA" />
+      <xs:enumeration value="Unspecified_0" />
+      <xs:enumeration value="Object_1" />
+      <xs:enumeration value="Variable_2" />
+      <xs:enumeration value="Method_4">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ObjectType_8">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VariableType_16">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ReferenceType_32">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">32</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DataType_64">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">64</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="View_128">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">128</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="ComSpecification" nillable="true" type="tns:ComSpecification" />
-  <xs:complexType name="ApplicationConfiguration">
+  <xs:element name="NodeClass" nillable="true" type="tns:NodeClass" />
+  <xs:complexType name="QualifiedName">
     <xs:sequence>
-      <xs:element name="ApplicationName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="ApplicationUri" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ProductUri" nillable="true" type="xs:string" />
-      <xs:element xmlns:q6="http://opcfoundation.org/UA/2008/02/Types.xsd" name="ApplicationType" type="q6:ApplicationType" />
-      <xs:element minOccurs="0" name="SecurityConfiguration" nillable="true" type="tns:SecurityConfiguration" />
-      <xs:element minOccurs="0" name="TransportConfigurations" nillable="true" type="tns:ListOfTransportConfiguration" />
-      <xs:element minOccurs="0" name="TransportQuotas" nillable="true" type="tns:TransportQuotas" />
-      <xs:element minOccurs="0" name="ServerConfiguration" nillable="true" type="tns:ServerConfiguration">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ClientConfiguration" nillable="true" type="tns:ClientConfiguration">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="DiscoveryServerConfiguration" nillable="true" type="tns:DiscoveryServerConfiguration">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element xmlns:q7="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="Extensions" nillable="true" type="q7:ListOfXmlElement">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TraceConfiguration" nillable="true" type="tns:TraceConfiguration">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="DisableHiResClock" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
+      <xs:element minOccurs="0" name="NamespaceIndex" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ApplicationConfiguration" nillable="true" type="tns:ApplicationConfiguration" />
-  <xs:complexType name="SecurityConfiguration">
-    <xs:sequence>
-      <xs:element name="ApplicationCertificate" nillable="true" type="tns:CertificateIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TrustedIssuerCertificates" nillable="true" type="tns:CertificateTrustList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TrustedPeerCertificates" nillable="true" type="tns:CertificateTrustList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="NonceLength" type="xs:int">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="RejectedCertificateStore" nillable="true" type="tns:CertificateStoreIdentifier">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="AutoAcceptUntrustedCertificates" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="UserRoleDirectory" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="RejectSHA1SignedCertificates" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="RejectUnknownRevocationStatus" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="MinimumCertificateKeySize" type="xs:unsignedShort">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="AddAppCertToTrustedStore" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="SendCertificateChain" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="UserIssuerCertificates" nillable="true" type="tns:CertificateTrustList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TrustedUserCertificates" nillable="true" type="tns:CertificateTrustList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="HttpsIssuerCertificates" nillable="true" type="tns:CertificateTrustList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="TrustedHttpsCertificates" nillable="true" type="tns:CertificateTrustList">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
+  <xs:element name="QualifiedName" nillable="true" type="tns:QualifiedName" />
+  <xs:simpleType name="MonitoringMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Disabled_0" />
+      <xs:enumeration value="Sampling_1" />
+      <xs:enumeration value="Reporting_2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MonitoringMode" nillable="true" type="tns:MonitoringMode" />
+  <xs:complexType name="MonitoringFilter">
+    <xs:sequence />
   </xs:complexType>
-  <xs:element name="SecurityConfiguration" nillable="true" type="tns:SecurityConfiguration" />
-  <xs:complexType name="CertificateIdentifier">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="StoreType" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StorePath" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StoreName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StoreLocation" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="SubjectName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="Thumbprint" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="RawData" nillable="true" type="xs:base64Binary">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ValidationOptions" type="xs:int">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="CertificateIdentifier" nillable="true" type="tns:CertificateIdentifier" />
-  <xs:complexType name="CertificateTrustList">
+  <xs:element name="MonitoringFilter" nillable="true" type="tns:MonitoringFilter" />
+  <xs:complexType name="DataChangeFilter">
     <xs:complexContent mixed="false">
-      <xs:extension base="tns:CertificateStoreIdentifier">
+      <xs:extension base="tns:MonitoringFilter">
         <xs:sequence>
-          <xs:element minOccurs="0" name="TrustedCertificates" nillable="true" type="tns:ListOfCertificateIdentifier">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
+          <xs:element minOccurs="0" name="Trigger" type="tns:DataChangeTrigger" />
+          <xs:element minOccurs="0" name="DeadbandType" type="xs:unsignedInt" />
+          <xs:element minOccurs="0" name="DeadbandValue" type="xs:double" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="CertificateTrustList" nillable="true" type="tns:CertificateTrustList" />
-  <xs:complexType name="CertificateStoreIdentifier">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="StoreType" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StorePath" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StoreName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="StoreLocation" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="ValidationOptions" type="xs:int">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="CertificateStoreIdentifier" nillable="true" type="tns:CertificateStoreIdentifier" />
-  <xs:complexType name="ListOfCertificateIdentifier">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CertificateIdentifier" nillable="true" type="tns:CertificateIdentifier" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfCertificateIdentifier" nillable="true" type="tns:ListOfCertificateIdentifier" />
-  <xs:complexType name="ListOfTransportConfiguration">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="TransportConfiguration" nillable="true" type="tns:TransportConfiguration" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfTransportConfiguration" nillable="true" type="tns:ListOfTransportConfiguration" />
-  <xs:complexType name="TransportConfiguration">
-    <xs:sequence>
-      <xs:element name="UriScheme" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="TypeName" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="TransportConfiguration" nillable="true" type="tns:TransportConfiguration" />
-  <xs:complexType name="TransportQuotas">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="OperationTimeout" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxStringLength" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxByteStringLength" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxArrayLength" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxMessageSize" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxBufferSize" type="xs:int" />
-      <xs:element minOccurs="0" name="ChannelLifetime" type="xs:int" />
-      <xs:element minOccurs="0" name="SecurityTokenLifetime" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="TransportQuotas" nillable="true" type="tns:TransportQuotas" />
-  <xs:complexType name="ServerConfiguration">
+  <xs:element name="DataChangeFilter" nillable="true" type="tns:DataChangeFilter" />
+  <xs:simpleType name="DataChangeTrigger">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Status_0" />
+      <xs:enumeration value="StatusValue_1" />
+      <xs:enumeration value="StatusValueTimestamp_2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DataChangeTrigger" nillable="true" type="tns:DataChangeTrigger" />
+  <xs:complexType name="EventFilter">
     <xs:complexContent mixed="false">
-      <xs:extension base="tns:ServerBaseConfiguration">
+      <xs:extension base="tns:MonitoringFilter">
         <xs:sequence>
-          <xs:element xmlns:q8="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="UserTokenPolicies" nillable="true" type="q8:ListOfUserTokenPolicy">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-          <xs:element minOccurs="0" name="DiagnosticsEnabled" type="xs:boolean" />
-          <xs:element minOccurs="0" name="MaxSessionCount" type="xs:int" />
-          <xs:element minOccurs="0" name="MinSessionTimeout" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxSessionTimeout" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxBrowseContinuationPoints" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxQueryContinuationPoints" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxHistoryContinuationPoints" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxRequestAge" type="xs:int" />
-          <xs:element minOccurs="0" name="MinPublishingInterval" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxPublishingInterval" type="xs:int" />
-          <xs:element minOccurs="0" name="PublishingResolution" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxSubscriptionLifetime" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxMessageQueueSize" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxNotificationQueueSize" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxNotificationsPerPublish" type="xs:int" />
-          <xs:element minOccurs="0" name="MinMetadataSamplingInterval" type="xs:int" />
-          <xs:element minOccurs="0" name="AvailableSamplingRates" nillable="true" type="tns:ListOfSamplingRateGroup">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-          <xs:element xmlns:q9="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="RegistrationEndpoint" nillable="true" type="q9:EndpointDescription">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-          <xs:element minOccurs="0" name="MaxRegistrationInterval" type="xs:int" />
-          <xs:element minOccurs="0" name="NodeManagerSaveFile" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="MinSubscriptionLifetime" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxPublishRequestCount" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxSubscriptionCount" type="xs:int" />
-          <xs:element minOccurs="0" name="MaxEventQueueSize" type="xs:int" />
-          <xs:element xmlns:q10="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="ServerProfileArray" nillable="true" type="q10:ListOfString" />
-          <xs:element minOccurs="0" name="ShutdownDelay" type="xs:int" />
-          <xs:element xmlns:q11="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="ServerCapabilities" nillable="true" type="q11:ListOfString" />
-          <xs:element xmlns:q12="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="SupportedPrivateKeyFormats" nillable="true" type="q12:ListOfString" />
-          <xs:element minOccurs="0" name="MaxTrustListSize" type="xs:int" />
-          <xs:element minOccurs="0" name="MultiCastDnsEnabled" type="xs:boolean" />
+          <xs:element minOccurs="0" name="SelectClauses" nillable="true" type="tns:ListOfSimpleAttributeOperand" />
+          <xs:element minOccurs="0" name="WhereClause" nillable="true" type="tns:ContentFilter" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="ServerConfiguration" nillable="true" type="tns:ServerConfiguration" />
-  <xs:complexType name="ServerBaseConfiguration">
+  <xs:element name="EventFilter" nillable="true" type="tns:EventFilter" />
+  <xs:complexType name="ListOfSimpleAttributeOperand">
     <xs:sequence>
-      <xs:element xmlns:q13="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="BaseAddresses" nillable="true" type="q13:ListOfString" />
-      <xs:element xmlns:q14="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="AlternateBaseAddresses" nillable="true" type="q14:ListOfString" />
-      <xs:element minOccurs="0" name="SecurityPolicies" nillable="true" type="tns:ListOfServerSecurityPolicy" />
-      <xs:element minOccurs="0" name="MinRequestThreadCount" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxRequestThreadCount" type="xs:int" />
-      <xs:element minOccurs="0" name="MaxQueuedRequestCount" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SimpleAttributeOperand" nillable="true" type="tns:SimpleAttributeOperand" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ServerBaseConfiguration" nillable="true" type="tns:ServerBaseConfiguration" />
-  <xs:complexType name="ListOfServerSecurityPolicy">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ServerSecurityPolicy" nillable="true" type="tns:ServerSecurityPolicy" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfServerSecurityPolicy" nillable="true" type="tns:ListOfServerSecurityPolicy" />
-  <xs:complexType name="ServerSecurityPolicy">
-    <xs:sequence>
-      <xs:element xmlns:q15="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="SecurityMode" type="q15:MessageSecurityMode" />
-      <xs:element minOccurs="0" name="SecurityPolicyUri" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ServerSecurityPolicy" nillable="true" type="tns:ServerSecurityPolicy" />
-  <xs:complexType name="ListOfSamplingRateGroup">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="SamplingRateGroup" nillable="true" type="tns:SamplingRateGroup" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ListOfSamplingRateGroup" nillable="true" type="tns:ListOfSamplingRateGroup" />
-  <xs:complexType name="SamplingRateGroup">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Start" type="xs:double" />
-      <xs:element minOccurs="0" name="Increment" type="xs:double" />
-      <xs:element minOccurs="0" name="Count" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="SamplingRateGroup" nillable="true" type="tns:SamplingRateGroup" />
-  <xs:complexType name="ClientConfiguration">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="DefaultSessionTimeout" type="xs:int" />
-      <xs:element xmlns:q16="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="WellKnownDiscoveryUrls" nillable="true" type="q16:ListOfString">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element xmlns:q17="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="DiscoveryServers" nillable="true" type="q17:ListOfEndpointDescription">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="EndpointCacheFilePath" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="MinSubscriptionLifetime" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ClientConfiguration" nillable="true" type="tns:ClientConfiguration" />
-  <xs:complexType name="DiscoveryServerConfiguration">
+  <xs:element name="ListOfSimpleAttributeOperand" nillable="true" type="tns:ListOfSimpleAttributeOperand" />
+  <xs:complexType name="SimpleAttributeOperand">
     <xs:complexContent mixed="false">
-      <xs:extension base="tns:ServerBaseConfiguration">
+      <xs:extension base="tns:FilterOperand">
         <xs:sequence>
-          <xs:element xmlns:q18="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="ServerNames" nillable="true" type="q18:ListOfLocalizedText">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-          <xs:element minOccurs="0" name="DiscoveryServerCacheFile" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ServerRegistrations" nillable="true" type="tns:ListOfServerRegistration">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
+          <xs:element minOccurs="0" name="TypeDefinitionId" nillable="true" type="tns:NodeId" />
+          <xs:element minOccurs="0" name="BrowsePath" nillable="true" type="tns:ListOfQualifiedName" />
+          <xs:element minOccurs="0" name="AttributeId" type="xs:unsignedInt" />
+          <xs:element minOccurs="0" name="IndexRange" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="DiscoveryServerConfiguration" nillable="true" type="tns:DiscoveryServerConfiguration" />
-  <xs:complexType name="ListOfServerRegistration">
+  <xs:element name="SimpleAttributeOperand" nillable="true" type="tns:SimpleAttributeOperand" />
+  <xs:complexType name="FilterOperand">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="FilterOperand" nillable="true" type="tns:FilterOperand" />
+  <xs:complexType name="ListOfQualifiedName">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ServerRegistration" nillable="true" type="tns:ServerRegistration" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="QualifiedName" nillable="true" type="tns:QualifiedName" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ListOfServerRegistration" nillable="true" type="tns:ListOfServerRegistration" />
-  <xs:complexType name="ServerRegistration">
+  <xs:element name="ListOfQualifiedName" nillable="true" type="tns:ListOfQualifiedName" />
+  <xs:complexType name="ContentFilter">
     <xs:sequence>
-      <xs:element minOccurs="0" name="ApplicationUri" nillable="true" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element xmlns:q19="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="AlternateDiscoveryUrls" nillable="true" type="q19:ListOfString">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
+      <xs:element minOccurs="0" name="Elements" nillable="true" type="tns:ListOfContentFilterElement" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ServerRegistration" nillable="true" type="tns:ServerRegistration" />
-  <xs:complexType name="TraceConfiguration">
+  <xs:element name="ContentFilter" nillable="true" type="tns:ContentFilter" />
+  <xs:complexType name="ListOfContentFilterElement">
     <xs:sequence>
-      <xs:element minOccurs="0" name="OutputFilePath" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DeleteOnLoad" type="xs:boolean" />
-      <xs:element minOccurs="0" name="TraceMasks" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ContentFilterElement" nillable="true" type="tns:ContentFilterElement" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="TraceConfiguration" nillable="true" type="tns:TraceConfiguration" />
-  <xs:complexType name="ListOfApplicationAccessRule">
+  <xs:element name="ListOfContentFilterElement" nillable="true" type="tns:ListOfContentFilterElement" />
+  <xs:complexType name="ContentFilterElement">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ApplicationAccessRule" nillable="true" type="tns:ApplicationAccessRule" />
+      <xs:element minOccurs="0" name="FilterOperator" type="tns:FilterOperator" />
+      <xs:element minOccurs="0" name="FilterOperands" nillable="true" type="tns:ListOfExtensionObject" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ListOfApplicationAccessRule" nillable="true" type="tns:ListOfApplicationAccessRule" />
-  <xs:complexType name="ApplicationAccessRule">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="RuleType" type="tns:AccessControlType" />
-      <xs:element minOccurs="0" name="Right" type="tns:ApplicationAccessRight" />
-      <xs:element minOccurs="0" name="IdentityName" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ApplicationAccessRule" nillable="true" type="tns:ApplicationAccessRule" />
-  <xs:simpleType name="AccessControlType">
+  <xs:element name="ContentFilterElement" nillable="true" type="tns:ContentFilterElement" />
+  <xs:simpleType name="FilterOperator">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Allow" />
-      <xs:enumeration value="Deny" />
+      <xs:enumeration value="Equals_0" />
+      <xs:enumeration value="IsNull_1" />
+      <xs:enumeration value="GreaterThan_2" />
+      <xs:enumeration value="LessThan_3" />
+      <xs:enumeration value="GreaterThanOrEqual_4" />
+      <xs:enumeration value="LessThanOrEqual_5" />
+      <xs:enumeration value="Like_6" />
+      <xs:enumeration value="Not_7" />
+      <xs:enumeration value="Between_8" />
+      <xs:enumeration value="InList_9" />
+      <xs:enumeration value="And_10" />
+      <xs:enumeration value="Or_11" />
+      <xs:enumeration value="Cast_12" />
+      <xs:enumeration value="InView_13" />
+      <xs:enumeration value="OfType_14" />
+      <xs:enumeration value="RelatedTo_15" />
+      <xs:enumeration value="BitwiseAnd_16" />
+      <xs:enumeration value="BitwiseOr_17" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="AccessControlType" nillable="true" type="tns:AccessControlType" />
-  <xs:simpleType name="ApplicationAccessRight">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="None" />
-      <xs:enumeration value="Run" />
-      <xs:enumeration value="Update" />
-      <xs:enumeration value="Configure" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="ApplicationAccessRight" nillable="true" type="tns:ApplicationAccessRight" />
-  <xs:complexType name="ConfiguredEndpointCollection">
+  <xs:element name="FilterOperator" nillable="true" type="tns:FilterOperator" />
+  <xs:complexType name="ListOfExtensionObject">
     <xs:sequence>
-      <xs:element xmlns:q20="http://opcfoundation.org/UA/2008/02/Types.xsd" minOccurs="0" name="KnownHosts" nillable="true" type="q20:ListOfString" />
-      <xs:element minOccurs="0" name="Endpoints" nillable="true" type="tns:ArrayOfConfiguredEndpoint" />
-      <xs:element minOccurs="0" name="TcpProxyUrl" nillable="true" type="xs:anyURI">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExtensionObject" nillable="true" type="tns:ExtensionObject" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfExtensionObject" nillable="true" type="tns:ListOfExtensionObject" />
+  <xs:complexType name="ExtensionObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TypeId" nillable="true" type="tns:NodeId" />
+      <xs:element minOccurs="0" name="Body" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" processContents="lax" />
+          </xs:sequence>
+        </xs:complexType>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ConfiguredEndpointCollection" nillable="true" type="tns:ConfiguredEndpointCollection" />
-  <xs:complexType name="ArrayOfConfiguredEndpoint">
+  <xs:element name="ExtensionObject" nillable="true" type="tns:ExtensionObject" />
+  <xs:complexType name="AggregateFilter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:MonitoringFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="StartTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="AggregateType" nillable="true" type="tns:NodeId" />
+          <xs:element minOccurs="0" name="ProcessingInterval" type="xs:double" />
+          <xs:element minOccurs="0" name="AggregateConfiguration" nillable="true" type="tns:AggregateConfiguration" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AggregateFilter" nillable="true" type="tns:AggregateFilter" />
+  <xs:complexType name="AggregateConfiguration">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ConfiguredEndpoint" nillable="true" type="tns:ConfiguredEndpoint" />
+      <xs:element minOccurs="0" name="UseServerCapabilitiesDefaults" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TreatUncertainAsBad" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PercentDataBad" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="PercentDataGood" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="UseSlopedExtrapolation" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfConfiguredEndpoint" nillable="true" type="tns:ArrayOfConfiguredEndpoint" />
+  <xs:element name="AggregateConfiguration" nillable="true" type="tns:AggregateConfiguration" />
+  <xs:complexType name="ArrayOfMonitoredItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MonitoredItem" nillable="true" type="tns:MonitoredItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMonitoredItem" nillable="true" type="tns:ArrayOfMonitoredItem" />
 </xs:schema>

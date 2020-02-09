@@ -22,17 +22,19 @@ namespace Opc.Ua.ServiceLogic
         void MQTTUnsubscribe(String topic);
         void MQTTPublish(String topic, String message);
         HashSet<String> MQTTSubscribedTopics();
-        ApplicationInstance OPCApplicationInstance();
-        ConfiguredEndpointCollection OPCEndpoints();
         void OPCConnect(String opcEndpoint);
         void OPCSubscribe(Subscription subscription);
         void OPCUnsubscribe(Subscription subscription);
         void OPCMonitor(Subscription subscription, MonitoredItem monitoredItem);
         void OPCUnmonitor(Subscription subscription, MonitoredItem monitoredItem);
         void OPCDisconnect();
+        string SessionEndpoint();
         bool CheckConnected();
-
         bool CheckService();
+        string SessionsFolder();
+        string SubscriptionsFolder();
+        string ItemsFolder();
+
 
     }
 
