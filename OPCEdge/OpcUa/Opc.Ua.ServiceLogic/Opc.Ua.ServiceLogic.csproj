@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="3.0.8" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="3.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Artc.Harmony.UaClientConfiguration\Opc.Ua.Configuration.csproj" />
+    <ProjectReference Include="..\Artc.Harmony.UaClient\Opc.Ua.Client.csproj" />
+    <ProjectReference Include="..\Artc.Harmony.UaCore\Opc.Ua.Core.csproj" />
+  </ItemGroup>
+
+</Project>

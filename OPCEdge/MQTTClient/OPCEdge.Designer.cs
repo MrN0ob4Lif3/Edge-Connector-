@@ -1,6 +1,6 @@
-﻿namespace BrokerClient
+﻿namespace OpcEdgeClient
 {
-    partial class BrokerMain
+    partial class OpcEdgeMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrokerMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcEdgeMain));
             this.connectButtonMQTT = new System.Windows.Forms.Button();
             this.connectionStringMQTT = new System.Windows.Forms.TextBox();
             this.MqttTabs = new System.Windows.Forms.TabControl();

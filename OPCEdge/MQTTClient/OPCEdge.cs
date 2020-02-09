@@ -17,9 +17,9 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 
-namespace BrokerClient
+namespace OpcEdgeClient
 {
-    public partial class BrokerMain : Form
+    public partial class OpcEdgeMain : Form
     {
         #region Form Variables
         public string brokerIP;
@@ -98,10 +98,10 @@ namespace BrokerClient
         }
 
         //Initializes specific elements for OPC and MQTT interfaces to work.
-        public BrokerMain()
+        public OpcEdgeMain()
         {
             //Loading controller for WCF service.
-            client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
+            client = new brokerService.BrokerServiceClient("NetTcpBinding_IOpcWCFInterface");
             brokerWindows = new ServiceController("brokerWindows");
             CheckService();
             InitializeComponent();
@@ -184,7 +184,7 @@ namespace BrokerClient
                 }
                 else
                 {
-                    client = new brokerService.BrokerServiceClient("NetTcpBinding_IBrokerService");
+                    client = new brokerService.BrokerServiceClient("NetTcpBinding_IOpcWCFInterface");
                 }
             }
         }

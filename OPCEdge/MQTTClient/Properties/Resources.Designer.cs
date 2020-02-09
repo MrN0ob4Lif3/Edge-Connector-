@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BrokerClient.Properties {
+namespace OpcEdgeClient.Properties {
     using System;
     
     

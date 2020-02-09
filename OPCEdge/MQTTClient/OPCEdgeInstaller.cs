@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BrokerClient
+namespace OpcEdgeClient
 {
     [RunInstaller(true)]
     public partial class OPCEdgeInstaller : System.Configuration.Install.Installer

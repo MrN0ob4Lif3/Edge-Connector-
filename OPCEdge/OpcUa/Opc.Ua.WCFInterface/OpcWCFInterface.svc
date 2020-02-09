@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="OpcWCFInterface.OpcWCFInterface" CodeBehind="OpcWCFInterface.svc.cs" %>
