@@ -1,1 +1,1 @@
-"opc.tcp://opcua.rocks:4840/"
+"opc.tcp://localhost:51210/UA/SampleServer"

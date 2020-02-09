@@ -15,7 +15,6 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace OpcEdgeClient
 {
@@ -33,7 +32,7 @@ namespace OpcEdgeClient
         public String[] m_topicList;
         string itemsFolder;
         string subscriptionsFolder;
-        string sessionFolder;
+        string sessionsFolder;
         string sessionEndpoint;
         private delegate void FormDelegate();
         static bool autoAccept = true;
@@ -63,6 +62,20 @@ namespace OpcEdgeClient
         //Initializes OPC Application instance.
         public async void InitializeClients()
         {
+            //Creates directory for retained information in case it was deleted somehow.
+            if(!Directory.Exists(itemsFolder))
+            {
+                Directory.CreateDirectory(itemsFolder);
+            }
+            if (!Directory.Exists(subscriptionsFolder))
+            {
+                Directory.CreateDirectory(subscriptionsFolder);
+            }
+            if (!Directory.Exists(sessionsFolder))
+            {
+                Directory.CreateDirectory(sessionsFolder);
+            }
+
             //Initialize OPC Application Instance
             application = new ApplicationInstance
             {
@@ -166,7 +179,7 @@ namespace OpcEdgeClient
             InitializeComponent();
             SetStartup();
             //Retrieves path to retained information folders from service.
-            sessionFolder = client.SessionsFolder();
+            sessionsFolder = client.SessionsFolder();
             subscriptionsFolder = client.SubscriptionsFolder();
             itemsFolder = client.ItemsFolder();
             //Loading OPC Application Instance.
@@ -685,7 +698,7 @@ namespace OpcEdgeClient
         public Task SaveSessionAsync(Session session)
         {
             string sessionEndpoint = session.Endpoint.EndpointUrl;
-            string sessionFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+            string sessionFile = Path.Combine(sessionsFolder, string.Format(@"{0}.json", m_session.SessionName));
 
             if (File.Exists(sessionFile))
             {
@@ -697,7 +710,7 @@ namespace OpcEdgeClient
                         if (endpoint.Contains(sessionEndpoint))
                         {
                             File.Delete(sessionFile);
-                            string newFile = Path.Combine(sessionFolder, string.Format(@"{0}.json", m_session.SessionName));
+                            string newFile = Path.Combine(sessionsFolder, string.Format(@"{0}.json", m_session.SessionName));
                             File.AppendAllText(sessionFile, JsonConvert.SerializeObject(sessionEndpoint));
                             return Task.FromResult(0);
                         }
@@ -725,7 +738,7 @@ namespace OpcEdgeClient
         public Task<String> LoadSessionAsync(String sessionEndpoint)
         {
             String retainedSession = null;
-            String[] sessionFiles = Directory.GetFiles(sessionFolder, "*.json");
+            String[] sessionFiles = Directory.GetFiles(sessionsFolder, "*.json");
             if (sessionFiles != null)
             {
                 foreach (string session in sessionFiles)
@@ -791,12 +804,12 @@ namespace OpcEdgeClient
                                 {
                                     try
                                     {
-                                        String[] testItems = File.ReadAllLines(item);
-                                        foreach (string testItem in testItems)
+                                        String[] storedItems = File.ReadAllLines(item);
+                                        foreach (string storedItem in storedItems)
                                         {
                                             //Checking and recreating monitored items for each subscription.
                                             ReferenceDescription retainedItem;
-                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
+                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(storedItem);
                                             opcBrowse.Subscribe(tempSubscription, retainedItem);
                                             if (topicListPub.Items.Contains(tempSubscription.DisplayName))
                                             {
@@ -846,7 +859,7 @@ namespace OpcEdgeClient
                 }
                 else
                 {
-                    MessageBox.Show("Service is not running. Please restart it.");
+                    MessageBox.Show("Service is not running or OPC . Please restart it.");
                     this.Close();
                     System.Environment.Exit(1);
                 }

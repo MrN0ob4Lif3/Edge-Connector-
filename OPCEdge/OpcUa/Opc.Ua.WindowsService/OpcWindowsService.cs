@@ -110,20 +110,26 @@ namespace OpcWindowsService
                 //If there was a pre-exising session before, attempt reconnection.
                 foreach(string sessionFile in Directory.GetFiles(sessionsFolder, "*.json"))
                 {
-                    String readSession = File.ReadAllText(sessionFile);
-                    if(readSession != "")
+                    String[] sessions = File.ReadAllLines(sessionFile);
+                    foreach (string retainedEndpoint in sessions)
                     {
-                        try
+                        if (retainedEndpoint != "")
                         {
-                            OPCConnect(application, readSession);
+                            try
+                            {
+                                OPCConnect(application, retainedEndpoint);
+                                sessionEndpoint = retainedEndpoint;
+                                break;
+                            }
+                            catch
+                            {
+                                //Ignore exception as server may not be up.
+                            }
+                            break;
                         }
-                        catch (Exception ex)
-                        {
-                            // Log the exception.
-                            EventLog.WriteEntry(ex.Message, EventLogEntryType.Error);
-                        }
-                        break;
                     }
+                    String readSession = File.ReadAllText(sessionFile);
+
                 }
                 serviceCheck = true;
                 //Use timer callback to monitor and publish subscriptions.
@@ -505,12 +511,12 @@ namespace OpcWindowsService
                                 {
                                     try
                                     {
-                                        String[] testItems = File.ReadAllLines(item);
-                                        foreach (string testItem in testItems)
+                                        String[] storedItems = File.ReadAllLines(item);
+                                        foreach (string storedItem in storedItems)
                                         {
                                             //Checking and recreating monitored items for each subscription.
                                             ReferenceDescription retainedItem;
-                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(testItem);
+                                            retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(storedItem);
                                             Subscribe(tempSubscription, retainedItem);
                                         }
                                         break;
