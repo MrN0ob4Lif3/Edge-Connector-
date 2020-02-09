@@ -139,37 +139,6 @@ namespace OpcWCFInterface
             }
 
             m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
-
-            /*try
-            {
-                //Find best endpoint
-                EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(opcIP, securityCheck, m_discoverTimeout);
-                EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
-                ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
-                //Create Session
-                m_session = await Session.Create(
-                    m_configuration,
-                    endpoint,
-                    false,
-                    !DisableDomainCheck,
-                    (String.IsNullOrEmpty(SessionName)) ? m_configuration.ApplicationName : SessionName,
-                    60000,
-                    UserIdentity,
-                    PreferredLocales);
-                //Keep session alive 
-                m_session.KeepAlive += new KeepAliveEventHandler(Session_KeepAlive);
-            }
-            catch (Exception e)
-            {
-                // Create an EventLog instance and assign its source.
-                EventLog myLog = new EventLog
-                {
-                    Source = "OpcWCFInterfaceOPCClient"
-                };
-                // Write an informational entry to the event log.
-                myLog.WriteEntry(e.Message);
-            }
-            */
         }
         #region OPC Session Creation Methods
         /// <summary>

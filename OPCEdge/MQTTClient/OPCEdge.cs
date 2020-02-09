@@ -773,8 +773,8 @@ namespace OpcEdgeClient
         {
             try
             {
-                
-                client.CheckConnected();
+                client.CheckService();
+                //client.CheckConnected();
             }
             catch (Exception ex)
             {

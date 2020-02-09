@@ -154,14 +154,22 @@ namespace OpcWindowsService
         #region MQTT Methods
         public async void MQTTConnectClient(IManagedMqttClient managedMqtt, string brokerIP)
         {
-            //await ManagedClient.ManagedMqttConnectTCPAsync(managedMqtt, brokerIP);
-            await Mqtt.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
+            await mqttClientSemaphore.WaitAsync();
+            try
+            {
+                await Mqtt.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
+            }
+            finally
+            {
+                mqttClientSemaphore.Release();
+            }
         }
 
         #region Callback methods
         //Callback for MQTT connection.
         async void IServiceCallback.MQTTConnect(string brokerIP)
         {
+            await mqttClientSemaphore.WaitAsync();
             try
             {
                 managedMqtt = Mqtt.CreateManagedClient();
