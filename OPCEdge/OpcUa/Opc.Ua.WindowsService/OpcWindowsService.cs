@@ -20,11 +20,14 @@ namespace OpcWindowsService
 {
     public partial class OpcWindowsService : ServiceBase, IServiceCallback
     {
+        #region Service Properties
         ServiceHost host;
         static string tempFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
         string itemsFolder = Path.Combine(tempFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(tempFolder, @"Retained Subscriptions");
         string sessionFolder = Path.Combine(tempFolder, @"Retained Sessions");
+        bool serviceCheck = false;
+        #endregion  
 
         #region MQTT Properties
         public IManagedMqttClient managedMqtt;
@@ -94,7 +97,7 @@ namespace OpcWindowsService
                 }
                 //m_CertificateValidation = new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
-                //OPC Server connection.
+                //If there was a pre-exising session before, attempt reconnection.
                 foreach(string sessionFile in Directory.GetFiles(sessionFolder, "*.json"))
                 {
                     String readSession = File.ReadAllText(sessionFile);
@@ -112,7 +115,7 @@ namespace OpcWindowsService
                         break;
                     }
                 }
-
+                serviceCheck = true;
                 //Use timer callback to monitor and publish subscriptions.
                 publishTimer = new System.Threading.Timer(x => OPCPublish(m_session), null, 5000, 1000);
             }
@@ -420,6 +423,12 @@ namespace OpcWindowsService
                 }
             }
             return false;
+        }
+        
+        //Callback to check if service is running.
+        bool IServiceCallback.CheckService()
+        {
+            return serviceCheck;
         }
         #endregion
         #region OPC Session Creation Methods

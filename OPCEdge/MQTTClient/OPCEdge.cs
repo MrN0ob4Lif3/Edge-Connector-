@@ -23,7 +23,7 @@ namespace OpcEdgeClient
     {
         #region Form Variables
         public string brokerIP;
-        brokerService.BrokerServiceClient client;
+        OpcWCFInterface.OpcWCFInterfaceClient client;
         ServiceController brokerWindows;
         private static Session m_session;
         private Browser m_browser;
@@ -101,7 +101,7 @@ namespace OpcEdgeClient
         public OpcEdgeMain()
         {
             //Loading controller for WCF service.
-            client = new brokerService.BrokerServiceClient("NetTcpBinding_IOpcWCFInterface");
+            client = new OpcWCFInterface.OpcWCFInterfaceClient("NetTcpBinding_IOpcWCFInterface");
             brokerWindows = new ServiceController("brokerWindows");
             CheckService();
             InitializeComponent();
@@ -184,7 +184,7 @@ namespace OpcEdgeClient
                 }
                 else
                 {
-                    client = new brokerService.BrokerServiceClient("NetTcpBinding_IOpcWCFInterface");
+                    client = new OpcWCFInterface.OpcWCFInterfaceClient("NetTcpBinding_IOpcWCFInterface");
                 }
             }
         }
@@ -773,6 +773,7 @@ namespace OpcEdgeClient
         {
             try
             {
+                
                 client.CheckConnected();
             }
             catch (Exception ex)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="8jCk3ZPVx12DlwzpQoBLcY5wS3E=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="sp4iS1PrI7XGkExaGI/SESqMRyc=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IOpcWCFInterface">
       <properties>
@@ -230,10 +230,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IOpcWCFInterface" contract="OpcWcfInterface.IOpcWCFInterface" bindingType="basicHttpBinding" address="http://localhost:8080/brokerService" bindingConfiguration="BasicHttpBinding_IOpcWCFInterface">
+    <endpoint name="BasicHttpBinding_IOpcWCFInterface" contract="OpcWCFInterface.IOpcWCFInterface" bindingType="basicHttpBinding" address="http://localhost:8080/OpcWCFInterface" bindingConfiguration="BasicHttpBinding_IOpcWCFInterface">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:8080/brokerService</serializedValue>
+          <serializedValue>http://localhost:8080/OpcWCFInterface</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -245,7 +245,7 @@
           <serializedValue>BasicHttpBinding_IOpcWCFInterface</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OpcWcfInterface.IOpcWCFInterface</serializedValue>
+          <serializedValue>OpcWCFInterface.IOpcWCFInterface</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
@@ -315,10 +315,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="NetTcpBinding_IOpcWCFInterface" contract="OpcWcfInterface.IOpcWCFInterface" bindingType="netTcpBinding" address="net.tcp://localhost:8090/brokerService" bindingConfiguration="NetTcpBinding_IOpcWCFInterface">
+    <endpoint name="NetTcpBinding_IOpcWCFInterface" contract="OpcWCFInterface.IOpcWCFInterface" bindingType="netTcpBinding" address="net.tcp://localhost:8090/OpcWCFInterface" bindingConfiguration="NetTcpBinding_IOpcWCFInterface">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>net.tcp://localhost:8090/brokerService</serializedValue>
+          <serializedValue>net.tcp://localhost:8090/OpcWCFInterface</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -330,7 +330,7 @@
           <serializedValue>NetTcpBinding_IOpcWCFInterface</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OpcWcfInterface.IOpcWCFInterface</serializedValue>
+          <serializedValue>OpcWCFInterface.IOpcWCFInterface</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>

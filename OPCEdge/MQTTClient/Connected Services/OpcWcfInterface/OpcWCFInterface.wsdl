@@ -139,6 +139,12 @@
   <wsdl:message name="IOpcWCFInterface_CheckConnected_OutputMessage">
     <wsdl:part name="parameters" element="tns:CheckConnectedResponse" />
   </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_CheckService_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckService" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_CheckService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckServiceResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOpcWCFInterface">
     <wsdl:operation name="MQTTConnectClientAsync">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/MQTTConnectClientAsync" message="tns:IOpcWCFInterface_MQTTConnectClientAsync_InputMessage" />
@@ -203,6 +209,10 @@
     <wsdl:operation name="CheckConnected">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/CheckConnected" message="tns:IOpcWCFInterface_CheckConnected_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/CheckConnectedResponse" message="tns:IOpcWCFInterface_CheckConnected_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/CheckService" message="tns:IOpcWCFInterface_CheckService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/CheckServiceResponse" message="tns:IOpcWCFInterface_CheckService_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOpcWCFInterface" type="tns:IOpcWCFInterface">
@@ -344,6 +354,15 @@
     </wsdl:operation>
     <wsdl:operation name="CheckConnected">
       <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/CheckConnected" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckService">
+      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/CheckService" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -499,15 +518,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CheckService">
+      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/CheckService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="OpcWCFInterface">
     <wsdl:port name="BasicHttpBinding_IOpcWCFInterface" binding="tns:BasicHttpBinding_IOpcWCFInterface">
-      <soap:address location="http://localhost:8080/brokerService" />
+      <soap:address location="http://localhost:8080/OpcWCFInterface" />
     </wsdl:port>
     <wsdl:port name="NetTcpBinding_IOpcWCFInterface" binding="tns:NetTcpBinding_IOpcWCFInterface">
-      <soap12:address location="net.tcp://localhost:8090/brokerService" />
+      <soap12:address location="net.tcp://localhost:8090/OpcWCFInterface" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.tcp://localhost:8090/brokerService</wsa10:Address>
+        <wsa10:Address>net.tcp://localhost:8090/OpcWCFInterface</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
           <Spn>host/DESKTOP-41A3VPF</Spn>
         </Identity>

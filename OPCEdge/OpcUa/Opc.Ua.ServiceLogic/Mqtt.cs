@@ -32,6 +32,8 @@ namespace Opc.Ua.ServiceLogic
         void OPCDisconnect();
         bool CheckConnected();
 
+        bool CheckService();
+
     }
 
     //Static Property to allow for use of the interface above.

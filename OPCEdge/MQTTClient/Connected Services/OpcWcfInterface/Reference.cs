@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BrokerClient.OpcWcfInterface {
+namespace OpcEdgeClient.OpcWCFInterface {
     using System.Runtime.Serialization;
     using System;
     
@@ -147,7 +147,7 @@ namespace BrokerClient.OpcWcfInterface {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="OpcWcfInterface.IOpcWCFInterface")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="OpcWCFInterface.IOpcWCFInterface")]
     public interface IOpcWCFInterface {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/MQTTConnectClientAsync", ReplyAction="http://tempuri.org/IOpcWCFInterface/MQTTConnectClientAsyncResponse")]
@@ -261,15 +261,21 @@ namespace BrokerClient.OpcWcfInterface {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/CheckConnected", ReplyAction="http://tempuri.org/IOpcWCFInterface/CheckConnectedResponse")]
         System.Threading.Tasks.Task<bool> CheckConnectedAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/CheckService", ReplyAction="http://tempuri.org/IOpcWCFInterface/CheckServiceResponse")]
+        bool CheckService();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/CheckService", ReplyAction="http://tempuri.org/IOpcWCFInterface/CheckServiceResponse")]
+        System.Threading.Tasks.Task<bool> CheckServiceAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IOpcWCFInterfaceChannel : BrokerClient.OpcWcfInterface.IOpcWCFInterface, System.ServiceModel.IClientChannel {
+    public interface IOpcWCFInterfaceChannel : OpcEdgeClient.OpcWCFInterface.IOpcWCFInterface, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class OpcWCFInterfaceClient : System.ServiceModel.ClientBase<BrokerClient.OpcWcfInterface.IOpcWCFInterface>, BrokerClient.OpcWcfInterface.IOpcWCFInterface {
+    public partial class OpcWCFInterfaceClient : System.ServiceModel.ClientBase<OpcEdgeClient.OpcWCFInterface.IOpcWCFInterface>, OpcEdgeClient.OpcWCFInterface.IOpcWCFInterface {
         
         public OpcWCFInterfaceClient() {
         }
@@ -416,6 +422,14 @@ namespace BrokerClient.OpcWcfInterface {
         
         public System.Threading.Tasks.Task<bool> CheckConnectedAsync() {
             return base.Channel.CheckConnectedAsync();
+        }
+        
+        public bool CheckService() {
+            return base.Channel.CheckService();
+        }
+        
+        public System.Threading.Tasks.Task<bool> CheckServiceAsync() {
+            return base.Channel.CheckServiceAsync();
         }
     }
 }

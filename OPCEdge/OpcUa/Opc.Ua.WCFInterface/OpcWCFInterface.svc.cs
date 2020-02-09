@@ -53,7 +53,7 @@ namespace OpcWCFInterface
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceMQTTTCP"
+                    Source = "OpcWCFInterfaceMQTTTCP"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -71,7 +71,7 @@ namespace OpcWCFInterface
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceMQTTSubscribe"
+                    Source = "OpcWCFInterfaceMQTTSubscribe"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -89,7 +89,7 @@ namespace OpcWCFInterface
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceMQTTSubscribe"
+                    Source = "OpcWCFInterfaceMQTTSubscribe"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -107,7 +107,7 @@ namespace OpcWCFInterface
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceMQTTPublish"
+                    Source = "OpcWCFInterfaceMQTTPublish"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -164,7 +164,7 @@ namespace OpcWCFInterface
                 // Create an EventLog instance and assign its source.
                 EventLog myLog = new EventLog
                 {
-                    Source = "brokerServiceOPCClient"
+                    Source = "OpcWCFInterfaceOPCClient"
                 };
                 // Write an informational entry to the event log.
                 myLog.WriteEntry(e.Message);
@@ -521,6 +521,11 @@ namespace OpcWCFInterface
         public bool CheckConnected()
         {
             return Host.Current.CheckConnected();
+        }
+
+        public bool CheckService()
+        {
+            return Host.Current.CheckService();
         }
     }
 }

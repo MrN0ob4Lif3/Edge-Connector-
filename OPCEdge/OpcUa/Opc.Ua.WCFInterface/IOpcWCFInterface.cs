@@ -62,6 +62,9 @@ namespace OpcWCFInterface
         [OperationContract]
         bool CheckConnected();
 
+        [OperationContract]
+        bool CheckService();
+
         #endregion
     }
 

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{34FC924D-9ACA-4E64-A409-2CE4150FAD31}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>BrokerClient</RootNamespace>
-    <AssemblyName>BrokerClient</AssemblyName>
+    <RootNamespace>OpcEdgeClient</RootNamespace>
+    <AssemblyName>OpcEdgeClient</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -67,7 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\OpcWcfInterface\Reference.cs">
+    <Compile Include="Connected Services\OpcWCFInterface\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -99,37 +99,37 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Connected Services\OpcWcfInterface\item.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item1.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item2.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item3.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item4.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item5.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item6.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item6.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item7.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item7.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item8.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item8.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\item9.xsd">
+    <None Include="Connected Services\OpcWCFInterface\item9.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\OpcWcfInterface\OpcWCFInterface.wsdl" />
+    <None Include="Connected Services\OpcWCFInterface\OpcWCFInterface.wsdl" />
     <None Include="Properties\DataSources\brokerService.CompositeType.datasource" />
     <None Include="Properties\DataSources\brokerService.OPCInstance.datasource" />
     <None Include="Properties\DataSources\brokerService.SessionSurrogate.datasource" />
@@ -172,19 +172,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\OpcWcfInterface\" />
+    <WCFMetadataStorage Include="Connected Services\OpcWCFInterface\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\OpcWcfInterface\item.disco" />
+    <None Include="Connected Services\OpcWCFInterface\item.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\OpcWcfInterface\configuration91.svcinfo" />
+    <None Include="Connected Services\OpcWCFInterface\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\OpcWcfInterface\configuration.svcinfo" />
+    <None Include="Connected Services\OpcWCFInterface\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\OpcWcfInterface\Reference.svcmap">
+    <None Include="Connected Services\OpcWCFInterface\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
