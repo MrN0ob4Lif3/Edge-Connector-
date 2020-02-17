@@ -188,38 +188,8 @@ namespace OpcEdgeClient
             checkService = new System.Threading.Timer(x => CheckService(), null, 5000, 1000);
         }
 
-        private void MqttMain_Load(object sender, EventArgs e)
+        private void OpcEdgeMain_Load(object sender, EventArgs e)
         {
-            //Loading MQTT elements
-            publishPayload = new Dictionary<String, String>();
-            connectionStringMQTT.Text = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
-            
-            try
-            {
-                client.Open();
-                m_topicList = client.MQTTSubscribedTopics();
-            }
-            catch
-            {
-                // Initialize Form controls.
-                if (m_topicList != null)
-                {
-                    foreach (String topic in m_topicList)
-                    {
-                        topicListPub.Items.Add(topic);
-                        topicListSub.Items.Add(topic);
-                    }
-                }
-            }
-
-            if (publishKey1.Text != null && publishValue1.Text != null)
-            {
-                publishPayload.Add(publishKey1.Text, publishValue1.Text);
-            }
-            if (publishKey2.Text != null && publishValue2.Text != null)
-            {
-                publishPayload.Add(publishKey2.Text, publishValue2.Text);
-            }
             opcEndpoints.Initialize(m_endpoints, m_configuration);
             opcSession.Configuration = m_configuration = app_configuration;
             opcSession.MessageContext = context;
@@ -230,132 +200,9 @@ namespace OpcEdgeClient
         }
         #endregion
 
-        #region MQTT Controls
-        //Connect to specified address.
-        private void ConnectButton_Click(object sender, EventArgs e)
-        {
-            if (connectionStringMQTT.Text != string.Empty)
-            {
-                brokerIP = connectionStringMQTT.Text;
-                if (client.InnerChannel.State != CommunicationState.Faulted)
-                {
-                    try
-                    {
-                        client.MQTTConnectClientAsync(connectionStringMQTT.Text);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Error connecting.");
-                    }
-                }
-                else
-                {
-                    client = new OpcWCFInterface.OpcWCFInterfaceClient("NetTcpBinding_IOpcWCFInterface");
-                }
-            }
-        }
-        //Subscribe to topic.
-        private void SubscribeButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string topic = topicSubscribe.Text;
-                client.MQTTSubscribeTopic(topic);
-                if (topicListPub.Items.Contains(topic))
-                    return;
-                else
-                    topicListPub.Items.Add(topic);
-                topicListSub.Items.Add(topic);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error subscribing.");
-            }
-        }
-        //Unsubscribes from topic.
-        private void UnsubscribeButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                client.MQTTUnsubscribeTopic(topicSubscribe.Text);
-                ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(topicListSub);
-                selectedItems = topicListSub.SelectedItems;
-
-                if (topicListSub.SelectedIndex != -1)
-                {
-                    for (int i = selectedItems.Count - 1; i >= 0; i--)
-                    {
-                        topicListPub.Items.Remove(selectedItems[i]);
-                        topicListSub.Items.Remove(selectedItems[i]);
-                    }
-                }
-                else
-                    MessageBox.Show("Select a topic to unsubscribe from.");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error unsubscribing");
-            }
-        }
-        //Publishes message to selected topic.
-        private void PublishButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                publishPayload = new Dictionary<String, String>();
-                string topicChosen = null;
-
-                //Checks if topic selected or entered.
-                if (topicListPub.SelectedItem != null && pubTopic.Text != null)
-                    topicChosen = topicListPub.SelectedItem.ToString();
-                else if (pubTopic.Text != null)
-                    topicChosen = pubTopic.Text;
-                else
-                    MessageBox.Show("Please select a topic or input a new topic to publish to.");
-
-                //Checks if key / value has been filled.
-                if (publishKey1.Text != null && publishValue1.Text != null)
-                {
-                    publishPayload.Add(publishKey1.Text, publishValue1.Text);
-                }
-                if (publishKey2.Text != null && publishValue2.Text != null)
-                {
-                    publishPayload.Add(publishKey2.Text, publishValue2.Text);
-                }
-                if (publishPayload != null)
-                {
-                    string message = JsonConvert.SerializeObject(publishPayload);
-                    client.MQTTPublishTopicAsync(topicChosen, message);
-                }
-
-                //Checks if topicChosen is a new input topic. If so, add to topic list.
-                if (topicChosen != null && topicListSub.Items.Contains(topicChosen))
-                    return;
-                else if (topicChosen != null)
-                {
-                    topicListPub.Items.Add(topicChosen);
-                    topicListSub.Items.Add(topicChosen);
-                    client.MQTTSubscribeTopic(topicChosen);
-                }
-                else
-                    MessageBox.Show("Please select a topic or input a new topic to publish to.");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error publishing.");
-            }
-        }
-        //Refreshes elements after tab switch.
-        private void MqttTabs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            topicListSub.SelectedItem = null;
-            topicListPub.SelectedItem = null;
-        }
-        #endregion
-
         #region Form Controls (Close, Resize, etc.)
         //Form Resizing 
-        private void MqttMain_Resize(object sender, EventArgs e)
+        private void OpcEdgeMain_Resize(object sender, EventArgs e)
         {
             //if the form is minimized  
             //hide it from the task bar  
@@ -368,14 +215,14 @@ namespace OpcEdgeClient
             }
         }
 
-        private void MqttNotify_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void OpcEdgeNotify_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             this.WindowState = FormWindowState.Normal;
             brokerNotify.Visible = false;
         }
 
-        private void MqttMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void OpcEdgeMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             //if the form is closed  
             //hide it from the task bar  
@@ -386,7 +233,7 @@ namespace OpcEdgeClient
             brokerNotify.Visible = true;
         }
 
-        private void MqttMain_FormClosed(object sender, FormClosedEventArgs e)
+        private void OpcEdgeMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.checkService.Change(Timeout.Infinite, Timeout.Infinite);
             this.checkService.Dispose();
@@ -811,15 +658,6 @@ namespace OpcEdgeClient
                                             ReferenceDescription retainedItem;
                                             retainedItem = JsonConvert.DeserializeObject<ReferenceDescription>(storedItem);
                                             opcBrowse.Subscribe(tempSubscription, retainedItem);
-                                            if (topicListPub.Items.Contains(tempSubscription.DisplayName))
-                                            {
-                                                continue;
-                                            }
-                                            else
-                                            {
-                                                topicListPub.Items.Add((tempSubscription.DisplayName));
-                                                topicListSub.Items.Add((tempSubscription.DisplayName));
-                                            }
                                         }
                                         break;
                                     }
@@ -846,7 +684,6 @@ namespace OpcEdgeClient
             try
             {
                 client.CheckService();
-                //client.CheckConnected();
             }
             catch (Exception ex)
             {
@@ -859,7 +696,7 @@ namespace OpcEdgeClient
                 }
                 else
                 {
-                    MessageBox.Show("Service is not running or OPC . Please restart it.");
+                    MessageBox.Show("The OPC Service has not been started yet or has encountered an error. Please restart it.");
                     this.Close();
                     System.Environment.Exit(1);
                 }
