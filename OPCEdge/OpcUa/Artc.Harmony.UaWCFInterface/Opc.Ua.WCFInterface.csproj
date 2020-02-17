@@ -119,8 +119,8 @@
       <Project>{92AE819B-4938-4502-AC32-67063F9893CD}</Project>
       <Name>UA Sample Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Opc.Ua.ServiceLogic\Opc.Ua.ServiceLogic.csproj">
-      <Project>{0193cd8e-6755-4ffb-a8d4-d93f53465c8f}</Project>
+    <ProjectReference Include="..\Artc.Harmony.UaServiceLogic\Opc.Ua.ServiceLogic.csproj">
+      <Project>{ccc1f400-917f-4f6e-a4bb-df008c18a98d}</Project>
       <Name>Opc.Ua.ServiceLogic</Name>
     </ProjectReference>
   </ItemGroup>

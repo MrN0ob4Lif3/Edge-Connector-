@@ -86,11 +86,11 @@
       <Project>{A247D2EE-14FC-463D-A9BA-6CFF1EF22B7A}</Project>
       <Name>UA Client Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Opc.Ua.ServiceLogic\Opc.Ua.ServiceLogic.csproj">
-      <Project>{0193cd8e-6755-4ffb-a8d4-d93f53465c8f}</Project>
+    <ProjectReference Include="..\Artc.Harmony.UaServiceLogic\Opc.Ua.ServiceLogic.csproj">
+      <Project>{ccc1f400-917f-4f6e-a4bb-df008c18a98d}</Project>
       <Name>Opc.Ua.ServiceLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Opc.Ua.WCFInterface\Opc.Ua.WCFInterface.csproj">
+    <ProjectReference Include="..\Artc.Harmony.UaWCFInterface\Opc.Ua.WCFInterface.csproj">
       <Project>{443289ba-c188-41f3-a552-a9a7715baa49}</Project>
       <Name>Opc.Ua.WCFInterface</Name>
     </ProjectReference>

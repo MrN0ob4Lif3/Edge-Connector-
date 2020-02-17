@@ -144,11 +144,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpcUa\Artc.Harmony.UaClientControls\UA Client Controls.csproj">
+    <ProjectReference Include="..\Artc.Harmony.UaClientControls\UA Client Controls.csproj">
       <Project>{A247D2EE-14FC-463D-A9BA-6CFF1EF22B7A}</Project>
       <Name>UA Client Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpcUa\Artc.Harmony.UaSampleControls\UA Sample Controls.csproj">
+    <ProjectReference Include="..\Artc.Harmony.UaSampleControls\UA Sample Controls.csproj">
       <Project>{92AE819B-4938-4502-AC32-67063F9893CD}</Project>
       <Name>UA Sample Controls</Name>
     </ProjectReference>
