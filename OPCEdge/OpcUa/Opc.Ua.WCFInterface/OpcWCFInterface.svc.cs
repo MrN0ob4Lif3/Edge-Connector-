@@ -1,10 +1,6 @@
 ﻿using System;
-using Opc.Ua;
 using Opc.Ua.Client;
-using Opc.Ua.Client.Controls;
 using System.Diagnostics;
-using Opc.Ua.Configuration;
-using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using Opc.Ua.ServiceLogic;
 

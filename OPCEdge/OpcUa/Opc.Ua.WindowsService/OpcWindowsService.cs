@@ -5,18 +5,17 @@ using System.ServiceModel;
 using System.Threading;
 using System.ServiceModel.Description;
 using MQTTnet.Extensions.ManagedClient;
-using Opc.Ua.ServiceLogic;
 using System.Collections.Generic;
-using Opc.Ua.Configuration;
-using Opc.Ua;
-using Opc.Ua.Client.Controls;
 using System.Threading.Tasks;
-using Opc.Ua.Client;
-using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Newtonsoft.Json;
+using Opc.Ua.ServiceLogic;
+using Opc.Ua.Configuration;
+using Opc.Ua;
+using Opc.Ua.Client;
+using Opc.Ua.Client.Controls;
 
 namespace OpcWindowsService
 {
@@ -81,7 +80,7 @@ namespace OpcWindowsService
                 // Log an event to indicate successful start.
                 EventLog.WriteEntry("Successful start.", EventLogEntryType.Information);
                 //Initialize MQTT Client.
-                managedMqtt = Mqtt.CreateManagedClient();
+                managedMqtt = ServiceLogic.CreateManagedClient();
                 //MQTT Broker connection
                 //string brokerIP = "localhost";
                 string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
@@ -173,7 +172,7 @@ namespace OpcWindowsService
             await mqttClientSemaphore.WaitAsync();
             try
             {
-                await Mqtt.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
+                await ServiceLogic.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
             }
             finally
             {
@@ -188,8 +187,8 @@ namespace OpcWindowsService
             await mqttClientSemaphore.WaitAsync();
             try
             {
-                managedMqtt = Mqtt.CreateManagedClient();
-                await Mqtt.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
+                managedMqtt = ServiceLogic.CreateManagedClient();
+                await ServiceLogic.ManagedMqttConnectWebSocket(managedMqtt, brokerIP);
             }
             finally
             {
@@ -209,7 +208,7 @@ namespace OpcWindowsService
                 }
                 else
                 {
-                    Mqtt.ManagedMqttSubscribe(managedMqtt, topic);
+                    ServiceLogic.ManagedMqttSubscribe(managedMqtt, topic);
                     m_topicSet.Add(topic);
                 }
             }
@@ -225,7 +224,7 @@ namespace OpcWindowsService
             await mqttClientSemaphore.WaitAsync();
             try
             {
-                Mqtt.ManagedMqttUnsubscribe(managedMqtt, topic);
+                ServiceLogic.ManagedMqttUnsubscribe(managedMqtt, topic);
                 m_topicSet.Remove(topic);
             }
             finally
@@ -240,7 +239,7 @@ namespace OpcWindowsService
             await mqttClientSemaphore.WaitAsync();
             try
             {
-                await Mqtt.ManagedMqttPublish(managedMqtt, topic, message);
+                await ServiceLogic.ManagedMqttPublish(managedMqtt, topic, message);
 
             }
             finally
@@ -729,6 +728,7 @@ namespace OpcWindowsService
         #endregion
 
         #region Service Methods
+
         //Callback to check if session is running in service and disconnects if connected.
         bool IServiceCallback.CheckConnected()
         {
