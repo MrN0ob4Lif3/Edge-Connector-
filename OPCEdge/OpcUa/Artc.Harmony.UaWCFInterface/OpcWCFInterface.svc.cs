@@ -146,17 +146,26 @@ namespace OpcWCFInterface
         {
             return Host.Current.CheckService();
         }
-        
+
+        //Callback to return path to 'Retained' folder.
+        public string MainFolder()
+        {
+            return Host.Current.MainFolder();
+        }
+
+        //Callback to return path to 'Retained Sessions' folder.
         public string SessionsFolder()
         {
             return Host.Current.SessionsFolder();
         }
 
+        //Callback to return path to 'Retained Subscriptions' folder.
         public string SubscriptionsFolder()
         {
             return Host.Current.SubscriptionsFolder();
         }
 
+        //Callback to return path to 'Retained Items' folder.
         public string ItemsFolder()
         {
             return Host.Current.ItemsFolder();

@@ -171,6 +171,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="MainFolder">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MainFolderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MainFolderResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="SessionsFolder">
     <xs:complexType>
       <xs:sequence />

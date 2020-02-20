@@ -23,7 +23,7 @@ namespace OpcWindowsService
     {
         #region Service Properties
         ServiceHost host;
-        static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920";
+        static string mainFolder = @"C:\Users\Andrew\Documents\SITUofGFYP-AY1920\Retained\";
         string itemsFolder = Path.Combine(mainFolder, @"Retained Monitored Items");
         string subscriptionsFolder = Path.Combine(mainFolder, @"Retained Subscriptions");
         string sessionsFolder = Path.Combine(mainFolder, @"Retained Sessions");
@@ -65,15 +65,7 @@ namespace OpcWindowsService
         {
             try
             {
-                //Creates directories to store retained information.
-                DirectorySecurity sec = Directory.GetAccessControl(mainFolder);
-                SecurityIdentifier everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
-                sec.AddAccessRule(new FileSystemAccessRule(everyone, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, System.Security.AccessControl.AccessControlType.Allow));
-                Directory.SetAccessControl(mainFolder, sec);
-                Directory.CreateDirectory(itemsFolder);
-                Directory.CreateDirectory(subscriptionsFolder);
-                Directory.CreateDirectory(sessionsFolder);
-
+                createDirectories();
                 //Set the static callback reference and creates interface for WinForms by hosting a WCF Service.
                 Host.Current = this;
                 StartBroker();
@@ -82,7 +74,6 @@ namespace OpcWindowsService
                 //Initialize MQTT Client.
                 managedMqtt = ServiceLogic.CreateManagedClient();
                 //MQTT Broker connection
-                //string brokerIP = "localhost";
                 string brokerIP = "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt";
                 MQTTConnectClient(managedMqtt, brokerIP);
 
@@ -630,6 +621,33 @@ namespace OpcWindowsService
                 }
             }
         }
+        
+        //Create directories to store retained information (Session endpoint, subscriptions, monitored items)
+        public void createDirectories()
+        {
+            //Creates directories to store retained information.
+            if (!Directory.Exists(mainFolder))
+            {
+                Directory.CreateDirectory(mainFolder);
+                DirectorySecurity sec = Directory.GetAccessControl(mainFolder);
+                SecurityIdentifier everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+                //Changing permissions for mainFolder so EdgeClient can access
+                sec.AddAccessRule(new FileSystemAccessRule(everyone, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, System.Security.AccessControl.AccessControlType.Allow));
+                Directory.SetAccessControl(mainFolder, sec);
+            }
+            if (!Directory.Exists(itemsFolder))
+            {
+                Directory.CreateDirectory(itemsFolder);
+            }
+            if (!Directory.Exists(subscriptionsFolder))
+            {
+                Directory.CreateDirectory(subscriptionsFolder);
+            }
+            if (!Directory.Exists(sessionsFolder))
+            {
+                Directory.CreateDirectory(sessionsFolder);
+            }
+        }
 
         #region Callback methods
 
@@ -746,6 +764,12 @@ namespace OpcWindowsService
         bool IServiceCallback.CheckService()
         {
             return serviceCheck;
+        }
+
+        //Callback to return path to 'Retained' folder.
+        string IServiceCallback.MainFolder()
+        {
+            return mainFolder;
         }
 
         //Callback to return path to 'Retained Sessions' folder.

@@ -91,14 +91,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MQTTnet">
-      <Version>3.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="MQTTnet.Extensions.ManagedClient">
-      <Version>3.0.8</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Artc.Harmony.UaClientConfiguration\Opc.Ua.Configuration.csproj">
       <Project>{a453ffc4-b6e3-4d29-9adf-74683070b3e7}</Project>
       <Name>Opc.Ua.Configuration</Name>
@@ -120,7 +112,7 @@
       <Name>UA Sample Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Artc.Harmony.UaServiceLogic\Opc.Ua.ServiceLogic.csproj">
-      <Project>{ccc1f400-917f-4f6e-a4bb-df008c18a98d}</Project>
+      <Project>{c9a8baae-e0a7-4a69-8cdb-4dac2f50ea92}</Project>
       <Name>Opc.Ua.ServiceLogic</Name>
     </ProjectReference>
   </ItemGroup>

@@ -30,6 +30,7 @@ namespace Opc.Ua.ServiceLogic
         string SessionEndpoint();
         bool CheckConnected();
         bool CheckService();
+        string MainFolder();
         string SessionsFolder();
         string SubscriptionsFolder();
         string ItemsFolder();

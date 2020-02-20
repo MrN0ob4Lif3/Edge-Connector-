@@ -58,6 +58,9 @@ namespace OpcWCFInterface
 
         #region Service Operations
         [OperationContract]
+        string MainFolder();
+
+        [OperationContract]
         string SessionsFolder();
 
         [OperationContract]

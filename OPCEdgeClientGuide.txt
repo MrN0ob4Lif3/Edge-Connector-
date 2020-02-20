@@ -1,0 +1,26 @@
+Installation of OPC Service (Temporary until installer properly configured and tested once service finalized):
+1) Run "Developer Command Prompt for VS" as administrator
+
+2) Navigate to build (Either debug or release, whichever was built) folder for Artc.Harmony.UaWindowsService
+E.g. "cd C:\Users\Andrew\Documents\Harmony\src\Edge\OpcUa\Artc.Harmony.UaWindowsService\bin\Debug"
+
+3) Use installutil command to install service.
+installutil -i OpcWindowsService.exe
+
+4) Use installutil command to uninstall service once done.
+installutil -u OpcWindowsService.exe
+
+
+OpcEdgeClient:
+1) Set Opc.EdgeClient as startup project in VS
+
+2) Start once OpcWindowsService has been installed. (Client will not run if service has not been installed or is not running.)
+
+
+Notes:
+1) OpcWindowsService's MQTT client has been coded to auto-connect to "dev-harmony-01.southeastasia.cloudapp.azure.com:8080/mqtt"
+This can be found in line 77 under OpcWindowsService.cs if change required.
+
+2) OpcWindowsService's OPC client has been coded to auto-connect to last connected OPC endpoint (Unless no previous connection)
+Retained endpoints will be stored as a .json file in a directory created by the service. (Line 26-29 and 626-650) 
+

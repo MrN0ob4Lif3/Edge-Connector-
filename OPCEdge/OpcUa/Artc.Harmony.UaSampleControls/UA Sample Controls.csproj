@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{92AE819B-4938-4502-AC32-67063F9893CD}</ProjectGuid>
+    <ProjectGuid>{45D60119-D990-4EEC-9EE8-51CDBE6CE509}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Opc.Ua.Sample</RootNamespace>

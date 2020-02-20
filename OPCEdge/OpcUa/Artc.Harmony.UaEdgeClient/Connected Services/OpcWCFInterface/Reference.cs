@@ -141,6 +141,12 @@ namespace OpcEdgeClient.OpcWCFInterface {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SessionEndpoint", ReplyAction="http://tempuri.org/IOpcWCFInterface/SessionEndpointResponse")]
         System.Threading.Tasks.Task<string> SessionEndpointAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/MainFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/MainFolderResponse")]
+        string MainFolder();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/MainFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/MainFolderResponse")]
+        System.Threading.Tasks.Task<string> MainFolderAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOpcWCFInterface/SessionsFolder", ReplyAction="http://tempuri.org/IOpcWCFInterface/SessionsFolderResponse")]
         string SessionsFolder();
         
@@ -297,6 +303,14 @@ namespace OpcEdgeClient.OpcWCFInterface {
         
         public System.Threading.Tasks.Task<string> SessionEndpointAsync() {
             return base.Channel.SessionEndpointAsync();
+        }
+        
+        public string MainFolder() {
+            return base.Channel.MainFolder();
+        }
+        
+        public System.Threading.Tasks.Task<string> MainFolderAsync() {
+            return base.Channel.MainFolderAsync();
         }
         
         public string SessionsFolder() {

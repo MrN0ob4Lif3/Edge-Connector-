@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.ServiceModel;
 using System.ServiceProcess;
 using System.Reflection;
 using System.Drawing;
@@ -15,6 +14,9 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 namespace OpcEdgeClient
 {
@@ -30,6 +32,7 @@ namespace OpcEdgeClient
         private SessionReconnectHandler m_reconnectHandler;
         private int m_reconnectPeriod = 10;
         public String[] m_topicList;
+        string mainFolder;
         string itemsFolder;
         string subscriptionsFolder;
         string sessionsFolder;
@@ -63,18 +66,7 @@ namespace OpcEdgeClient
         public async void InitializeClients()
         {
             //Creates directory for retained information in case it was deleted somehow.
-            if(!Directory.Exists(itemsFolder))
-            {
-                Directory.CreateDirectory(itemsFolder);
-            }
-            if (!Directory.Exists(subscriptionsFolder))
-            {
-                Directory.CreateDirectory(subscriptionsFolder);
-            }
-            if (!Directory.Exists(sessionsFolder))
-            {
-                Directory.CreateDirectory(sessionsFolder);
-            }
+            createDirectories();
 
             //Initialize OPC Application Instance
             application = new ApplicationInstance
@@ -99,6 +91,7 @@ namespace OpcEdgeClient
             //If service is currently connected to a OPC endpoint, recreate the connection on the client.
             if (sessionEndpoint != null)
             {
+                sessionEndpoint = Regex.Replace(sessionEndpoint, "\\\\|\"", "");
                 // load the application configuration.
                 ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
                 // check the application certificate.
@@ -179,6 +172,7 @@ namespace OpcEdgeClient
             InitializeComponent();
             SetStartup();
             //Retrieves path to retained information folders from service.
+            mainFolder = client.MainFolder();
             sessionsFolder = client.SessionsFolder();
             subscriptionsFolder = client.SubscriptionsFolder();
             itemsFolder = client.ItemsFolder();
@@ -700,6 +694,33 @@ namespace OpcEdgeClient
                     this.Close();
                     System.Environment.Exit(1);
                 }
+            }
+        }
+
+        //Create directories to store retained information (Session endpoint, subscriptions, monitored items)
+        public void createDirectories()
+        {
+            //Creates directories to store retained information.
+            if (!Directory.Exists(mainFolder))
+            {
+                Directory.CreateDirectory(mainFolder);
+                DirectorySecurity sec = Directory.GetAccessControl(mainFolder);
+                SecurityIdentifier everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+                //Changing permissions for mainFolder so EdgeClient can access
+                sec.AddAccessRule(new FileSystemAccessRule(everyone, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, System.Security.AccessControl.AccessControlType.Allow));
+                Directory.SetAccessControl(mainFolder, sec);
+            }
+            if (!Directory.Exists(itemsFolder))
+            {
+                Directory.CreateDirectory(itemsFolder);
+            }
+            if (!Directory.Exists(subscriptionsFolder))
+            {
+                Directory.CreateDirectory(subscriptionsFolder);
+            }
+            if (!Directory.Exists(sessionsFolder))
+            {
+                Directory.CreateDirectory(sessionsFolder);
             }
         }
         #endregion

@@ -121,6 +121,12 @@
   <wsdl:message name="IOpcWCFInterface_SessionEndpoint_OutputMessage">
     <wsdl:part name="parameters" element="tns:SessionEndpointResponse" />
   </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_MainFolder_InputMessage">
+    <wsdl:part name="parameters" element="tns:MainFolder" />
+  </wsdl:message>
+  <wsdl:message name="IOpcWCFInterface_MainFolder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MainFolderResponse" />
+  </wsdl:message>
   <wsdl:message name="IOpcWCFInterface_SessionsFolder_InputMessage">
     <wsdl:part name="parameters" element="tns:SessionsFolder" />
   </wsdl:message>
@@ -195,6 +201,10 @@
     <wsdl:operation name="SessionEndpoint">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionEndpoint" message="tns:IOpcWCFInterface_SessionEndpoint_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionEndpointResponse" message="tns:IOpcWCFInterface_SessionEndpoint_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MainFolder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/MainFolder" message="tns:IOpcWCFInterface_MainFolder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOpcWCFInterface/MainFolderResponse" message="tns:IOpcWCFInterface_MainFolder_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="SessionsFolder">
       <wsdl:input wsaw:Action="http://tempuri.org/IOpcWCFInterface/SessionsFolder" message="tns:IOpcWCFInterface_SessionsFolder_InputMessage" />
@@ -330,6 +340,15 @@
     </wsdl:operation>
     <wsdl:operation name="SessionEndpoint">
       <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/SessionEndpoint" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MainFolder">
+      <soap:operation soapAction="http://tempuri.org/IOpcWCFInterface/MainFolder" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -487,6 +506,15 @@
     </wsdl:operation>
     <wsdl:operation name="SessionEndpoint">
       <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/SessionEndpoint" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MainFolder">
+      <soap12:operation soapAction="http://tempuri.org/IOpcWCFInterface/MainFolder" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
